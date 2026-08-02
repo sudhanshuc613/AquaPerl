@@ -4,51 +4,48 @@ import slugify from 'slugify';
 import { prisma } from '@/lib/prisma';
 import { authOptions } from '@/lib/auth';
 
-// Helper: ensure a default category exists and return its id
 async function getDefaultCategoryId(): Promise<string> {
-  let def = await prisma.category.findFirst({ where: { slug: 'ro-purifiers' } })
-         ?? await prisma.category.findFirst();
+  let def = await prisma.category.findFirst({ where: { slug: 'ro-purifiers' } }) ?? await prisma.category.findFirst();
   if (!def) {
-    def = await prisma.category.create({
-      data: { name: 'RO Purifiers', slug: 'ro-purifiers', type: 'PRODUCT' },
-    });
+    def = await prisma.category.create({ data: { name: 'RO Purifiers', slug: 'ro-purifiers', type: 'PRODUCT' } });
   }
   return def.id;
+}
+
+async function resolveCategoryId(input: string | undefined): Promise<string> {
+  if (!input) return getDefaultCategoryId();
+  const s = String(input).trim();
+  const isUuid = /^c[a-z0-9]{20,}$/i.test(s) || /^[0-9a-f-]{36}$/i.test(s); // cuid/uuid
+  if (isUuid) {
+    const found = await prisma.category.findUnique({ where: { id: s } }).catch(() => null);
+    if (found) return found.id;
+  }
+  const bySlug = await prisma.category.findUnique({ where: { slug: s.toLowerCase() } });
+  if (bySlug) return bySlug.id;
+  // Create new category from slug/name
+  const slug = s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || `cat-${Date.now()}`;
+  const name = s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  const created = await prisma.category.create({ data: { name, slug, type: 'PRODUCT' } });
+  return created.id;
 }
 
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !['ADMIN', 'SUPER_ADMIN'].includes((session.user as any)?.role)) {
-      return NextResponse.json({ error: 'Unauthorized - please login again' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized - login fir se karo' }, { status: 401 });
     }
     const data = await req.json();
     if (!data.name || !data.sku || !data.price) {
-      return NextResponse.json({ error: 'Name, SKU, aur Price zaroori hai' }, { status: 400 });
+      return NextResponse.json({ error: 'Name, SKU, Price zaroori hai' }, { status: 400 });
     }
 
-    let categoryId = data.categoryId;
-    if (!categoryId) categoryId = await getDefaultCategoryId();
-    else {
-      // If categoryId is a slug (not cuid), resolve or create
-      const exists = await prisma.category.findUnique({ where: { id: categoryId } }).catch(() => null);
-      if (!exists) {
-        const bySlug = await prisma.category.findUnique({ where: { slug: categoryId } });
-        if (bySlug) categoryId = bySlug.id;
-        else {
-          const created = await prisma.category.create({
-            data: { name: categoryId.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()), slug: categoryId, type: 'PRODUCT' },
-          });
-          categoryId = created.id;
-        }
-      }
-    }
+    const categoryId = await resolveCategoryId(data.categoryId);
 
     const baseSlug = slugify(String(data.name), { lower: true, strict: true });
     const existing = await prisma.product.findUnique({ where: { slug: baseSlug } });
     const slug = existing ? `${baseSlug}-${Date.now()}` : baseSlug;
 
-    // Normalise images: accept string (URL) or object {url,isPrimary}; skip any non-url/empty
     const rawImages: any[] = Array.isArray(data.images) ? data.images : [];
     if (data.imageUrl && typeof data.imageUrl === 'string' && data.imageUrl.startsWith('http')) {
       rawImages.unshift({ url: data.imageUrl, isPrimary: true });
@@ -80,8 +77,6 @@ export async function POST(req: Request) {
         isFeatured: !!data.isFeatured,
         isCommercial: !!data.isCommercial,
         warrantyMonths: Number(data.warrantyMonths) || 12,
-        metaTitle: data.metaTitle || null,
-        metaDescription: data.metaDescription || null,
         metaKeywords: Array.isArray(data.metaKeywords) ? data.metaKeywords : [],
         images: images.length ? { create: images } : undefined,
       },
@@ -99,24 +94,16 @@ export async function GET(req: Request) {
     const page = parseInt(searchParams.get('page') || '1');
     const q = searchParams.get('q') || '';
     const take = 50;
-    const where: any = {
-      ...(q ? { OR: [{ name: { contains: q, mode: 'insensitive' } }, { sku: { contains: q, mode: 'insensitive' } }] } : {}),
-    };
+    const where: any = { ...(q ? { OR: [{ name: { contains: q, mode: 'insensitive' } }, { sku: { contains: q, mode: 'insensitive' } }] } : {}) };
     const [total, products] = await prisma.$transaction([
       prisma.product.count({ where }),
       prisma.product.findMany({
-        where, take, skip: (page - 1) * take,
-        orderBy: { createdAt: 'desc' },
-        include: {
-          category: { select: { name: true, slug: true } },
-          brand: { select: { name: true } },
-          images: { orderBy: { sortOrder: 'asc' } },
-        },
+        where, take, skip: (page - 1) * take, orderBy: { createdAt: 'desc' },
+        include: { category: { select: { name: true, slug: true, id: true } }, brand: { select: { name: true } }, images: { orderBy: { sortOrder: 'asc' } } },
       }),
     ]);
     return NextResponse.json({ total, page, products });
   } catch (e: any) {
-    console.error('Product GET error:', e);
     return NextResponse.json({ total: 0, page: 1, products: [], error: e.message });
   }
 }

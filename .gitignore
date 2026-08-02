@@ -2,9 +2,13 @@ node_modules/
 .next/
 .env
 .env.local
+.env.production
 .vercel/
-npm-debug.log
+npm-debug.log*
+yarn-error.log
 .DS_Store
 *.log
 dist/
 build/
+.vscode/
+*.tsbuildinfo

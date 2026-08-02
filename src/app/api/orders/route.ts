@@ -32,31 +32,39 @@ export async function POST(req: Request) {
     const subtotal = data.items.reduce((s, i) => s + i.unitPrice * i.quantity, 0);
     const shipping = subtotal >= 500 ? 0 : 99;
     const total = subtotal + shipping;
+    const addr = `${data.address.name} | ${data.address.phone} | ${data.address.line1}${data.address.line2 ? ', ' + data.address.line2 : ''}, ${data.address.city}, ${data.address.state} - ${data.address.pincode}`;
 
-    const addrSnapshot = `${data.address.name} | ${data.address.phone} | ${data.address.line1}${data.address.line2 ? ', ' + data.address.line2 : ''}, ${data.address.city}, ${data.address.state} - ${data.address.pincode}`;
+    // Build items data — for demo/sample productIds starting with 's' or invalid,
+    // we skip the FK constraint by NOT linking (product becomes snapshot only).
+    const orderItemsData = await Promise.all(data.items.map(async (i) => {
+      const base: any = {
+        productName: i.productName,
+        productSlug: i.productSlug,
+        image: i.image || null,
+        quantity: i.quantity,
+        unitPrice: i.unitPrice,
+        totalPrice: i.unitPrice * i.quantity,
+      };
+      // Only set productId FK if product actually exists in DB (not a sample id)
+      if (!i.productId.startsWith('s')) {
+        try {
+          const exists = await prisma.product.findUnique({ where: { id: i.productId }, select: { id: true } });
+          if (exists) base.productId = i.productId;
+        } catch {}
+      }
+      return base;
+    }));
 
-    // For guest / logged-in both: create order without requiring Address relation.
-    // Snapshot in notes, skip addressId.
     const order = await prisma.order.create({
       data: {
         orderNumber: generateOrderNumber(),
         userId: session?.user ? (session.user as any).id : undefined,
         subtotal, shippingAmount: shipping, totalAmount: total,
         paymentMethod: data.paymentMethod,
-        paymentStatus: data.paymentMethod === 'COD' ? 'PENDING' : 'PENDING',
-        orderStatus: 'PENDING',
-        notes: `Shipping: ${addrSnapshot}`,
-        items: {
-          create: data.items.map(i => ({
-            productId: i.productId,
-            productName: i.productName,
-            productSlug: i.productSlug,
-            image: i.image || null,
-            quantity: i.quantity,
-            unitPrice: i.unitPrice,
-            totalPrice: i.unitPrice * i.quantity,
-          })),
-        },
+        paymentStatus: 'PENDING',
+        orderStatus: 'CONFIRMED', // COD = confirm immediately
+        notes: `Shipping: ${addr}`,
+        items: { create: orderItemsData },
       },
     });
 
