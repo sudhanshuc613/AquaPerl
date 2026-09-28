@@ -1,0 +1,57 @@
+================================================================
+  AQUANEXA / ROKADOCTOR.IN — PRODUCTION UPDATE v2
+  Public users ke liye admin HIDE, photo upload WORKING, SEO STRONG
+================================================================
+
+Step 1: ZIP download karo aur apne AquaPerl folder mein extract karo
+        (saari files overwrite karo — "Replace all" click)
+        Folder: C:\Users\SUDHA\Downloads\workspace-019fada4-b2eb-7c33-82c1-bf96af13cbee\AquaPerl
+
+Step 2: CMD (Command Prompt) — PowerShell NAHI — khol ke ye commands run karo:
+
+        cd C:\Users\SUDHA\Downloads\workspace-019fada4-b2eb-7c33-82c1-bf96af13cbee\AquaPerl
+
+        npm install
+
+        npx prisma generate
+
+        git add .
+
+        git commit -m "Production v2: hide admin from public, working photo upload, add product fix, strong SEO"
+
+        git push
+
+Step 3: Vercel auto redeploy karega (2-3 min wait).
+
+Step 4: Test karo:
+  - Homepage pe koi "Admin" link nahi dikhna chahiye (top strip mein ab sirf
+    logged-in admin ko hi dikhta hai)
+  - User icon pe click karo -> "Admin Login" dikhega (public ke liye)
+  - Admin login -> admin@rokadoctor.in / admin@123
+  - Dashboard -> Add Product -> "Choose File" button se apne PC se photo select karo
+    (photo turant upload hogi, preview dikhega), ya URL paste karo -> Save
+  - Product save ho jayega aur table mein dikhega
+  - Homepage pe naya product auto dikh jayega (refresh once)
+  - /book-service form submit karo -> admin/services mein ticket dikhega
+  - Category page sort kaam karega
+  - Sitemap: /sitemap.xml pe jao (SEO ke liye zaroori)
+  - Robots: /robots.txt
+
+Step 5: Agar login nahi ho pa raha (admin delete ho jaye):
+  Browser mein /api/setup-admin kholo — admin auto ban jayega.
+
+================================================================
+  NAYA KYA FIX KIYA IS VERSION MEIN:
+  1) Navbar se Admin link public users ke liye FULLY HIDE (sirf logged-in admin ko dikhega)
+  2) User icon pe proper dropdown: Admin Login / My Orders / Logout
+  3) Add Product form mein "Choose File" button se LOCAL PHOTO UPLOAD kaam karta hai
+     (base64 upload — Vercel pe bina Cloudinary ke bhi chalta hai)
+  4) Products API fix (Decimal/slug/category auto-create bugs)
+  5) Edit/Delete/View-on-site buttons working
+  6) Service requests API admin-auth protected (koi public nahi dekh sakta)
+  7) Strong SEO: Patna ke 18+ areas ke keywords, LocalBusiness schema,
+     Organization schema, WebSite search-action, geo meta tags, sitemap.xml, robots.txt
+  8) Homepage pe DB ke real products dikhte hain (fallback sample bhi hai)
+  9) Service form mein better error messages (Hindi mein)
+  10) Dashboard KPIs, products, services sab live
+================================================================

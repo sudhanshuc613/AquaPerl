@@ -1,0 +1,56 @@
+================================================================
+  AQUANEXA / ROKADOCTOR.IN — FINAL PRODUCTION UPDATE (v3)
+  Sab features working: Buy, Book Service, Customer Login,
+  Admin Panel, Search, Photo Upload, SEO, Customers list
+================================================================
+
+STEP 1: Is ZIP ko apne AquaPerl folder mein extract karo.
+        (saare files OVERWRITE kar do — "Replace all" click karo)
+        Folder: C:\Users\SUDHA\Downloads\workspace-019fada4-b2eb-7c33-82c1-bf96af13cbee\AquaPerl
+
+STEP 2: CMD (Command Prompt — NOT PowerShell) mein:
+
+        cd C:\Users\SUDHA\Downloads\workspace-019fada4-b2eb-7c33-82c1-bf96af13cbee\AquaPerl
+
+        rmdir /s /q .git
+        del /q package-lock.json 2>nul
+
+        git init
+        git add .
+        git commit -m "AquaNexa PRODUCTION v3 - full working site"
+        git branch -M main
+        git remote remove origin 2>nul
+        git remote add origin https://github.com/sudhanshuc613/AquaPerl.git
+        git push -u origin main --force
+
+        (Yeh fresh start hai — purani node_modules history bhi nahi jayegi,
+        commit sirf ~300 KB ka hoga, push 5 second mein ho jayega)
+
+STEP 3: Vercel auto-deploy karega. 2-3 minute wait karo.
+
+STEP 4: Test these features:
+        [PUBLIC USERS — koi admin link nahi dikhega]
+        ✅ Homepage pe products pe "Quick Add" / cart button kaam karega
+        ✅ Cart open hoga, add ho jayega
+        ✅ User icon pe click -> "Login" aur "Create Account" dikhega (NO "Admin Login" visible publicly)
+        ✅ /auth/register pe naya customer account ban jaayega
+        ✅ /auth/login se customer login kar sakte hain
+        ✅ Navbar search kaam karega — search results /search?q=... pe dikhenge
+        ✅ "Book RO Service" form submit hoga, confirmation page dikhega with ticket number + WhatsApp link
+        ✅ /book-service full page bhi kaam karega
+
+        [ADMIN (secret URL /login — only owner knows)]
+        ✅ /login jaake admin@rokadoctor.in / admin@123 se login
+        ✅ Login ke baad hi top strip mein "Admin Panel" dikhega
+        ✅ Dashboard -> Add Product -> CHOOSE FILE se local photo upload kaam karega
+        ✅ Photo preview dikhegi, save pe product add ho jayega
+        ✅ Customers page pe saare registered users dikhenge
+        ✅ Service Calls page pe naye form submissions live dikhenge
+        ✅ Sort/filter sab kaam karenge
+
+IMPORTANT:
+  - Admin login URL: https://aqua-perl-53b8.vercel.app/login (ye public ko nahi pata chalta, sirf tumhe)
+  - Customer login: /auth/login (ye user icon se khulta hai)
+  - Customer register: /auth/register
+  - Agar admin delete ho jaye to /api/setup-admin pe jao (admin auto ban jayega)
+================================================================
