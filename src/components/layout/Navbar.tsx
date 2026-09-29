@@ -5,11 +5,10 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {
   Search, ShoppingCart, User, Menu, X, Phone, ChevronDown, Wrench,
-  Droplets, Factory, Settings2, LogOut, LayoutDashboard, Package,
+  Droplets, Factory, Settings2, LogOut, LayoutDashboard, Package, MapPin, Shield,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { PHONES, telLink } from '@/lib/utils';
+import { cn, PHONES, PATNA_AREAS, telLink } from '@/lib/utils';
 import { useCart } from '@/lib/store';
 
 const categoryMega = [
@@ -42,12 +41,19 @@ const categoryMega = [
   },
 ];
 
+// Split Patna areas into 2 columns for megamenu
+const AREA_COLS = [
+  PATNA_AREAS.slice(0, Math.ceil(PATNA_AREAS.length / 2)),
+  PATNA_AREAS.slice(Math.ceil(PATNA_AREAS.length / 2)),
+];
+
 export default function Navbar() {
   const { data: session } = useSession();
   const isAdmin = !!(session && ['ADMIN','SUPER_ADMIN'].includes((session.user as any)?.role));
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeCat, setActiveCat] = useState<string | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [acctOpen, setAcctOpen] = useState(false);
   const [searchQ, setSearchQ] = useState('');
   const items = useCart(s => s.items);
@@ -59,19 +65,22 @@ export default function Navbar() {
     if (searchQ.trim()) router.push(`/search?q=${encodeURIComponent(searchQ.trim())}`);
   };
 
+  const toggleMobile = (key: string) => setMobileExpanded(mobileExpanded === key ? null : key);
+
   return (
     <>
       {/* Top strip */}
       <div className="bg-navy-900 text-white text-xs">
         <div className="container-pad flex items-center justify-between py-1.5">
           <div className="hidden items-center gap-4 md:flex">
-            <span className="flex items-center gap-1">🚚 Pan-India Delivery | 🔧 Patna RO Service ₹100 Visit | 4.9★ Rated</span>
+            <span className="flex items-center gap-1">🚚 Pan-India Delivery | 🔧 Patna RO Service ₹200 Visit | ⚡ Same-Day | 4.9★ Rated</span>
           </div>
           <div className="flex items-center gap-4">
             <a href={telLink(PHONES.primary)} className="flex items-center gap-1 font-bold bg-cta-orange/90 hover:bg-cta-orange px-2 py-0.5 rounded">
               <Phone className="h-3 w-3 animate-pulse"/> Call Now: {PHONES.primary}
             </a>
             <Link href="/track-order" className="hidden hover:text-brand-300 md:inline">Track Order</Link>
+            <Link href="/amc" className="hidden hover:text-brand-300 md:inline items-center gap-1 inline-flex"><Shield className="h-3 w-3"/>AMC Plans</Link>
             {isAdmin && <Link href="/admin/dashboard" className="flex items-center gap-1 font-semibold text-brand-300 hover:text-white">Admin Panel</Link>}
           </div>
         </div>
@@ -117,22 +126,53 @@ export default function Navbar() {
                   )}
                 </div>
               ))}
+              <div className="group relative"
+                onMouseEnter={() => setActiveCat('areas')}
+                onMouseLeave={() => setActiveCat(null)}>
+                <button className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-navy-800 hover:bg-brand-50 hover:text-brand-600">
+                  <MapPin className="h-4 w-4"/>Service Areas
+                  <ChevronDown className={cn('h-4 w-4 transition-transform', activeCat==='areas' && 'rotate-180')}/>
+                </button>
+                {activeCat === 'areas' && (
+                  <div className="absolute left-0 top-full w-[520px] pt-2">
+                    <div className="rounded-xl border border-gray-100 bg-white p-3 shadow-xl">
+                      <Link href="/book-service" className="flex items-center gap-2 rounded-lg bg-orange-50 px-3 py-2 text-sm font-bold text-cta-orange" onClick={() => setActiveCat(null)}>
+                        <MapPin className="h-4 w-4"/>All Patna Areas Covered (30+)
+                      </Link>
+                      <div className="mt-2 grid grid-cols-2 gap-x-4">
+                        {AREA_COLS.map((col, ci) => (
+                          <div key={ci} className="space-y-0.5">
+                            {col.map(a => (
+                              <Link key={a.slug} href={`/areas/${a.slug}`} className="block rounded px-3 py-1 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600" onClick={() => setActiveCat(null)}>
+                                📍 {a.name}
+                              </Link>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
               <Link href="/book-service" className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-cta-orange hover:bg-orange-50">
                 <Wrench className="h-4 w-4"/>Patna RO Service
+              </Link>
+              <Link href="/amc" className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-navy-800 hover:bg-brand-50 hover:text-brand-600">
+                <Shield className="h-4 w-4"/>AMC Plans
               </Link>
             </nav>
 
             <form onSubmit={doSearch} className="flex flex-1 justify-center">
               <div className="relative flex w-full max-w-2xl items-center rounded-xl border-2 bg-gray-50 focus-within:border-brand-500 focus-within:bg-white">
                 <Search className="ml-3 h-5 w-5 text-gray-400"/>
-                <input type="text" value={searchQ} onChange={e => setSearchQ(e.target.value)} placeholder="RO, membrane, Kent service, filter..." className="w-full bg-transparent px-3 py-2.5 text-sm outline-none"/>
+                <input type="text" value={searchQ} onChange={e => setSearchQ(e.target.value)} placeholder="RO, membrane, Kent service, Patna area..." className="w-full bg-transparent px-3 py-2.5 text-sm outline-none"/>
                 <Button type="submit" className="m-1 hidden px-4 sm:flex">Search</Button>
               </div>
             </form>
 
             <div className="flex items-center gap-1">
               <Link href="/book-service" className="hidden md:inline-flex">
-                <Button variant="navy" size="sm" className="gap-1.5"><Wrench className="h-4 w-4"/>Book Service</Button>
+                <Button variant="navy" size="sm" className="gap-1.5"><Wrench className="h-4 w-4"/>Book Service ₹200</Button>
               </Link>
               <div className="relative" onMouseEnter={() => setAcctOpen(true)} onMouseLeave={() => setAcctOpen(false)}>
                 <button className="rounded-lg p-2 hover:bg-brand-50"><User className="h-5 w-5 text-navy-800"/></button>
@@ -145,6 +185,7 @@ export default function Navbar() {
                           <div className="my-1 h-px bg-gray-100"/>
                           {isAdmin && <Link href="/admin/dashboard" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-brand-700 hover:bg-brand-50"><LayoutDashboard className="h-4 w-4"/>Admin Dashboard</Link>}
                           <Link href="/orders" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-brand-50"><Package className="h-4 w-4"/>My Orders</Link>
+                          <Link href="/track-order" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-brand-50"><Search className="h-4 w-4"/>Track Order</Link>
                           <button onClick={() => {signOut(); setAcctOpen(false);}} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50"><LogOut className="h-4 w-4"/>Logout</button>
                         </>
                       ) : (
@@ -152,6 +193,7 @@ export default function Navbar() {
                           <p className="px-3 py-2 text-xs text-gray-500">Welcome! Login for orders</p>
                           <Link href="/auth/login" className="block rounded-lg px-3 py-2 text-sm font-semibold text-brand-700 hover:bg-brand-50">Login</Link>
                           <Link href="/auth/register" className="block rounded-lg px-3 py-2 text-sm hover:bg-brand-50">Create Account</Link>
+                          <Link href="/track-order" className="block rounded-lg px-3 py-2 text-sm hover:bg-brand-50">Track Order</Link>
                           <div className="my-1 h-px bg-gray-100"/>
                           <a href={telLink(PHONES.primary)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold text-cta-orange hover:bg-orange-50"><Phone className="h-4 w-4"/>Call {PHONES.primary}</a>
                         </>
@@ -174,34 +216,61 @@ export default function Navbar() {
             </div>
           </form>
           <div className="flex items-center gap-3 border-t border-gray-100 py-2 md:hidden">
-            <Link href="/book-service" className="flex-1"><Button className="w-full gap-1.5" size="sm"><Wrench className="h-4 w-4"/>Book RO Service ₹100</Button></Link>
+            <Link href="/book-service" className="flex-1"><Button className="w-full gap-1.5" size="sm"><Wrench className="h-4 w-4"/>Book RO Service ₹200</Button></Link>
           </div>
         </div>
 
         {mobileOpen && (
           <div className="border-t border-gray-100 bg-white md:hidden">
-            <div className="container-pad space-y-2 py-4">
+            <div className="container-pad space-y-2 py-4 max-h-[70vh] overflow-y-auto">
               {categoryMega.map(cat => (
                 <div key={cat.title}>
-                  <Link href={cat.href} className="flex items-center gap-2 rounded-lg px-3 py-2 font-semibold text-navy-800 hover:bg-brand-50" onClick={() => setMobileOpen(false)}>
-                    <cat.icon className="h-5 w-5 text-brand-500"/>{cat.title}
-                  </Link>
+                  <div className="flex items-center justify-between rounded-lg px-3 py-2 font-semibold text-navy-800 hover:bg-brand-50 cursor-pointer" onClick={() => toggleMobile(cat.title)}>
+                    <Link href={cat.href} className="flex items-center gap-2 flex-1" onClick={() => setMobileOpen(false)}>
+                      <cat.icon className="h-5 w-5 text-brand-500"/>{cat.title}
+                    </Link>
+                    <ChevronDown className={cn('h-4 w-4 transition-transform', mobileExpanded===cat.title && 'rotate-180')}/>
+                  </div>
+                  {mobileExpanded === cat.title && (
+                    <div className="pl-8 space-y-1 pb-2">
+                      {cat.sub.map(s => <Link key={s.name} href={s.href} className="block px-3 py-1.5 text-sm text-gray-700" onClick={() => setMobileOpen(false)}>{s.name}</Link>)}
+                    </div>
+                  )}
                 </div>
               ))}
+              <div>
+                <div className="flex items-center justify-between rounded-lg px-3 py-2 font-semibold text-navy-800 hover:bg-brand-50 cursor-pointer" onClick={() => toggleMobile('areas')}>
+                  <span className="flex items-center gap-2"><MapPin className="h-5 w-5 text-brand-500"/>Service Areas</span>
+                  <ChevronDown className={cn('h-4 w-4 transition-transform', mobileExpanded==='areas' && 'rotate-180')}/>
+                </div>
+                {mobileExpanded === 'areas' && (
+                  <div className="pl-8 grid grid-cols-2 gap-x-2 pb-2">
+                    {PATNA_AREAS.map(a => (
+                      <Link key={a.slug} href={`/areas/${a.slug}`} className="block px-2 py-1 text-sm text-gray-700" onClick={() => setMobileOpen(false)}>📍 {a.name}</Link>
+                    ))}
+                  </div>
+                )}
+              </div>
               <Link href="/book-service" className="flex items-center gap-2 rounded-lg px-3 py-2 font-semibold text-cta-orange hover:bg-orange-50" onClick={() => setMobileOpen(false)}>
-                <Wrench className="h-5 w-5"/>Patna RO Service
+                <Wrench className="h-5 w-5"/>Patna RO Service ₹200
+              </Link>
+              <Link href="/amc" className="flex items-center gap-2 rounded-lg px-3 py-2 font-semibold text-navy-800 hover:bg-brand-50" onClick={() => setMobileOpen(false)}>
+                <Shield className="h-5 w-5"/>AMC Plans
+              </Link>
+              <Link href="/track-order" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm" onClick={() => setMobileOpen(false)}>
+                <Package className="h-5 w-5"/>Track Order
               </Link>
               <div className="my-2 h-px bg-gray-100"/>
               {session ? (
                 <>
-                  {isAdmin && <Link href="/admin/dashboard" className="block rounded-lg px-3 py-2 text-sm font-semibold text-brand-700">Admin Dashboard</Link>}
-                  <Link href="/orders" className="block rounded-lg px-3 py-2 text-sm">My Orders</Link>
+                  {isAdmin && <Link href="/admin/dashboard" className="block rounded-lg px-3 py-2 text-sm font-semibold text-brand-700" onClick={() => setMobileOpen(false)}>Admin Dashboard</Link>}
+                  <Link href="/orders" className="block rounded-lg px-3 py-2 text-sm" onClick={() => setMobileOpen(false)}>My Orders</Link>
                   <button onClick={() => {signOut(); setMobileOpen(false);}} className="block w-full text-left rounded-lg px-3 py-2 text-sm text-red-600">Logout</button>
                 </>
               ) : (
                 <>
-                  <Link href="/auth/login" className="block rounded-lg bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-700">🔐 Login</Link>
-                  <Link href="/auth/register" className="block rounded-lg px-3 py-2 text-sm">Create Account</Link>
+                  <Link href="/auth/login" className="block rounded-lg bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-700" onClick={() => setMobileOpen(false)}>🔐 Login</Link>
+                  <Link href="/auth/register" className="block rounded-lg px-3 py-2 text-sm" onClick={() => setMobileOpen(false)}>Create Account</Link>
                 </>
               )}
             </div>

@@ -33,7 +33,7 @@ const sampleProducts = [
 
 const uspStats = [
   { num: '10,000+', label: 'Happy Customers' },
-  { num: '₹100', label: 'Patna Visit Charge' },
+  { num: '₹200', label: 'Patna Visit Charge' },
   { num: '50+', label: 'Brands Available' },
   { num: '24/7', label: 'Support' },
 ];
@@ -95,7 +95,7 @@ export default function HomePage() {
         </Link>
         <Link href="/book-service" className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-cta-orange to-orange-600 p-8 text-white shadow-xl">
           <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold">Patna Locals Only</span>
-          <h3 className="mt-3 text-2xl md:text-3xl">RO Repair @₹100 Visit</h3>
+          <h3 className="mt-3 text-2xl md:text-3xl">RO Repair @₹200 Visit</h3>
           <p className="mt-1 text-orange-100">Same-day service. Expert technicians. Genuine parts.</p>
           <Button className="mt-4 bg-white !text-cta-orange hover:bg-gray-100">Book Service Now <Wrench className="h-4 w-4"/></Button>
           <Phone className="absolute -right-4 -top-4 h-24 w-24 text-white/10"/>
@@ -110,12 +110,12 @@ export default function HomePage() {
             <h2 className="mt-1 text-3xl md:text-4xl">Patna ka #1 RO Repair & Installation Service</h2>
             <p className="mt-3 text-gray-600">
               Hum Patna ke har area mein same-day RO repair, installation, filter change, aur membrane change karte hain.
-              Sirf <strong>₹100 visit charge</strong> — koi hidden fee nahi. Sab brands ka service: Kent, Aquaguard, Livpure,
+              Sirf <strong>₹200 visit charge</strong> — koi hidden fee nahi. Sab brands ka service: Kent, Aquaguard, Livpure,
               Pureit, Eureka Forbes, AO Smith, aur local brands bhi.
             </p>
             <ul className="mt-5 space-y-2">
               {[
-                '₹100 hi visit charge — repair na ho to bhi koi paisa nahi extra',
+                '₹200 hi visit charge — repair na ho to bhi koi paisa nahi extra',
                 'Genuine spare parts — 100% original company ke',
                 '24-hour ke andar technician at your door',
                 '30-day service warranty',

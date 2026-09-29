@@ -28,15 +28,35 @@ export async function GET() {
       await prisma.category.upsert({ where: { slug: c.slug }, create: c, update: {} });
     }
 
-    // Create admin
-    const existing = await prisma.user.findFirst({ where: { email: 'admin@roserviceinpatna.in' } });
+    // Create admin (idempotent — handles existing email or phone)
+    const ADMIN_EMAIL = 'admin@roserviceinpatna.in';
+    const ADMIN_PHONE = '9999999999'; // unique dummy phone for admin (non-customer)
+    const ADMIN_PASS = 'admin@123';
     let created = false;
+    let existing = await prisma.user.findFirst({ where: { email: ADMIN_EMAIL } });
+    if (!existing) existing = await prisma.user.findFirst({ where: { role: { in: ['ADMIN', 'SUPER_ADMIN'] } } });
     if (!existing) {
-      const hash = await bcrypt.hash('admin@123', 10);
-      await prisma.user.create({
-        data: { name: 'Admin', email: 'admin@roserviceinpatna.in', phone: '8969821440', passwordHash: hash, role: 'SUPER_ADMIN' },
+      const hash = await bcrypt.hash(ADMIN_PASS, 10);
+      try {
+        await prisma.user.create({
+          data: { name: 'Admin', email: ADMIN_EMAIL, phone: ADMIN_PHONE, passwordHash: hash, role: 'SUPER_ADMIN' },
+        });
+        created = true;
+      } catch (err: any) {
+        // phone conflict — use a fallback unique phone
+        const hash2 = await bcrypt.hash(ADMIN_PASS, 10);
+        await prisma.user.create({
+          data: { name: 'Admin', email: ADMIN_EMAIL, phone: '9999999998', passwordHash: hash2, role: 'SUPER_ADMIN' },
+        });
+        created = true;
+      }
+    } else {
+      // ensure password/role are correct even if admin existed from old setup
+      const hash = await bcrypt.hash(ADMIN_PASS, 10);
+      await prisma.user.update({
+        where: { id: existing.id },
+        data: { email: ADMIN_EMAIL, role: 'SUPER_ADMIN', passwordHash: hash },
       });
-      created = true;
     }
     const catCount = await prisma.category.count();
     const prodCount = await prisma.product.count();

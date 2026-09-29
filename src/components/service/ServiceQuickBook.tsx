@@ -91,7 +91,7 @@ export default function ServiceQuickBook() {
         <div>
           <span className="inline-flex items-center gap-1 rounded-full bg-brand-100 px-3 py-1 text-xs font-bold text-brand-700"><Clock className="h-3 w-3"/> Same-Day Patna Service</span>
           <h2 className="mt-3">Book RO Service in Patna</h2>
-          <p className="mt-2 text-gray-600">Expert technicians at your doorstep. Visit charge only <strong className="text-cta-orange">₹100</strong>. Genuine spare parts. 30-day service warranty.</p>
+          <p className="mt-2 text-gray-600">Expert technicians at your doorstep. Visit charge only <strong className="text-cta-orange">₹200</strong>. Genuine spare parts. 30-day service warranty.</p>
         </div>
         <div className="space-y-3">
           {[
@@ -134,7 +134,7 @@ export default function ServiceQuickBook() {
             {err && <div className="md:col-span-2 rounded-lg bg-red-50 p-2 text-sm text-red-700">{err}</div>}
             <div className="md:col-span-2">
               <Button type="submit" size="lg" className="w-full" disabled={loading}>
-                {loading ? 'Booking...' : <><Wrench className="h-4 w-4"/> Book Service (₹100 Visit)</>}
+                {loading ? 'Booking...' : <><Wrench className="h-4 w-4"/> Book Service (₹200 Visit)</>}
               </Button>
               <p className="mt-2 text-center text-xs text-gray-400">Submit karte hi aapka ticket ban jayega. Technician confirm karega phone pe.</p>
             </div>

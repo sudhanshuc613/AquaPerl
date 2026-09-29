@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="mb-12 flex flex-col gap-4 rounded-2xl bg-aqua-gradient p-8 text-white shadow-xl md:flex-row md:items-center md:justify-between">
           <div>
             <h3 className="text-2xl text-white md:text-3xl">Need Urgent RO Repair in Patna?</h3>
-            <p className="mt-1 text-brand-100">Visit charge only ₹100. Same-day service all over Patna.</p>
+            <p className="mt-1 text-brand-100">Visit charge only ₹200. Same-day service all over Patna.</p>
           </div>
           <div className="flex flex-wrap gap-3">
             <a href={`tel:+91${PHONES.primary}`} className="btn-primary bg-white !text-navy-900 hover:bg-gray-100"><Phone className="h-4 w-4"/>Call {PHONES.primary}</a>

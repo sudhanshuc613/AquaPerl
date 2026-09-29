@@ -13,11 +13,11 @@ const inter = Inter({ subsets: ['latin'], display: 'swap' });
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://roserviceinpatna.in'),
   title: {
-    default: 'RO Service in Patna | ₹100 Visit Charge | Same-Day Repair & Installation - RO Service Patna',
+    default: 'RO Service in Patna | ₹200 Visit Charge | Same-Day Repair & Installation - RO Service Patna',
     template: '%s | RO Service Patna',
   },
   description:
-    'Patna ka #1 trusted RO repair & installation service. Same-day doorstep service in all Patna areas for just ₹100 visit charge. We service Kent, Aquaguard, Livpure, Pureit, AO Smith and all brands. 10,000+ happy customers. Call 8969821440 now! Genuine spare parts, 30-day service warranty. Also sell RO purifiers, membranes & filters at best price in Patna.',
+    'Patna ka #1 trusted RO repair & installation service. Same-day doorstep service in all Patna areas for just ₹200 visit charge. We service Kent, Aquaguard, Livpure, Pureit, AO Smith and all brands. 10,000+ happy customers. Call 9241536586 now! Genuine spare parts, 30-day service warranty. Also sell RO purifiers, membranes & filters at best price in Patna.',
   keywords: [
     'RO service in Patna','RO repair Patna','RO installation Patna','water purifier service Patna',
     'Kent RO service Patna','Aquaguard service Patna','Livpure service Patna','RO mechanic Patna',
@@ -35,12 +35,12 @@ export const metadata: Metadata = {
   category: 'Local Service',
   alternates: { canonical: '/' },
   openGraph: {
-    type: 'website', url: '/', title: 'RO Service in Patna | ₹100 Visit Charge - Same-Day Service',
-    description: 'Patna ka #1 RO repair service. ₹100 visit charge. Same-day technician at door. All brands supported. Call 8969821440.',
+    type: 'website', url: '/', title: 'RO Service in Patna | ₹200 Visit Charge - Same-Day Service',
+    description: 'Patna ka #1 RO repair service. ₹200 visit charge. Same-day technician at door. All brands supported. Call 9241536586.',
     siteName: BRAND.name, locale: 'en_IN',
     images: [{ url: '/og.jpg', width: 1200, height: 630, alt: 'RO Service Patna' }],
   },
-  twitter: { card: 'summary_large_image', title: 'RO Service Patna - ₹100 Visit Charge' },
+  twitter: { card: 'summary_large_image', title: 'RO Service Patna - ₹200 Visit Charge' },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
   formatDetection: { telephone: true, email: true, address: true },
 };
@@ -53,7 +53,7 @@ const localBusinessSchema = {
   image: 'https://roserviceinpatna.in/og.jpg',
   url: 'https://roserviceinpatna.in',
   telephone: [`+91-${PHONES.primary}`, `+91-${PHONES.secondary}`],
-  priceRange: '₹100 - ₹5000',
+  priceRange: '₹200 - ₹7000',
   email: 'service@roserviceinpatna.in',
   address: { '@type': 'PostalAddress', streetAddress: 'Patna', addressLocality: 'Patna', addressRegion: 'Bihar', postalCode: '800001', addressCountry: 'IN' },
   geo: { '@type': 'GeoCoordinates', latitude: 25.5941, longitude: 85.1376 },

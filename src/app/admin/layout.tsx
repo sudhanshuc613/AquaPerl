@@ -35,7 +35,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Droplets className="h-6 w-6 text-white" />
             </div>
             <div>
-              <p className="text-lg font-extrabold">Aqua<span className="text-brand-400">Nexa</span></p>
+              <p className="text-lg font-extrabold">RO<span className="text-brand-400">Patna</span></p>
               <p className="text-[10px] uppercase tracking-wider text-gray-400">Admin Panel</p>
             </div>
           </Link>

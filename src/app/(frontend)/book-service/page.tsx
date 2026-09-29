@@ -4,8 +4,8 @@ import { Phone, CheckCircle2, Shield, Clock, Users, Wrench } from 'lucide-react'
 import { PHONES, telLink, waLink } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'Book RO Service in Patna | ₹100 Visit Charge - RO Service Patna',
-  description: 'Expert RO repair, installation, AMC & filter change service in Patna. Same-day doorstep visit at just ₹100. Verified technicians, genuine parts. Call 8969821440 now.',
+  title: 'Book RO Service in Patna | ₹200 Visit Charge - RO Service Patna',
+  description: 'Expert RO repair, installation, AMC & filter change service in Patna. Same-day doorstep visit at just ₹200. Verified technicians, genuine parts. Call 9241536586 now.',
   keywords: ['RO service Patna','RO repair Patna','RO installation Patna','water purifier service Patna','RO Service Patna service','RO AMC Patna'],
 };
 
@@ -21,9 +21,9 @@ export default function BookServicePage() {
     '@context': 'https://schema.org',
     '@type': 'Service',
     name: 'RO Water Purifier Repair & Installation',
-    provider: { '@type': 'LocalBusiness', name: 'RO Service Patna', telephone: '+91-8969821440' },
+    provider: { '@type': 'LocalBusiness', name: 'RO Service Patna', telephone: '+91-9241536586' },
     areaServed: { '@type': 'City', name: 'Patna' },
-    offers: { '@type': 'Offer', price: '100', priceCurrency: 'INR', description: 'Visit charge only ₹100' },
+    offers: { '@type': 'Offer', price: '200', priceCurrency: 'INR', description: 'Visit charge only ₹200' },
   };
 
   return (
@@ -34,7 +34,7 @@ export default function BookServicePage() {
           <span className="badge bg-white/20 text-white backdrop-blur-sm"><Clock className="h-3 w-3" /> Same-Day Patna Service</span>
           <h1 className="mt-3 text-white md:text-5xl">Book RO Service in Patna</h1>
           <p className="mt-3 max-w-2xl text-lg text-white/90">
-            Expert repair, installation, AMC & filter change. Visit charge just <strong className="text-yellow-300">₹100</strong>.
+            Expert repair, installation, AMC & filter change. Visit charge just <strong className="text-yellow-300">₹200</strong>.
             Genuine parts • Transparent pricing • 100% satisfaction.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">

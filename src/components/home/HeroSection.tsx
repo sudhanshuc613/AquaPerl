@@ -26,7 +26,7 @@ const slides = [
   },
   {
     title: "Expert RO Service in Patna",
-    subtitle: "Visit Charge Only ₹100",
+    subtitle: "Visit Charge Only ₹200",
     description: "Same-day doorstep service by verified technicians. Repair, installation, AMC, filter change — all at your home.",
     cta: "Call Now",
     ctaLink: telLink(PHONES.primary),
