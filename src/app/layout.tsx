@@ -83,6 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <meta name="theme-color" content="#06b6d4" />
+        <meta name="google-site-verification" content="IgBBlqTT4T6ht8lnWBGyEgg0UzIOcSltbScUbFWMOC4" />
         <meta name="geo.region" content="IN-BR" />
         <meta name="geo.placename" content="Patna" />
         <meta name="geo.position" content="25.5941;85.1376" />
