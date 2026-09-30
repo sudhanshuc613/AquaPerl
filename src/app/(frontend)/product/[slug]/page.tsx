@@ -62,8 +62,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 const sample: Record<string, any> = {
-  'aquanexa-pro-12l': {
-    id: '1', name: 'RO Service Patna Pro 12L RO+UV+UF+TDS Water Purifier', slug: 'aquanexa-pro-12l',
+  'ro-patna-pro-12l': {
+    id: '1', name: 'RO Service Patna Pro 12L RO+UV+UF+TDS Water Purifier', slug: 'ro-patna-pro-12l',
     sku: 'AQN-PRO-12', price: 12999, compareAtPrice: 18999, stockQty: 42, warrantyMonths: 24,
     shortDescription: 'Premium 12L RO+UV+UF+Copper+TDS controller with 8-stage purification and digital display.',
     description: `The RO Service Patna Pro is our flagship domestic water purifier, built for Indian households with advanced multi-stage purification:
@@ -95,7 +95,7 @@ Suitable for water with TDS up to 2500 ppm. Free installation in Patna; free pan
       'Warranty': '24 months on product, 12 months on membrane',
     },
     isCommercial: false, isFeatured: true,
-    brand: { id: '1', name: 'RO Service Patna', slug: 'aquanexa' },
+    brand: { id: '1', name: 'RO Service Patna', slug: 'ro-service-patna' },
     category: { id: 'c1', name: 'Domestic RO Purifiers', slug: 'ro-purifiers' },
     images: [
       { url: 'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=800', alt: 'Front view', isPrimary: true },

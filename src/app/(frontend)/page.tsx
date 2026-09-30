@@ -15,14 +15,14 @@ import {
 import { Button } from '@/components/ui/button';
 
 const sampleProducts = [
-    { id:'s1', name:'RO Service Patna Pro 12L RO+UV+UF TDS Controller', slug:'aquanexa-pro-12l', price:12999, compareAtPrice:18999, primaryImage:'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=600', brand:{name:'RO Service Patna',slug:'aquanexa'}, avgRating:4.7, reviewCount:342, isCommercial:false },
+    { id:'s1', name:'RO Service Patna Pro 12L RO+UV+UF TDS Controller', slug:'ro-patna-pro-12l', price:12999, compareAtPrice:18999, primaryImage:'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=600', brand:{name:'RO Service Patna',slug:'ro-service-patna'}, avgRating:4.7, reviewCount:342, isCommercial:false },
     { id:'s2', name:'Kent Super Plus RO+UV+UF 8L', slug:'kent-super-plus', price:15499, compareAtPrice:19000, primaryImage:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600', brand:{name:'Kent',slug:'kent'}, avgRating:4.5, reviewCount:612, isCommercial:false },
-    { id:'s3', name:'Commercial RO Plant 100 LPH (SS Body)', slug:'commercial-100-lph', price:65000, compareAtPrice:85000, primaryImage:'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600', brand:{name:'RO Service Patna',slug:'aquanexa'}, avgRating:4.8, reviewCount:86, isCommercial:true },
+    { id:'s3', name:'Commercial RO Plant 100 LPH (SS Body)', slug:'commercial-100-lph', price:65000, compareAtPrice:85000, primaryImage:'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600', brand:{name:'RO Service Patna',slug:'ro-service-patna'}, avgRating:4.8, reviewCount:86, isCommercial:true },
     { id:'s4', name:'RO Membrane 80 GPD Original', slug:'ro-membrane-80-gpd', price:1499, compareAtPrice:2200, primaryImage:'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=600', brand:null, avgRating:4.4, reviewCount:1291, isCommercial:false },
     { id:'s5', name:'Sediment + Carbon Filter Set', slug:'filter-set', price:599, compareAtPrice:899, primaryImage:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600', brand:null, avgRating:4.3, reviewCount:421, isCommercial:false },
     { id:'s6', name:'UV Lamp 11W Replacement', slug:'uv-lamp-11w', price:799, compareAtPrice:1200, primaryImage:'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600', brand:null, avgRating:4.5, reviewCount:231, isCommercial:false },
     { id:'s7', name:'Livpure Glo 7L RO+UV', slug:'livpure-glo-7l', price:10999, compareAtPrice:14500, primaryImage:'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=600', brand:{name:'Livpure',slug:'livpure'}, avgRating:4.4, reviewCount:318, isCommercial:false },
-    { id:'s8', name:'RO Service Patna Under-Sink RO 10L', slug:'under-sink-10l', price:18999, compareAtPrice:24999, primaryImage:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600', brand:{name:'RO Service Patna',slug:'aquanexa'}, avgRating:4.6, reviewCount:98, isCommercial:false },
+    { id:'s8', name:'RO Service Patna Under-Sink RO 10L', slug:'under-sink-10l', price:18999, compareAtPrice:24999, primaryImage:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600', brand:{name:'RO Service Patna',slug:'ro-service-patna'}, avgRating:4.6, reviewCount:98, isCommercial:false },
   ];
 
 const uspStats = [

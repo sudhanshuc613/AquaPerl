@@ -7,10 +7,10 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  const email = 'admin@rokadoctor.in';
-  const phone = '8969821440';
+  const email = 'admin@roserviceinpatna.in';
+  const phone = '9241536586';
   const password = 'admin@123'; // BADAL DENA PRODUCTION MEIN!
-  const name = 'AquaNexa Admin';
+  const name = 'RO Service Patna Admin';
 
   const existing = await prisma.user.findFirst({ where: { OR: [{ email }, { phone }] } });
   if (existing) {

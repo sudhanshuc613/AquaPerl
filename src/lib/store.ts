@@ -53,7 +53,7 @@ export const useCart = create<CartState>()(
       clear: () => set({ items: [] }),
       setOpen: (isOpen) => set({ isOpen }),
     }),
-    { name: 'aquanexa-cart' }
+    { name: 'ro-patna-cart' }
   )
 );
 

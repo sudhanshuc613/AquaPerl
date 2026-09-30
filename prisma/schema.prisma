@@ -1,6 +1,6 @@
 // ============================================================
-// AquaNexa - Database Schema (PostgreSQL via Prisma ORM)
-// Domain: rokadoctor.in | Business: RO Purifiers E-commerce + Patna Service
+// RO Service Patna - Database Schema (PostgreSQL via Prisma ORM)
+// Domain: roserviceinpatna.in | Business: RO Purifiers + Patna Service Booking
 // ============================================================
 
 generator client {
@@ -522,9 +522,9 @@ model SiteSetting {
   updatedAt   DateTime @updatedAt
 }
 // Keys will include:
-// - contact.phones : ["8969821440", "9661288308"]
-// - contact.whatsapp : "8969821440"
-// - contact.email : "support@rokadoctor.in"
+// - contact.phones : ["9241536586", "9534037266"]
+// - contact.whatsapp : "9241536586"
+// - contact.email : "service@roserviceinpatna.in"
 // - shipping.freeAbove : 999
 // - shipping.standardCharge : 79
 // - razorpay.keyId, stripe.keyId

@@ -34,9 +34,9 @@ async function main() {
 
   // 3. Brand
   const brand = await prisma.brand.upsert({
-    where: { slug: 'aquanexa' },
-    update: {},
-    create: { name: 'AquaNexa', slug: 'aquanexa' },
+    where: { slug: 'ro-service-patna' },
+    update: { name: 'RO Service Patna' },
+    create: { name: 'RO Service Patna', slug: 'ro-service-patna' },
   });
 
   // 4. Patna pincodes (sample)
@@ -51,10 +51,10 @@ async function main() {
 
   // 5. Sample products
   const sampleProducts = [
-    { name: 'AquaNexa Pro 12L RO+UV+UF+TDS', sku: 'AQN-PRO-12', price: 12999, compareAtPrice: 18999, categoryId: catRO.id, brandId: brand.id, type: 'RO_PURIFIER' as const, isFeatured: true, warrantyMonths: 24, images: [{ url: 'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=800', isPrimary: true }], specifications: { Capacity: '12 L', Technology: 'RO+UV+UF+TDS', Stages: 8 } },
-    { name: 'Commercial RO Plant 100 LPH', sku: 'AQN-C100', price: 65000, compareAtPrice: 85000, categoryId: catCommercial.id, brandId: brand.id, type: 'COMMERCIAL_PLAN' as const, isFeatured: true, isCommercial: true, warrantyMonths: 12, images: [{ url: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800', isPrimary: true }] },
-    { name: 'Genuine RO Membrane 80 GPD', sku: 'AQN-MEM-80', price: 1499, compareAtPrice: 2200, categoryId: catParts.id, brandId: brand.id, type: 'SPARE_PART' as const, isFeatured: true, warrantyMonths: 6, images: [{ url: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=800', isPrimary: true }] },
-    { name: 'Sediment + Carbon Filter Kit', sku: 'AQN-FK', price: 899, compareAtPrice: 1500, categoryId: catParts.id, brandId: brand.id, type: 'SPARE_PART' as const, images: [{ url: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800', isPrimary: true }] },
+    { name: 'RO Service Patna Pro 12L RO+UV+UF+TDS', sku: 'RO-PRO-12', price: 12999, compareAtPrice: 18999, categoryId: catRO.id, brandId: brand.id, type: 'RO_PURIFIER' as const, isFeatured: true, warrantyMonths: 24, images: [{ url: '/images/ro-hero.webp', isPrimary: true }], specifications: { Capacity: '12 L', Technology: 'RO+UV+UF+TDS', Stages: 8 } },
+    { name: 'Commercial RO Plant 100 LPH', sku: 'RO-C100', price: 65000, compareAtPrice: 85000, categoryId: catCommercial.id, brandId: brand.id, type: 'COMMERCIAL_PLAN' as const, isFeatured: true, isCommercial: true, warrantyMonths: 12, images: [{ url: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800', isPrimary: true }] },
+    { name: 'Genuine RO Membrane 80 GPD', sku: 'RO-MEM-80', price: 1499, compareAtPrice: 2200, categoryId: catParts.id, brandId: brand.id, type: 'SPARE_PART' as const, isFeatured: true, warrantyMonths: 6, images: [{ url: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=800', isPrimary: true }] },
+    { name: 'Sediment + Carbon Filter Kit', sku: 'RO-FK', price: 899, compareAtPrice: 1500, categoryId: catParts.id, brandId: brand.id, type: 'SPARE_PART' as const, images: [{ url: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800', isPrimary: true }] },
   ];
 
   for (const p of sampleProducts) {
@@ -77,16 +77,36 @@ async function main() {
   // 6. Sample banners
   await prisma.banner.createMany({
     data: [
-      { title: "India's Best RO Purifiers", subtitle: 'Delivered anywhere', image: '/banner-1.jpg', position: 'hero', ctaText: 'Shop Now', ctaLink: '/categories/ro-purifiers', isActive: true, sortOrder: 1 },
-      { title: 'RO Service in Patna ₹100', subtitle: 'Same-day doorstep', image: '/banner-2.jpg', position: 'hero', ctaText: 'Book Now', ctaLink: '/book-service', isActive: true, sortOrder: 2 },
+      { title: "India's Best RO Purifiers", subtitle: 'Delivered anywhere in Patna', image: '/images/ro-hero.webp', position: 'hero', ctaText: 'Shop Now', ctaLink: '/categories/ro-purifiers', isActive: true, sortOrder: 1 },
+      { title: 'RO Service in Patna ₹200', subtitle: 'Same-day doorstep service', image: '/images/ro-hero.webp', position: 'hero', ctaText: 'Book Now', ctaLink: '/book-service', isActive: true, sortOrder: 2 },
     ],
     skipDuplicates: true,
   });
 
-  // 7. Site settings
+  // 7. Site settings - correct phone numbers
   await prisma.siteSetting.upsert({
-    where: { key: 'contact.phones' }, update: {},
-    create: { key: 'contact.phones', value: ['8969821440', '9661288308'] },
+    where: { key: 'contact.phones' }, update: { value: ['9241536586', '9534037266'] },
+    create: { key: 'contact.phones', value: ['9241536586', '9534037266'] },
+  });
+  await prisma.siteSetting.upsert({
+    where: { key: 'contact.primaryPhone' }, update: { value: '9241536586' },
+    create: { key: 'contact.primaryPhone', value: '9241536586' },
+  });
+  await prisma.siteSetting.upsert({
+    where: { key: 'contact.secondaryPhone' }, update: { value: '9534037266' },
+    create: { key: 'contact.secondaryPhone', value: '9534037266' },
+  });
+  await prisma.siteSetting.upsert({
+    where: { key: 'contact.whatsapp' }, update: { value: '9241536586' },
+    create: { key: 'contact.whatsapp', value: '9241536586' },
+  });
+  await prisma.siteSetting.upsert({
+    where: { key: 'service.visitCharge' }, update: { value: 200 },
+    create: { key: 'service.visitCharge', value: 200 },
+  });
+  await prisma.siteSetting.upsert({
+    where: { key: 'brand.name' }, update: { value: 'RO Service Patna' },
+    create: { key: 'brand.name', value: 'RO Service Patna' },
   });
   await prisma.siteSetting.upsert({
     where: { key: 'shipping.freeAbove' }, update: {},

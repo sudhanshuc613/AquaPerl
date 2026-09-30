@@ -1,5 +1,5 @@
 /**
- * AquaNexa Production Server Entry
+ * RO Service Patna — Production Server Entry
  * cPanel Node.js App ke liye startup file
  *
  * cPanel mein "Application root" poora project folder aur "Application startup file" server.js set karna.
@@ -26,7 +26,7 @@ app.prepare().then(() => {
       res.end('internal server error');
     }
   }).listen(port, hostname, () => {
-    console.log(`> AquaNexa ready on http://${hostname}:${port}`);
+    console.log(`> RO Service Patna ready on http://${hostname}:${port}`);
     console.log(`> NODE_ENV=${process.env.NODE_ENV || 'development'}`);
   });
 });

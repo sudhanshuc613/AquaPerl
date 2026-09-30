@@ -15,7 +15,7 @@ const config: Config = {
     },
     extend: {
       colors: {
-        // AquaNexa brand palette
+        // RO Service Patna brand palette
         brand: {
           50:  '#ecfeff',
           100: '#cffafe',

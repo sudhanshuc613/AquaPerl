@@ -10,10 +10,10 @@ type SortKey = 'popularity' | 'priceAsc' | 'priceDesc' | 'newest' | 'rating';
 
 const sampleByCategory: Record<string, any[]> = {
   'ro-purifiers': [
-    { id:'s1', name:'RO Service Patna Pro 12L RO+UV+UF TDS', slug:'aquanexa-pro-12l', price:12999, compareAtPrice:18999, primaryImage:'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=600', brand:{name:'RO Service Patna',slug:'aquanexa'}, avgRating:4.7, reviewCount:342, isCommercial:false },
+    { id:'s1', name:'RO Service Patna Pro 12L RO+UV+UF TDS', slug:'ro-patna-pro-12l', price:12999, compareAtPrice:18999, primaryImage:'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=600', brand:{name:'RO Service Patna',slug:'ro-service-patna'}, avgRating:4.7, reviewCount:342, isCommercial:false },
     { id:'s2', name:'Kent Super Plus RO+UV+UF 8L', slug:'kent-super-plus', price:15499, compareAtPrice:19000, primaryImage:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600', brand:{name:'Kent',slug:'kent'}, avgRating:4.5, reviewCount:612, isCommercial:false },
     { id:'s7', name:'Livpure Glo 7L RO+UV', slug:'livpure-glo-7l', price:10999, compareAtPrice:14500, primaryImage:'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=600', brand:{name:'Livpure',slug:'livpure'}, avgRating:4.4, reviewCount:318, isCommercial:false },
-    { id:'s8', name:'RO Service Patna Under-Sink RO 10L', slug:'under-sink-10l', price:18999, compareAtPrice:24999, primaryImage:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600', brand:{name:'RO Service Patna',slug:'aquanexa'}, avgRating:4.6, reviewCount:98, isCommercial:false },
+    { id:'s8', name:'RO Service Patna Under-Sink RO 10L', slug:'under-sink-10l', price:18999, compareAtPrice:24999, primaryImage:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600', brand:{name:'RO Service Patna',slug:'ro-service-patna'}, avgRating:4.6, reviewCount:98, isCommercial:false },
   ],
   'spare-parts': [
     { id:'s4', name:'RO Membrane 80 GPD Original', slug:'ro-membrane-80-gpd', price:1499, compareAtPrice:2200, primaryImage:'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=600', brand:null, avgRating:4.4, reviewCount:1291, isCommercial:false },
@@ -22,9 +22,9 @@ const sampleByCategory: Record<string, any[]> = {
     { id:'s9', name:'High Pressure Booster Pump', slug:'booster-pump', price:1899, compareAtPrice:2500, primaryImage:'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600', brand:null, avgRating:4.2, reviewCount:187, isCommercial:false },
   ],
   'commercial-plants': [
-    { id:'s3', name:'Commercial RO Plant 100 LPH (SS)', slug:'commercial-100-lph', price:65000, compareAtPrice:85000, primaryImage:'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600', brand:{name:'RO Service Patna',slug:'aquanexa'}, avgRating:4.8, reviewCount:86, isCommercial:true },
-    { id:'s10', name:'Commercial RO 50 LPH Compact', slug:'commercial-50-lph', price:38000, compareAtPrice:48000, primaryImage:'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600', brand:{name:'RO Service Patna',slug:'aquanexa'}, avgRating:4.6, reviewCount:42, isCommercial:true },
-    { id:'s11', name:'Industrial RO 250 LPH', slug:'industrial-250-lph', price:125000, compareAtPrice:155000, primaryImage:'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600', brand:{name:'RO Service Patna',slug:'aquanexa'}, avgRating:4.9, reviewCount:18, isCommercial:true },
+    { id:'s3', name:'Commercial RO Plant 100 LPH (SS)', slug:'commercial-100-lph', price:65000, compareAtPrice:85000, primaryImage:'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600', brand:{name:'RO Service Patna',slug:'ro-service-patna'}, avgRating:4.8, reviewCount:86, isCommercial:true },
+    { id:'s10', name:'Commercial RO 50 LPH Compact', slug:'commercial-50-lph', price:38000, compareAtPrice:48000, primaryImage:'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600', brand:{name:'RO Service Patna',slug:'ro-service-patna'}, avgRating:4.6, reviewCount:42, isCommercial:true },
+    { id:'s11', name:'Industrial RO 250 LPH', slug:'industrial-250-lph', price:125000, compareAtPrice:155000, primaryImage:'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600', brand:{name:'RO Service Patna',slug:'ro-service-patna'}, avgRating:4.9, reviewCount:18, isCommercial:true },
     { id:'s12', name:'Commercial 100 LPH FRP', slug:'commercial-frp-100', price:55000, compareAtPrice:72000, primaryImage:'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600', brand:null, avgRating:4.5, reviewCount:31, isCommercial:true },
   ],
 };
