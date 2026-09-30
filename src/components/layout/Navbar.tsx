@@ -5,7 +5,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {
   Search, ShoppingCart, User, Menu, X, Phone, ChevronDown, Wrench,
-  Droplets, Factory, Settings2, LogOut, LayoutDashboard, Package, MapPin, Shield,
+  Droplets, Factory, Settings2, LogOut, LayoutDashboard, Package, MapPin, Shield, Truck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn, PHONES, PATNA_AREAS, telLink } from '@/lib/utils';
@@ -41,10 +41,11 @@ const categoryMega = [
   },
 ];
 
-// Split Patna areas into 2 columns for megamenu
+// Split Patna areas into 3 columns for premium megamenu
 const AREA_COLS = [
-  PATNA_AREAS.slice(0, Math.ceil(PATNA_AREAS.length / 2)),
-  PATNA_AREAS.slice(Math.ceil(PATNA_AREAS.length / 2)),
+  PATNA_AREAS.slice(0, Math.ceil(PATNA_AREAS.length / 3)),
+  PATNA_AREAS.slice(Math.ceil(PATNA_AREAS.length / 3), Math.ceil(PATNA_AREAS.length * 2 / 3)),
+  PATNA_AREAS.slice(Math.ceil(PATNA_AREAS.length * 2 / 3)),
 ];
 
 export default function Navbar() {
@@ -71,55 +72,65 @@ export default function Navbar() {
     <>
       {/* Top strip */}
       <div className="bg-navy-900 text-white text-xs">
-        <div className="container-pad flex items-center justify-between py-1.5">
+        <div className="container-pad flex items-center justify-between py-2">
           <div className="hidden items-center gap-4 md:flex">
-            <span className="flex items-center gap-1">🚚 Pan-India Delivery | 🔧 Patna RO Service ₹200 Visit | ⚡ Same-Day | 4.9★ Rated</span>
+            <span className="flex items-center gap-1.5">
+              <Truck/> 🚚 Pan-India Delivery
+            </span>
+            <span className="text-white/30">|</span>
+            <span className="flex items-center gap-1.5">
+              <MapPin className="h-3 w-3"/> 🔧 Patna RO Service ₹200 Visit
+            </span>
+            <span className="text-white/30">|</span>
+            <span className="flex items-center gap-1.5 text-yellow-300">⭐ 4.9★ (2486+ reviews)</span>
           </div>
-          <div className="flex items-center gap-4">
-            <a href={telLink(PHONES.primary)} className="flex items-center gap-1 font-bold bg-cta-orange/90 hover:bg-cta-orange px-2 py-0.5 rounded">
+          <div className="flex items-center gap-3">
+            <a href={telLink(PHONES.primary)} className="flex items-center gap-1 font-bold bg-cta-orange hover:bg-orange-600 transition px-3 py-1 rounded-md shadow-sm">
               <Phone className="h-3 w-3 animate-pulse"/> Call Now: {PHONES.primary}
             </a>
-            <Link href="/track-order" className="hidden hover:text-brand-300 md:inline">Track Order</Link>
-            <Link href="/amc" className="hidden hover:text-brand-300 md:inline items-center gap-1 inline-flex"><Shield className="h-3 w-3"/>AMC Plans</Link>
-            {isAdmin && <Link href="/admin/dashboard" className="flex items-center gap-1 font-semibold text-brand-300 hover:text-white">Admin Panel</Link>}
+            <Link href="/track-order" className="hidden hover:text-brand-300 md:inline text-xs font-medium">Track Order</Link>
+            <Link href="/amc" className="hidden hover:text-brand-300 md:inline-flex items-center gap-1 text-xs font-medium"><Shield className="h-3 w-3"/>AMC</Link>
+            {isAdmin && <Link href="/admin/dashboard" className="flex items-center gap-1 font-semibold text-brand-300 hover:text-white text-xs">Admin</Link>}
           </div>
         </div>
       </div>
 
       <header className="sticky top-0 z-40 border-b border-gray-100 bg-white/95 backdrop-blur-md shadow-sm">
         <div className="container-pad">
-          <div className="flex h-16 items-center gap-4">
-            <button className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
+          <div className="flex h-20 items-center gap-6">
+            <button className="md:hidden -ml-2 p-2" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
               {mobileOpen ? <X className="h-6 w-6"/> : <Menu className="h-6 w-6"/>}
             </button>
 
-            <Link href="/" className="flex shrink-0 items-center gap-2">
-              <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-aqua-gradient shadow-lg shadow-brand-500/30">
-                <Droplets className="h-6 w-6 text-white"/>
+            {/* Brand Logo */}
+            <Link href="/" className="flex shrink-0 items-center gap-3">
+              <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 shadow-lg shadow-brand-500/30">
+                <Droplets className="h-7 w-7 text-white"/>
               </div>
               <div className="flex flex-col leading-tight">
-                <span className="text-lg md:text-xl font-extrabold tracking-tight text-navy-900">RO Service <span className="text-brand-500">Patna</span></span>
-                <span className="-mt-1 text-[10px] font-bold uppercase tracking-wider text-cta-orange">RO • SPARE PARTS • SERVICE</span>
+                <span className="text-xl md:text-2xl font-extrabold tracking-tight text-navy-900">RO Service <span className="text-brand-500">Patna</span></span>
+                <span className="-mt-1 text-[10px] font-bold uppercase tracking-widest text-cta-orange">RO • Spare Parts • Service</span>
               </div>
             </Link>
 
-            <nav className="ml-2 hidden items-center gap-1 md:flex">
+            {/* Desktop Nav */}
+            <nav className="hidden lg:flex items-center gap-1 ml-4">
               {categoryMega.map((cat) => (
                 <div key={cat.title} className="group relative"
                   onMouseEnter={() => setActiveCat(cat.title)}
                   onMouseLeave={() => setActiveCat(null)}>
-                  <button className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-navy-800 hover:bg-brand-50 hover:text-brand-600">
-                    <cat.icon className="h-4 w-4"/>{cat.title}
-                    <ChevronDown className={cn('h-4 w-4 transition-transform', activeCat===cat.title && 'rotate-180')}/>
+                  <button className="flex items-center gap-1.5 rounded-lg px-3.5 py-2.5 text-sm font-semibold text-navy-800 hover:bg-brand-50 hover:text-brand-600 transition">
+                    <cat.icon className="h-4.5 w-4.5"/>{cat.title}
+                    <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', activeCat===cat.title && 'rotate-180')}/>
                   </button>
                   {activeCat === cat.title && (
-                    <div className="absolute left-0 top-full w-64 pt-2">
-                      <div className="rounded-xl border border-gray-100 bg-white p-3 shadow-xl">
-                        <Link href={cat.href} className="flex items-center gap-2 rounded-lg bg-brand-50 px-3 py-2 text-sm font-bold text-brand-700" onClick={() => setActiveCat(null)}>
+                    <div className="absolute left-0 top-full w-64 pt-2 z-50">
+                      <div className="rounded-xl border border-gray-100 bg-white p-2 shadow-2xl">
+                        <Link href={cat.href} className="flex items-center gap-2 rounded-lg bg-brand-50 px-3 py-2.5 text-sm font-bold text-brand-700" onClick={() => setActiveCat(null)}>
                           <cat.icon className="h-4 w-4"/>View All {cat.title}
                         </Link>
-                        <div className="mt-2 space-y-1">
-                          {cat.sub.map(s => <Link key={s.name} href={s.href} className="block rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600" onClick={() => setActiveCat(null)}>{s.name}</Link>)}
+                        <div className="mt-1 space-y-0.5">
+                          {cat.sub.map(s => <Link key={s.name} href={s.href} className="block rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600" onClick={() => setActiveCat(null)}>{s.name}</Link>)}
                         </div>
                       </div>
                     </div>
@@ -129,22 +140,22 @@ export default function Navbar() {
               <div className="group relative"
                 onMouseEnter={() => setActiveCat('areas')}
                 onMouseLeave={() => setActiveCat(null)}>
-                <button className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-navy-800 hover:bg-brand-50 hover:text-brand-600">
-                  <MapPin className="h-4 w-4"/>Service Areas
-                  <ChevronDown className={cn('h-4 w-4 transition-transform', activeCat==='areas' && 'rotate-180')}/>
+                <button className="flex items-center gap-1.5 rounded-lg px-3.5 py-2.5 text-sm font-semibold text-navy-800 hover:bg-brand-50 hover:text-brand-600 transition">
+                  <MapPin className="h-4.5 w-4.5"/>Service Areas
+                  <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', activeCat==='areas' && 'rotate-180')}/>
                 </button>
                 {activeCat === 'areas' && (
-                  <div className="absolute left-0 top-full w-[520px] pt-2">
-                    <div className="rounded-xl border border-gray-100 bg-white p-3 shadow-xl">
-                      <Link href="/book-service" className="flex items-center gap-2 rounded-lg bg-orange-50 px-3 py-2 text-sm font-bold text-cta-orange" onClick={() => setActiveCat(null)}>
-                        <MapPin className="h-4 w-4"/>All Patna Areas Covered (30+)
+                  <div className="absolute left-0 top-full w-[680px] pt-2 z-50">
+                    <div className="rounded-xl border border-gray-100 bg-white p-4 shadow-2xl">
+                      <Link href="/book-service" className="flex items-center gap-2 rounded-lg bg-orange-50 px-4 py-2.5 text-sm font-bold text-cta-orange" onClick={() => setActiveCat(null)}>
+                        <MapPin className="h-4 w-4"/>All 32+ Patna Areas Covered
                       </Link>
-                      <div className="mt-2 grid grid-cols-2 gap-x-4">
+                      <div className="mt-3 grid grid-cols-3 gap-x-4 gap-y-0.5">
                         {AREA_COLS.map((col, ci) => (
-                          <div key={ci} className="space-y-0.5">
+                          <div key={ci}>
                             {col.map(a => (
-                              <Link key={a.slug} href={`/areas/${a.slug}`} className="block rounded px-3 py-1 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600" onClick={() => setActiveCat(null)}>
-                                📍 {a.name}
+                              <Link key={a.slug} href={`/areas/${a.slug}`} className="flex items-center gap-1.5 rounded px-2 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600" onClick={() => setActiveCat(null)}>
+                                <MapPin className="h-3 w-3 text-brand-500"/>{a.name}
                               </Link>
                             ))}
                           </div>
@@ -154,31 +165,37 @@ export default function Navbar() {
                   </div>
                 )}
               </div>
-              <Link href="/book-service" className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-cta-orange hover:bg-orange-50">
-                <Wrench className="h-4 w-4"/>Patna RO Service
+              <Link href="/book-service" className="flex items-center gap-1.5 rounded-lg px-3.5 py-2.5 text-sm font-semibold text-cta-orange hover:bg-orange-50 transition">
+                <Wrench className="h-4.5 w-4.5"/>Patna RO Service
               </Link>
-              <Link href="/amc" className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-navy-800 hover:bg-brand-50 hover:text-brand-600">
-                <Shield className="h-4 w-4"/>AMC Plans
+              <Link href="/amc" className="flex items-center gap-1.5 rounded-lg px-3.5 py-2.5 text-sm font-semibold text-navy-800 hover:bg-brand-50 hover:text-brand-600 transition">
+                <Shield className="h-4.5 w-4.5"/>AMC Plans
               </Link>
             </nav>
 
-            <form onSubmit={doSearch} className="flex flex-1 justify-center">
-              <div className="relative flex w-full max-w-2xl items-center rounded-xl border-2 bg-gray-50 focus-within:border-brand-500 focus-within:bg-white">
-                <Search className="ml-3 h-5 w-5 text-gray-400"/>
-                <input type="text" value={searchQ} onChange={e => setSearchQ(e.target.value)} placeholder="RO, membrane, Kent service, Patna area..." className="w-full bg-transparent px-3 py-2.5 text-sm outline-none"/>
-                <Button type="submit" className="m-1 hidden px-4 sm:flex">Search</Button>
+            {/* Search Bar - properly spaced */}
+            <form onSubmit={doSearch} className="hidden lg:flex flex-1 justify-end">
+              <div className="relative w-full max-w-md">
+                <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"/>
+                <input type="text" value={searchQ} onChange={e => setSearchQ(e.target.value)}
+                  placeholder="Search products, brands, service..."
+                  className="w-full h-11 rounded-full border-2 border-gray-200 bg-gray-50 pl-11 pr-4 text-sm outline-none transition focus:border-brand-500 focus:bg-white focus:shadow-sm"/>
               </div>
             </form>
 
-            <div className="flex items-center gap-1">
+            {/* Right Actions */}
+            <div className="flex items-center gap-1 ml-auto lg:ml-0">
               <Link href="/book-service" className="hidden md:inline-flex">
-                <Button variant="navy" size="sm" className="gap-1.5"><Wrench className="h-4 w-4"/>Book Service ₹200</Button>
+                <Button variant="navy" size="default" className="gap-1.5 h-11 px-5 shadow-md">
+                  <Wrench className="h-4 w-4"/>Book Service ₹200
+                </Button>
               </Link>
+              <button className="lg:hidden rounded-lg p-2.5 hover:bg-brand-50" aria-label="Search"><Search className="h-5 w-5 text-navy-800"/></button>
               <div className="relative" onMouseEnter={() => setAcctOpen(true)} onMouseLeave={() => setAcctOpen(false)}>
-                <button className="rounded-lg p-2 hover:bg-brand-50"><User className="h-5 w-5 text-navy-800"/></button>
+                <button className="rounded-lg p-2.5 hover:bg-brand-50"><User className="h-5 w-5 text-navy-800"/></button>
                 {acctOpen && (
-                  <div className="absolute right-0 top-full w-56 pt-2">
-                    <div className="rounded-xl border border-gray-100 bg-white p-2 shadow-xl">
+                  <div className="absolute right-0 top-full w-56 pt-2 z-50">
+                    <div className="rounded-xl border border-gray-100 bg-white p-2 shadow-2xl">
                       {session ? (
                         <>
                           <div className="px-3 py-2"><p className="text-xs text-gray-500">Hello,</p><p className="text-sm font-semibold truncate">{session.user?.name||session.user?.email}</p></div>
@@ -202,37 +219,39 @@ export default function Navbar() {
                   </div>
                 )}
               </div>
-              <button onClick={() => setCartOpen(true)} className="relative rounded-lg p-2 hover:bg-brand-50">
+              <button onClick={() => setCartOpen(true)} className="relative rounded-lg p-2.5 hover:bg-brand-50">
                 <ShoppingCart className="h-5 w-5 text-navy-800"/>
-                {count>0 && <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-cta-orange text-[10px] font-bold text-white">{count>99?'99+':count}</span>}
+                {count>0 && <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-cta-orange text-[10px] font-bold text-white ring-2 ring-white">{count>99?'99+':count}</span>}
               </button>
             </div>
           </div>
 
-          <form onSubmit={doSearch} className="flex pb-2 md:hidden">
-            <div className="relative flex w-full items-center rounded-lg bg-gray-50">
-              <Search className="ml-3 h-4 w-4 text-gray-400"/>
-              <input value={searchQ} onChange={e => setSearchQ(e.target.value)} type="text" placeholder="Search..." className="w-full bg-transparent px-2 py-2 text-sm outline-none"/>
+          {/* Mobile search */}
+          <form onSubmit={doSearch} className="flex pb-3 lg:hidden">
+            <div className="relative flex w-full items-center rounded-full bg-gray-50 border border-gray-200">
+              <Search className="ml-4 h-4 w-4 text-gray-400"/>
+              <input value={searchQ} onChange={e => setSearchQ(e.target.value)} type="text" placeholder="Search products, service..." className="w-full bg-transparent px-3 py-2.5 text-sm outline-none"/>
             </div>
           </form>
-          <div className="flex items-center gap-3 border-t border-gray-100 py-2 md:hidden">
-            <Link href="/book-service" className="flex-1"><Button className="w-full gap-1.5" size="sm"><Wrench className="h-4 w-4"/>Book RO Service ₹200</Button></Link>
+          <div className="flex items-center gap-3 border-t border-gray-100 py-2 lg:hidden">
+            <Link href="/book-service" className="flex-1"><Button className="w-full gap-1.5 h-11" size="sm"><Wrench className="h-4 w-4"/>Book RO Service ₹200</Button></Link>
           </div>
         </div>
 
+        {/* Mobile menu */}
         {mobileOpen && (
-          <div className="border-t border-gray-100 bg-white md:hidden">
-            <div className="container-pad space-y-2 py-4 max-h-[70vh] overflow-y-auto">
+          <div className="border-t border-gray-100 bg-white lg:hidden max-h-[70vh] overflow-y-auto">
+            <div className="container-pad space-y-2 py-4">
               {categoryMega.map(cat => (
                 <div key={cat.title}>
                   <div className="flex items-center justify-between rounded-lg px-3 py-2 font-semibold text-navy-800 hover:bg-brand-50 cursor-pointer" onClick={() => toggleMobile(cat.title)}>
                     <Link href={cat.href} className="flex items-center gap-2 flex-1" onClick={() => setMobileOpen(false)}>
                       <cat.icon className="h-5 w-5 text-brand-500"/>{cat.title}
                     </Link>
-                    <ChevronDown className={cn('h-4 w-4 transition-transform', mobileExpanded===cat.title && 'rotate-180')}/>
+                    <ChevronDown className={cn('h-4 w-4 transition', mobileExpanded===cat.title && 'rotate-180')}/>
                   </div>
                   {mobileExpanded === cat.title && (
-                    <div className="pl-8 space-y-1 pb-2">
+                    <div className="pl-8 space-y-0.5 pb-2">
                       {cat.sub.map(s => <Link key={s.name} href={s.href} className="block px-3 py-1.5 text-sm text-gray-700" onClick={() => setMobileOpen(false)}>{s.name}</Link>)}
                     </div>
                   )}
@@ -241,7 +260,7 @@ export default function Navbar() {
               <div>
                 <div className="flex items-center justify-between rounded-lg px-3 py-2 font-semibold text-navy-800 hover:bg-brand-50 cursor-pointer" onClick={() => toggleMobile('areas')}>
                   <span className="flex items-center gap-2"><MapPin className="h-5 w-5 text-brand-500"/>Service Areas</span>
-                  <ChevronDown className={cn('h-4 w-4 transition-transform', mobileExpanded==='areas' && 'rotate-180')}/>
+                  <ChevronDown className={cn('h-4 w-4 transition', mobileExpanded==='areas' && 'rotate-180')}/>
                 </div>
                 {mobileExpanded === 'areas' && (
                   <div className="pl-8 grid grid-cols-2 gap-x-2 pb-2">

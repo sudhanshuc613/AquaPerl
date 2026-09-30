@@ -11,7 +11,7 @@ import { BRAND, PHONES } from '@/lib/utils';
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://roserviceinpatna.in'),
+  metadataBase: new URL('https://www.roserviceinpatna.in'),
   title: {
     default: 'RO Service in Patna | ₹200 Visit Charge | Same-Day Repair & Installation - RO Service Patna',
     template: '%s | RO Service Patna',
@@ -48,10 +48,10 @@ export const metadata: Metadata = {
 const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
-  '@id': 'https://roserviceinpatna.in/#localbusiness',
+  '@id': 'https://www.roserviceinpatna.in/#localbusiness',
   name: 'RO Service Patna',
-  image: 'https://roserviceinpatna.in/og.jpg',
-  url: 'https://roserviceinpatna.in',
+  image: 'https://www.roserviceinpatna.in/og.jpg',
+  url: 'https://www.roserviceinpatna.in',
   telephone: [`+91-${PHONES.primary}`, `+91-${PHONES.secondary}`],
   priceRange: '₹200 - ₹7000',
   email: 'service@roserviceinpatna.in',

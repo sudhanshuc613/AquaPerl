@@ -7,18 +7,12 @@ import HeroSection from '@/components/home/HeroSection';
 import CategoryShowcase from '@/components/home/CategoryShowcase';
 import ProductCard from '@/components/product/ProductCard';
 import ServiceQuickBook from '@/components/service/ServiceQuickBook';
-import { formatPrice, PHONES, waLink, telLink } from '@/lib/utils';
+import { formatPrice, PHONES, waLink, telLink, PATNA_AREAS } from '@/lib/utils';
 import {
   Shield, Truck, Clock, Award, Phone, Wrench, Star, CheckCircle2,
   Headphones, Zap, MapPin, ArrowRight, Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-const PATNA_AREAS = [
-  'Boring Road', 'Kankarbagh', 'Patna Sahib', 'Danapur', 'Bailey Road', 'Rajendra Nagar',
-  'Gandhi Maidan', 'Mithapur', 'Anisabad', 'Phulwari Sharif', 'Patliputra', 'Kidwaipuri',
-  'Bakerganj', 'Machuatoli', 'Frazer Road', 'Srikrishnapuri', 'Lohia Nagar', 'Khemnichak',
-];
 
 const sampleProducts = [
     { id:'s1', name:'RO Service Patna Pro 12L RO+UV+UF TDS Controller', slug:'aquanexa-pro-12l', price:12999, compareAtPrice:18999, primaryImage:'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=600', brand:{name:'RO Service Patna',slug:'aquanexa'}, avgRating:4.7, reviewCount:342, isCommercial:false },
@@ -149,9 +143,9 @@ export default function HomePage() {
           <h3 className="mt-1 text-2xl">Hum in sab Patna areas mein service dete hain:</h3>
           <div className="mt-6 flex flex-wrap gap-2">
             {PATNA_AREAS.map(a => (
-              <span key={a} className="rounded-full border border-navy-200 bg-white px-4 py-1.5 text-sm font-medium text-navy-800 shadow-sm hover:border-brand-500 hover:text-brand-600">
-                📍 {a}
-              </span>
+              <Link key={a.slug} href={`/areas/${a.slug}`} className="rounded-full border border-navy-200 bg-white px-4 py-1.5 text-sm font-medium text-navy-800 shadow-sm hover:border-brand-500 hover:bg-brand-50 hover:text-brand-600 transition">
+                📍 {a.name}
+              </Link>
             ))}
           </div>
           <p className="mt-4 text-sm text-gray-600">

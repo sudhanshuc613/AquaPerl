@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: { area: string } })
     openGraph: {
       title: seo.title,
       description: seo.description,
-      url: `https://roserviceinpatna.in/areas/${params.area}`,
+      url: `https://www.roserviceinpatna.in/areas/${params.area}`,
       type: 'website',
       locale: 'en_IN',
     },
@@ -45,7 +45,7 @@ export default function AreaPage({ params }: { params: { area: string } }) {
     name: `RO Service ${areaName} Patna`,
     telephone: [`+91-${PHONES.primary}`,`+91-${PHONES.secondary}`],
     email: 'service@roserviceinpatna.in',
-    url: `https://roserviceinpatna.in/areas/${params.area}`,
+    url: `https://www.roserviceinpatna.in/areas/${params.area}`,
     address: { '@type':'PostalAddress', streetAddress: landmarks, addressLocality: areaName, postalCode: pincode, addressRegion:'Patna, Bihar', addressCountry:'IN' },
     areaServed: { '@type':'Place', name: `${areaName}, Patna, Bihar ${pincode}` },
     priceRange: '₹200 - ₹7000',

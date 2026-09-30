@@ -125,7 +125,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
     description: product.shortDescription ?? product.description,
     offers: {
       '@type': 'Offer',
-      url: `https://roserviceinpatna.in/product/${product.slug}`,
+      url: `https://www.roserviceinpatna.in/product/${product.slug}`,
       priceCurrency: 'INR',
       price: Number(product.price),
       availability: product.stockQty > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
