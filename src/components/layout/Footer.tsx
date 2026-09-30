@@ -17,7 +17,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5">
           <div>
             <div className="flex items-center gap-2">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-aqua-gradient">
@@ -55,11 +55,25 @@ export default function Footer() {
           </div>
 
           <div>
+            <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-white">Company</h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link href="/about" className="hover:text-brand-400">About Us</Link></li>
+              <li><Link href="/contact" className="hover:text-brand-400">Contact</Link></li>
+              <li><Link href="/pricing" className="hover:text-brand-400">Pricing</Link></li>
+              <li><Link href="/faq" className="hover:text-brand-400">FAQs</Link></li>
+              <li><Link href="/brands" className="hover:text-brand-400">All Brands</Link></li>
+              <li><Link href="/ro-service-near-me" className="hover:text-brand-400">Service Near Me</Link></li>
+            </ul>
+          </div>
+
+          <div>
             <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-white">Shop</h4>
             <ul className="space-y-2 text-sm">
-              {['RO Purifiers','Spare Parts','Membranes','Filters','UV Lamps','Commercial Plants','Accessories'].map(l => (
-                <li key={l}><Link href="/categories/ro-purifiers" className="hover:text-brand-400">{l}</Link></li>
-              ))}
+              <li><Link href="/categories/ro-purifiers" className="hover:text-brand-400">RO Purifiers</Link></li>
+              <li><Link href="/categories/spare-parts" className="hover:text-brand-400">Spare Parts</Link></li>
+              <li><Link href="/categories/ro-membranes" className="hover:text-brand-400">Membranes</Link></li>
+              <li><Link href="/categories/filters" className="hover:text-brand-400">Filters</Link></li>
+              <li><Link href="/categories/commercial-plants" className="hover:text-brand-400">Commercial Plants</Link></li>
             </ul>
           </div>
 
@@ -76,7 +90,11 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-gray-500 md:flex-row">
           <p>© {new Date().getFullYear()} RO Service Patna (roserviceinpatna.in). All rights reserved.</p>
-          <div className="flex gap-4">Payments: UPI • Cards • NetBanking • COD</div>
+          <div className="flex gap-4">
+            <Link href="/privacy-policy" className="hover:text-gray-300">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-gray-300">Terms</Link>
+            <span>Payments: UPI • Cards • NetBanking • COD</span>
+          </div>
         </div>
       </div>
 
