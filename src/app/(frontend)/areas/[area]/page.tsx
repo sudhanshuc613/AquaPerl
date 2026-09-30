@@ -151,7 +151,7 @@ export default function AreaPage({ params }: { params: { area: string } }) {
             <div>
               <h2>All RO Brands We Service in {areaName}</h2>
               <div className="mt-3 flex flex-wrap gap-2">
-                {BRANDS_SERVICED.map(b => <span key={b} className="rounded-full bg-brand-50 border border-brand-100 px-3 py-1 text-sm font-medium text-brand-700">{b}</span>)}
+                {BRANDS_SERVICED.map(b => <span key={b.slug} className="rounded-full bg-brand-50 border border-brand-100 px-3 py-1 text-sm font-medium text-brand-700">{b.name}</span>)}
               </div>
             </div>
 

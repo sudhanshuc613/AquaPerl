@@ -111,7 +111,7 @@ export default function AMCPage() {
         <div className="mt-16">
           <h2 className="text-center">All Brands Covered Under AMC</h2>
           <div className="mt-4 flex flex-wrap justify-center gap-2">
-            {BRANDS_SERVICED.map(b => <span key={b} className="rounded-full bg-brand-50 border border-brand-100 px-4 py-1.5 text-sm font-medium text-brand-700">{b}</span>)}
+            {BRANDS_SERVICED.map(b => <span key={b.slug} className="rounded-full bg-brand-50 border border-brand-100 px-4 py-1.5 text-sm font-medium text-brand-700">{b.name}</span>)}
           </div>
         </div>
 

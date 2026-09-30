@@ -83,11 +83,26 @@ export const PATNA_AREAS = [
   { slug: 'jp-nagar', name: 'JP Nagar', pincode: '800013', landmarks: 'Patliputra' },
 ];
 
-// All RO brands serviced in Patna
+// All RO brands serviced with logos
 export const BRANDS_SERVICED = [
-  'Kent', 'Aquaguard (Eureka Forbes)', 'Livpure', 'Pureit (HUL)',
-  'AO Smith', 'Blue Star', 'Havells', 'LG', 'Samsung', 'Whirlpool',
-  'V-Guard', 'Tata Swach', 'Nexus', 'Aquafresh', 'Generic/Local Brands'
+  { name: 'Kent', logo: '/brands/kent.png', slug: 'kent' },
+  { name: 'Aquaguard (Eureka Forbes)', logo: '/brands/aquaguard.png', slug: 'aquaguard-eureka-forbes' },
+  { name: 'Livpure', logo: '/brands/livpure.png', slug: 'livpure' },
+  { name: 'Pureit (HUL)', logo: '/brands/pureit.png', slug: 'pureit-hul' },
+  { name: 'AO Smith', logo: '/brands/ao-smith.png', slug: 'ao-smith' },
+  { name: 'Blue Star', logo: '/brands/blue-star.png', slug: 'blue-star' },
+  { name: 'Havells', logo: '/brands/havells.png', slug: 'havells' },
+  { name: 'LG', logo: '/brands/lg.png', slug: 'lg' },
+  { name: 'Samsung', logo: '/brands/samsung.png', slug: 'samsung' },
+  { name: 'Whirlpool', logo: '/brands/whirlpool.png', slug: 'whirlpool' },
+  { name: 'V-Guard', logo: '/brands/v-guard.png', slug: 'v-guard' },
+  { name: 'Usha Shriram', logo: '/brands/usha-shriram.png', slug: 'usha-shriram' },
+  { name: 'Blue Mount', logo: '/brands/bluemount.png', slug: 'blue-mount' },
+  { name: 'Nasaka', logo: '/brands/nasaka.png', slug: 'nasaka' },
+  { name: 'Aquafresh', logo: '/brands/aquafresh.png', slug: 'aquafresh' },
+  { name: 'Aqua Natural', logo: '/brands/aqua-natural.png', slug: 'aqua-natural' },
+  { name: 'Tata Swach', logo: '/brands/tata-swach.png', slug: 'tata-swach' },
+  { name: 'Eureka Forbes', logo: '/brands/eureka-forbes.png', slug: 'eureka-forbes' },
 ];
 
 // Services offered (competitor analysis - unke packages)

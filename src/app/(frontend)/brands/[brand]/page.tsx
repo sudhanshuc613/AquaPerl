@@ -7,22 +7,22 @@ import { Phone, CheckCircle2, Wrench, Clock, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 function getBrand(slug: string) {
-  return BRANDS_SERVICED.find(b => b.toLowerCase().replace(/[^a-z0-9]+/g,'-') === slug);
+  return BRANDS_SERVICED.find(b => b.slug === slug);
 }
 
 export function generateStaticParams() {
-  return BRANDS_SERVICED.map(b => ({ brand: b.toLowerCase().replace(/[^a-z0-9]+/g,'-') }));
+  return BRANDS_SERVICED.map(b => ({ brand: b.slug }));
 }
 
 export async function generateMetadata({ params }: { params: { brand: string } }): Promise<Metadata> {
   const brand = getBrand(params.brand);
   if (!brand) return { title: 'Brand Not Found' };
   return {
-    title: `${brand} RO Service in Patna | Same-Day Repair @ ₹200 - RO Service Patna`,
-    description: `Expert ${brand} RO repair, installation & service in Patna. Same-day visit @ ₹200. Genuine ${brand} spare parts, trained technicians, 30-day warranty. Call 9241536586.`,
+    title: `${brand.name} RO Service in Patna | Same-Day Repair @ ₹200 - RO Service Patna`,
+    description: `Expert ${brand.name} RO repair, installation & service in Patna. Same-day visit @ ₹200. Genuine ${brand.name} spare parts, trained technicians, 30-day warranty. Call 9241536586.`,
     keywords: [
-      `${brand} RO service Patna`,`${brand} water purifier service Patna`,`${brand} RO repair Patna`,
-      `${brand} service centre Patna`,`${brand} RO installation Patna`,`${brand} AMC Patna`,
+      `${brand.name} RO service Patna`,`${brand.name} water purifier service Patna`,`${brand.name} RO repair Patna`,
+      `${brand.name} service centre Patna`,`${brand.name} RO installation Patna`,`${brand.name} AMC Patna`,
     ],
     alternates: { canonical: `/brands/${params.brand}` },
   };
@@ -36,15 +36,15 @@ export default function BrandPage({ params }: { params: { brand: string } }) {
     <>
       <section className="bg-aqua-gradient text-white py-12">
         <div className="container-pad">
-          <p className="text-xs text-white/80"><Link href="/" className="hover:text-white">Home</Link> / <Link href="/brands" className="hover:text-white">Brands</Link> / {brand}</p>
-          <h1 className="mt-2 text-white text-3xl md:text-5xl">{brand} RO Service in Patna</h1>
+          <p className="text-xs text-white/80"><Link href="/" className="hover:text-white">Home</Link> / <Link href="/brands" className="hover:text-white">Brands</Link> / {brand.name}</p>
+          <h1 className="mt-2 text-white text-3xl md:text-5xl">{brand.name} RO Service in Patna</h1>
           <p className="mt-3 max-w-2xl text-white/90 text-lg">
-            Certified {brand} technician in Patna. Same-day doorstep repair, filter/membrane change, installation.
-            100% genuine {brand} spare parts, 30-day service warranty.
+            Certified {brand.name} technician in Patna. Same-day doorstep repair, filter/membrane change, installation.
+            100% genuine {brand.name} spare parts, 30-day service warranty.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <a href={telLink(PHONES.primary)} className="btn-primary bg-white !text-navy-900"><Phone className="h-4 w-4"/>Call {PHONES.primary}</a>
-            <a href={waLink(PHONES.whatsapp, `Hi, ${brand} RO service chahiye Patna mein.`)} target="_blank" rel="noopener" className="btn-whatsapp">WhatsApp Book</a>
+            <a href={waLink(PHONES.whatsapp, `Hi, ${brand.name} RO service chahiye Patna mein.`)} target="_blank" rel="noopener" className="btn-whatsapp">WhatsApp Book</a>
           </div>
         </div>
       </section>
@@ -52,18 +52,18 @@ export default function BrandPage({ params }: { params: { brand: string } }) {
       <div className="container-pad py-10 grid gap-8 lg:grid-cols-5">
         <div className="lg:col-span-3 space-y-6">
           <div>
-            <h2>{brand} RO Services We Provide in Patna</h2>
+            <h2>{brand.name} RO Services We Provide in Patna</h2>
             <ul className="mt-4 grid gap-2 sm:grid-cols-2">
               {[
-                `${brand} RO repair & troubleshooting`,
-                `${brand} New RO installation`,
+                `${brand.name} RO repair & troubleshooting`,
+                `${brand.name} New RO installation`,
                 `${brand} Filter set change (genuine)`,
-                `${brand} RO Membrane replacement (original)`,
+                `${brand.name} RO Membrane replacement (original)`,
                 `${brand} UV lamp replacement`,
                 `${brand} TDS calibration & adjustment`,
                 `${brand} Leakage / water flow fix`,
                 `${brand} Pump / SMPS repair`,
-                `${brand} AMC / annual maintenance`,
+                `${brand.name} AMC / annual maintenance`,
                 `${brand} Water tank sanitization`,
                 `${brand} Under-sink model service`,
                 `${brand} Commercial unit service`,
@@ -90,7 +90,7 @@ export default function BrandPage({ params }: { params: { brand: string } }) {
           </div>
 
           <div>
-            <h2>Patna Areas for {brand} RO Service</h2>
+            <h2>Patna Areas for {brand.name} RO Service</h2>
             <div className="mt-3 flex flex-wrap gap-2">
               {PATNA_AREAS.slice(0,24).map(a => (
                 <Link key={a.slug} href={`/areas/${a.slug}`} className="rounded-full border px-3 py-1.5 text-sm hover:border-brand-500 hover:text-brand-600">📍 {a.name}</Link>
@@ -102,7 +102,7 @@ export default function BrandPage({ params }: { params: { brand: string } }) {
           <div className="sticky top-24 space-y-4">
             <ServiceQuickBook/>
             <div className="card-surface p-5 text-center">
-              <p className="text-sm">Urgent {brand} RO repair?</p>
+              <p className="text-sm">Urgent {brand.name} RO repair?</p>
               <a href={telLink(PHONES.primary)} className="mt-2 block rounded-lg bg-cta-orange py-3 text-lg font-extrabold text-white">📞 {PHONES.primary}</a>
             </div>
           </div>

@@ -82,7 +82,7 @@ export default function AboutPage() {
       <section className="container-pad py-14">
         <h2 className="text-center">All RO Brands We Service & Sell</h2>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          {BRANDS_SERVICED.map(b => <span key={b} className="rounded-full bg-brand-50 border border-brand-100 px-4 py-2 text-sm font-medium text-brand-700">{b}</span>)}
+          {BRANDS_SERVICED.map(b => <span key={b.slug} className="rounded-full bg-brand-50 border border-brand-100 px-4 py-2 text-sm font-medium text-brand-700">{b.name}</span>)}
         </div>
       </section>
 

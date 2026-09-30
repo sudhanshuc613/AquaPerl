@@ -28,7 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/terms', freq: 'yearly' as const, pri: 0.2 },
   ];
 
-  const brandSlugs = BRANDS_SERVICED.map(b => b.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''));
+  const brandSlugs = BRANDS_SERVICED.map(b => b.slug);
 
   return [
     ...staticUrls.map(u => ({
