@@ -1,301 +1,352 @@
 'use client';
+
+/**
+ * Navbar — sticky, 3-tier (top strip → main bar → category bar).
+ * Includes: logo, smart autosuggest search, mega-menu dropdowns,
+ * "Book Service" CTA, account menu, cart badge, mobile drawer.
+ */
+import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import {
-  Search, ShoppingCart, User, Menu, X, Phone, ChevronDown, Wrench,
-  Droplets, Factory, Settings2, LogOut, LayoutDashboard, Package, MapPin, Shield, Truck,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn, PHONES, PATNA_AREAS, telLink } from '@/lib/utils';
-import { useCart } from '@/lib/store';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { BRAND, CONTACT, PRODUCT_TYPES } from '@/lib/constants';
+import { SERVICE_INTENTS } from '@/lib/seo/service-intent-data';
+import { useBodyScrollLock, useEscapeKey } from '@/lib/hooks/useBodyScrollLock';
+import { useCartStore } from '@/store/cart';
+import SearchAutosuggest from './SearchAutosuggest';
+import AccountMenu from './AccountMenu';
 
-const categoryMega = [
-  {
-    title: 'RO Purifiers', icon: Droplets, href: '/categories/ro-purifiers',
-    sub: [
-      { name: 'Domestic RO', href: '/categories/domestic-ro' },
-      { name: 'UV + UF Purifiers', href: '/categories/uv-uf' },
-      { name: 'Under-Sink Models', href: '/categories/under-sink' },
-      { name: 'Wall-Mount Models', href: '/categories/wall-mount' },
-    ],
-  },
-  {
-    title: 'Spare Parts', icon: Settings2, href: '/categories/spare-parts',
-    sub: [
-      { name: 'RO Membranes', href: '/categories/ro-membranes' },
-      { name: 'Filter Sets', href: '/categories/filters' },
-      { name: 'UV Lamps', href: '/categories/uv-lamps' },
-      { name: 'Pumps & Motors', href: '/categories/pumps' },
-      { name: 'Connectors & Pipes', href: '/categories/connectors' },
-    ],
-  },
-  {
-    title: 'Commercial Plants', icon: Factory, href: '/categories/commercial-plants',
-    sub: [
-      { name: '50 LPH Plants', href: '/categories/50-lph' },
-      { name: '100 LPH Plants', href: '/categories/100-lph' },
-      { name: '250+ LPH Plants', href: '/categories/250-lph' },
-    ],
-  },
-];
-
-// Split Patna areas into 3 columns for premium megamenu
-const AREA_COLS = [
-  PATNA_AREAS.slice(0, Math.ceil(PATNA_AREAS.length / 3)),
-  PATNA_AREAS.slice(Math.ceil(PATNA_AREAS.length / 3), Math.ceil(PATNA_AREAS.length * 2 / 3)),
-  PATNA_AREAS.slice(Math.ceil(PATNA_AREAS.length * 2 / 3)),
-];
+const MEGA_MENU: Record<string, { heading: string; links: { label: string; href: string }[] }[]> = {
+  'New RO': [
+    { heading: 'By Type', links: [
+      { label: 'RO + UV + UF Purifiers', href: '/category/new-ro-purifiers?tech=RO,UV,UF' },
+      { label: 'Alkaline & Copper', href: '/category/new-ro-purifiers?tech=ALKALINE,COPPER' },
+      { label: 'Under-Sink Purifiers', href: '/category/new-ro-purifiers' },
+      { label: 'Wall-Mounted', href: '/category/new-ro-purifiers' },
+    ]},
+    { heading: 'By Brand', links: [
+      { label: 'Kent', href: '/service-patna/brand/kent' }, { label: 'Aquaguard', href: '/service-patna/brand/aquaguard' },
+      { label: 'Livpure', href: '/service-patna/brand/livpure' }, { label: 'Aqua Perl', href: '/category/new-ro-purifiers' },
+    ]},
+    { heading: 'By Budget', links: [
+      { label: 'Under ₹8,000', href: '/category/new-ro-purifiers?price=0-8000' },
+      { label: '₹8,000 – ₹15,000', href: '/category/new-ro-purifiers?price=8000-15000' },
+      { label: 'Premium ₹15,000+', href: '/category/new-ro-purifiers?price=15000-' },
+    ]},
+  ],
+  'Spare Parts': [
+    { heading: 'Filtration', links: [
+      { label: 'RO Membranes', href: '/category/ro-membranes' },
+      { label: 'Sediment Filters', href: '/category/spare-parts' },
+      { label: 'Carbon Filters', href: '/category/spare-parts' },
+      { label: 'UV Lamps', href: '/category/spare-parts' },
+    ]},
+    { heading: 'Electricals', links: [
+      { label: 'Booster Pumps', href: '/category/booster-pumps' },
+      { label: 'SMPS & Adaptors', href: '/category/spare-parts' },
+      { label: 'Solenoid Valves', href: '/category/spare-parts' },
+    ]},
+    { heading: 'Fittings', links: [
+      { label: 'Filter Housings', href: '/category/spare-parts' },
+      { label: 'Pipes & Connectors', href: '/category/spare-parts' },
+      { label: 'Storage Tanks', href: '/category/spare-parts' },
+    ]},
+  ],
+  'Commercial Plants': [
+    { heading: 'By Capacity', links: [
+      { label: '25–100 LPH', href: '/category/commercial-plants?capacity=25-100' },
+      { label: '250–500 LPH', href: '/category/commercial-plants?capacity=250-500' },
+      { label: '1000 LPH & above', href: '/category/commercial-plants?capacity=1000-' },
+    ]},
+    { heading: 'By Use Case', links: [
+      { label: 'Hotels & Restaurants', href: '/category/commercial-plants' },
+      { label: 'Schools & Offices', href: '/category/commercial-plants' },
+      { label: 'Water Plants (ATM)', href: '/category/commercial-plants' },
+    ]},
+  ],
+};
 
 export default function Navbar() {
-  const { data: session } = useSession();
-  const isAdmin = !!(session && ['ADMIN','SUPER_ADMIN'].includes((session.user as any)?.role));
   const router = useRouter();
+  const pathname = usePathname();
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeCat, setActiveCat] = useState<string | null>(null);
-  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
-  const [acctOpen, setAcctOpen] = useState(false);
-  const [searchQ, setSearchQ] = useState('');
-  const items = useCart(s => s.items);
-  const count = items.reduce((s, i) => s + i.quantity, 0);
-  const setCartOpen = useCart(s => s.setOpen);
+  const [scrolled, setScrolled] = useState(false);
+  const itemCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
+  const closeTimer = useRef<ReturnType<typeof setTimeout>>();
+  const closeMobile = useCallback(() => setMobileOpen(false), []);
 
-  const doSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQ.trim()) router.push(`/search?q=${encodeURIComponent(searchQ.trim())}`);
-  };
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
-  const toggleMobile = (key: string) => setMobileExpanded(mobileExpanded === key ? null : key);
+  /* Mobile drawer khulte hi page ka scroll band karo.
+     Warna drawer ke peeche ka homepage scroll hota rehta hai aur
+     content beech screen pe aa jaata hai (mobile pe dikhta bug). */
+  useBodyScrollLock(mobileOpen);
+  useEscapeKey(mobileOpen, closeMobile);
+
+  const hoverOpen = (k: string) => { clearTimeout(closeTimer.current); setOpenMenu(k); };
+  const hoverClose = () => { closeTimer.current = setTimeout(() => setOpenMenu(null), 160); };
 
   return (
-    <>
-      {/* Top strip */}
-      <div className="bg-navy-900 text-white text-xs">
-        <div className="container-pad flex items-center justify-between py-2">
-          <div className="hidden items-center gap-4 md:flex">
-            <span className="flex items-center gap-1.5">
-              <Truck/> 🚚 Pan-India Delivery
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? 'bg-white/92 shadow-nav backdrop-blur-md supports-[backdrop-filter]:bg-white/80'
+          : 'bg-white'
+      }`}
+    >
+      {/* ── Tier 1: announcement strip ── */}
+      <div className="relative bg-navy-gradient text-white">
+        {/* Hairline gold rule — the one metallic cue in the chrome */}
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-gold-500/45 to-transparent" />
+        <div className="container mx-auto flex h-9 items-center justify-between px-4 text-xs">
+          <p className="hidden items-center gap-2 sm:flex">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ripple rounded-full bg-emerald-400" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
             </span>
-            <span className="text-white/30">|</span>
-            <span className="flex items-center gap-1.5">
-              <MapPin className="h-3 w-3"/> 🔧 Patna RO Service ₹200 Visit
-            </span>
-            <span className="text-white/30">|</span>
-            <span className="flex items-center gap-1.5 text-yellow-300">⭐ 4.9★ (2486+ reviews)</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <a href={telLink(PHONES.primary)} className="flex items-center gap-1 font-bold bg-cta-orange hover:bg-orange-600 transition px-3 py-1 rounded-md shadow-sm">
-              <Phone className="h-3 w-3 animate-pulse"/> Call Now: {PHONES.primary}
+            RO Service in Patna — Visit charge only ₹200 · Same-day visit
+          </p>
+          <p className="sm:hidden">RO Service Patna — ₹200 visit</p>
+          <div className="flex items-center gap-4">
+            <a href={CONTACT.primaryTel} className="font-semibold transition-colors hover:text-gold-300">
+              📞 {CONTACT.primaryPhone}
             </a>
-            <Link href="/track-order" className="hidden hover:text-brand-300 md:inline text-xs font-medium">Track Order</Link>
-            <Link href="/amc" className="hidden hover:text-brand-300 md:inline-flex items-center gap-1 text-xs font-medium"><Shield className="h-3 w-3"/>AMC</Link>
-            {isAdmin && <Link href="/admin/dashboard" className="flex items-center gap-1 font-semibold text-brand-300 hover:text-white text-xs">Admin</Link>}
+            <span className="hidden text-navy-300 md:inline">|</span>
+            <Link href="/track-order" className="hidden transition-colors hover:text-gold-300 md:inline">Track Order</Link>
           </div>
         </div>
       </div>
 
-      <header className="sticky top-0 z-40 border-b border-gray-100 bg-white/95 backdrop-blur-md shadow-sm">
-        <div className="container-pad">
-          <div className="flex h-20 items-center gap-6">
-            <button className="md:hidden -ml-2 p-2" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
-              {mobileOpen ? <X className="h-6 w-6"/> : <Menu className="h-6 w-6"/>}
-            </button>
+      {/* ── Tier 2: main bar ── */}
+      <div className="border-b border-navy-50">
+        <div className="container mx-auto flex h-[70px] items-center gap-4 px-4">
+          {/* Mobile menu toggle */}
+          <button onClick={() => setMobileOpen(true)} aria-label="Open menu"
+            className="rounded-lg p-2 text-navy-700 hover:bg-navy-50 lg:hidden">
+            <Burger />
+          </button>
 
-            {/* Brand Logo */}
-            <Link href="/" className="flex shrink-0 items-center gap-3">
-              <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 shadow-lg shadow-brand-500/30">
-                <Droplets className="h-7 w-7 text-white"/>
-              </div>
-              <div className="flex flex-col leading-tight">
-                <span className="text-xl md:text-2xl font-extrabold tracking-tight text-navy-900">RO Service <span className="text-brand-500">Patna</span></span>
-                <span className="-mt-1 text-[10px] font-bold uppercase tracking-widest text-cta-orange">RO • Spare Parts • Service</span>
-              </div>
-            </Link>
+          {/* Logo — bada rakha hai. Chhota logo pe log click hi nahi karte,
+              aur bahut log jaante hi nahi ki logo se homepage khulta hai.
+              Isliye desktop pe saath mein saaf-saaf "Home" link bhi diya hai. */}
+          <Link
+            href="/"
+            className="group flex shrink-0 items-center rounded-xl px-1 py-1 transition hover:bg-navy-50/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-aqua-500"
+            aria-label={`${BRAND.name} — go to homepage`}
+            title={`${BRAND.name} — Home`}
+          >
+            <Image
+              src={BRAND.logo}
+              alt={`${BRAND.name} — RO service and water purifiers in Patna`}
+              width={260} height={62} priority
+              className="h-11 w-auto object-contain sm:h-14"
+            />
+          </Link>
 
-            {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center gap-1 ml-4">
-              {categoryMega.map((cat) => (
-                <div key={cat.title} className="group relative"
-                  onMouseEnter={() => setActiveCat(cat.title)}
-                  onMouseLeave={() => setActiveCat(null)}>
-                  <button className="flex items-center gap-1.5 rounded-lg px-3.5 py-2.5 text-sm font-semibold text-navy-800 hover:bg-brand-50 hover:text-brand-600 transition">
-                    <cat.icon className="h-4.5 w-4.5"/>{cat.title}
-                    <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', activeCat===cat.title && 'rotate-180')}/>
-                  </button>
-                  {activeCat === cat.title && (
-                    <div className="absolute left-0 top-full w-64 pt-2 z-50">
-                      <div className="rounded-xl border border-gray-100 bg-white p-2 shadow-2xl">
-                        <Link href={cat.href} className="flex items-center gap-2 rounded-lg bg-brand-50 px-3 py-2.5 text-sm font-bold text-brand-700" onClick={() => setActiveCat(null)}>
-                          <cat.icon className="h-4 w-4"/>View All {cat.title}
-                        </Link>
-                        <div className="mt-1 space-y-0.5">
-                          {cat.sub.map(s => <Link key={s.name} href={s.href} className="block rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600" onClick={() => setActiveCat(null)}>{s.name}</Link>)}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-              <div className="group relative"
-                onMouseEnter={() => setActiveCat('areas')}
-                onMouseLeave={() => setActiveCat(null)}>
-                <button className="flex items-center gap-1.5 rounded-lg px-3.5 py-2.5 text-sm font-semibold text-navy-800 hover:bg-brand-50 hover:text-brand-600 transition">
-                  <MapPin className="h-4.5 w-4.5"/>Service Areas
-                  <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', activeCat==='areas' && 'rotate-180')}/>
-                </button>
-                {activeCat === 'areas' && (
-                  <div className="absolute left-0 top-full w-[680px] pt-2 z-50">
-                    <div className="rounded-xl border border-gray-100 bg-white p-4 shadow-2xl">
-                      <Link href="/book-service" className="flex items-center gap-2 rounded-lg bg-orange-50 px-4 py-2.5 text-sm font-bold text-cta-orange" onClick={() => setActiveCat(null)}>
-                        <MapPin className="h-4 w-4"/>All 32+ Patna Areas Covered
-                      </Link>
-                      <div className="mt-3 grid grid-cols-3 gap-x-4 gap-y-0.5">
-                        {AREA_COLS.map((col, ci) => (
-                          <div key={ci}>
-                            {col.map(a => (
-                              <Link key={a.slug} href={`/areas/${a.slug}`} className="flex items-center gap-1.5 rounded px-2 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600" onClick={() => setActiveCat(null)}>
-                                <MapPin className="h-3 w-3 text-brand-500"/>{a.name}
-                              </Link>
-                            ))}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <Link href="/book-service" className="flex items-center gap-1.5 rounded-lg px-3.5 py-2.5 text-sm font-semibold text-cta-orange hover:bg-orange-50 transition">
-                <Wrench className="h-4.5 w-4.5"/>Patna RO Service
-              </Link>
-              <Link href="/amc" className="flex items-center gap-1.5 rounded-lg px-3.5 py-2.5 text-sm font-semibold text-navy-800 hover:bg-brand-50 hover:text-brand-600 transition">
-                <Shield className="h-4.5 w-4.5"/>AMC Plans
-              </Link>
-            </nav>
-
-            {/* Search Bar - properly spaced */}
-            <form onSubmit={doSearch} className="hidden lg:flex flex-1 justify-end">
-              <div className="relative w-full max-w-md">
-                <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"/>
-                <input type="text" value={searchQ} onChange={e => setSearchQ(e.target.value)}
-                  placeholder="Search products, brands, service..."
-                  className="w-full h-11 rounded-full border-2 border-gray-200 bg-gray-50 pl-11 pr-4 text-sm outline-none transition focus:border-brand-500 focus:bg-white focus:shadow-sm"/>
-              </div>
-            </form>
-
-            {/* Right Actions */}
-            <div className="flex items-center gap-1 ml-auto lg:ml-0">
-              <Link href="/book-service" className="hidden md:inline-flex">
-                <Button variant="navy" size="default" className="gap-1.5 h-11 px-5 shadow-md">
-                  <Wrench className="h-4 w-4"/>Book Service ₹200
-                </Button>
-              </Link>
-              <button className="lg:hidden rounded-lg p-2.5 hover:bg-brand-50" aria-label="Search"><Search className="h-5 w-5 text-navy-800"/></button>
-              <div className="relative" onMouseEnter={() => setAcctOpen(true)} onMouseLeave={() => setAcctOpen(false)}>
-                <button className="rounded-lg p-2.5 hover:bg-brand-50"><User className="h-5 w-5 text-navy-800"/></button>
-                {acctOpen && (
-                  <div className="absolute right-0 top-full w-56 pt-2 z-50">
-                    <div className="rounded-xl border border-gray-100 bg-white p-2 shadow-2xl">
-                      {session ? (
-                        <>
-                          <div className="px-3 py-2"><p className="text-xs text-gray-500">Hello,</p><p className="text-sm font-semibold truncate">{session.user?.name||session.user?.email}</p></div>
-                          <div className="my-1 h-px bg-gray-100"/>
-                          {isAdmin && <Link href="/admin/dashboard" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-brand-700 hover:bg-brand-50"><LayoutDashboard className="h-4 w-4"/>Admin Dashboard</Link>}
-                          <Link href="/orders" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-brand-50"><Package className="h-4 w-4"/>My Orders</Link>
-                          <Link href="/track-order" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-brand-50"><Search className="h-4 w-4"/>Track Order</Link>
-                          <button onClick={() => {signOut(); setAcctOpen(false);}} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50"><LogOut className="h-4 w-4"/>Logout</button>
-                        </>
-                      ) : (
-                        <>
-                          <p className="px-3 py-2 text-xs text-gray-500">Welcome! Login for orders</p>
-                          <Link href="/auth/login" className="block rounded-lg px-3 py-2 text-sm font-semibold text-brand-700 hover:bg-brand-50">Login</Link>
-                          <Link href="/auth/register" className="block rounded-lg px-3 py-2 text-sm hover:bg-brand-50">Create Account</Link>
-                          <Link href="/track-order" className="block rounded-lg px-3 py-2 text-sm hover:bg-brand-50">Track Order</Link>
-                          <div className="my-1 h-px bg-gray-100"/>
-                          <a href={telLink(PHONES.primary)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold text-cta-orange hover:bg-orange-50"><Phone className="h-4 w-4"/>Call {PHONES.primary}</a>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-              <button onClick={() => setCartOpen(true)} className="relative rounded-lg p-2.5 hover:bg-brand-50">
-                <ShoppingCart className="h-5 w-5 text-navy-800"/>
-                {count>0 && <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-cta-orange text-[10px] font-bold text-white ring-2 ring-white">{count>99?'99+':count}</span>}
-              </button>
-            </div>
+          {/* Smart search — desktop */}
+          <div className="hidden flex-1 md:block">
+            <SearchAutosuggest />
           </div>
 
-          {/* Mobile search */}
-          <form onSubmit={doSearch} className="flex pb-3 lg:hidden">
-            <div className="relative flex w-full items-center rounded-full bg-gray-50 border border-gray-200">
-              <Search className="ml-4 h-4 w-4 text-gray-400"/>
-              <input value={searchQ} onChange={e => setSearchQ(e.target.value)} type="text" placeholder="Search products, service..." className="w-full bg-transparent px-3 py-2.5 text-sm outline-none"/>
-            </div>
-          </form>
-          <div className="flex items-center gap-3 border-t border-gray-100 py-2 lg:hidden">
-            <Link href="/book-service" className="flex-1"><Button className="w-full gap-1.5 h-11" size="sm"><Wrench className="h-4 w-4"/>Book RO Service ₹200</Button></Link>
+          {/* Right cluster */}
+          <div className="ml-auto flex items-center gap-1 sm:gap-2">
+            <Link href="/#book-service"
+              className="hidden items-center gap-2 rounded-xl bg-cta-green px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-cta-greenDark sm:inline-flex"
+              data-analytics="nav_book_service">
+              <WrenchIcon /> Book Service
+            </Link>
+
+            <AccountMenu />
+
+            <Link href="/cart" className="relative flex items-center gap-2 rounded-xl px-3 py-2 text-navy-700 transition hover:bg-navy-50" aria-label={`Cart, ${itemCount} items`}>
+              <CartIcon />
+              {itemCount > 0 && (
+                <span className="absolute left-6 top-1 min-w-[19px] rounded-full bg-cta-orange px-1 text-center text-[11px] font-bold leading-[19px] text-white">
+                  {itemCount > 99 ? '99+' : itemCount}
+                </span>
+              )}
+              <span className="hidden text-left text-xs leading-tight lg:block">
+                <span className="block text-muted">My</span>
+                <span className="block font-bold">Cart</span>
+              </span>
+            </Link>
           </div>
         </div>
 
-        {/* Mobile menu */}
-        {mobileOpen && (
-          <div className="border-t border-gray-100 bg-white lg:hidden max-h-[70vh] overflow-y-auto">
-            <div className="container-pad space-y-2 py-4">
-              {categoryMega.map(cat => (
-                <div key={cat.title}>
-                  <div className="flex items-center justify-between rounded-lg px-3 py-2 font-semibold text-navy-800 hover:bg-brand-50 cursor-pointer" onClick={() => toggleMobile(cat.title)}>
-                    <Link href={cat.href} className="flex items-center gap-2 flex-1" onClick={() => setMobileOpen(false)}>
-                      <cat.icon className="h-5 w-5 text-brand-500"/>{cat.title}
-                    </Link>
-                    <ChevronDown className={cn('h-4 w-4 transition', mobileExpanded===cat.title && 'rotate-180')}/>
-                  </div>
-                  {mobileExpanded === cat.title && (
-                    <div className="pl-8 space-y-0.5 pb-2">
-                      {cat.sub.map(s => <Link key={s.name} href={s.href} className="block px-3 py-1.5 text-sm text-gray-700" onClick={() => setMobileOpen(false)}>{s.name}</Link>)}
-                    </div>
-                  )}
-                </div>
-              ))}
-              <div>
-                <div className="flex items-center justify-between rounded-lg px-3 py-2 font-semibold text-navy-800 hover:bg-brand-50 cursor-pointer" onClick={() => toggleMobile('areas')}>
-                  <span className="flex items-center gap-2"><MapPin className="h-5 w-5 text-brand-500"/>Service Areas</span>
-                  <ChevronDown className={cn('h-4 w-4 transition', mobileExpanded==='areas' && 'rotate-180')}/>
-                </div>
-                {mobileExpanded === 'areas' && (
-                  <div className="pl-8 grid grid-cols-2 gap-x-2 pb-2">
-                    {PATNA_AREAS.map(a => (
-                      <Link key={a.slug} href={`/areas/${a.slug}`} className="block px-2 py-1 text-sm text-gray-700" onClick={() => setMobileOpen(false)}>📍 {a.name}</Link>
+        {/* Search — mobile */}
+        <div className="border-t border-navy-50 px-4 py-2.5 md:hidden">
+          <SearchAutosuggest />
+        </div>
+      </div>
+
+      {/* ── Tier 3: category bar with mega-menus ── */}
+      <nav className="hidden border-b border-navy-100 bg-sand-100 lg:block" aria-label="Product categories">
+        <div className="container mx-auto flex items-center gap-1 px-4">
+          {/* Saaf-saaf "Home" — logo pe click karna sabko nahi pata hota */}
+          <Link
+            href="/"
+            aria-current={pathname === '/' ? 'page' : undefined}
+            className={`flex items-center gap-1.5 px-4 py-3 text-sm font-bold transition ${
+              pathname === '/'
+                ? 'text-aqua-600'
+                : 'text-navy-700 hover:text-aqua-600'
+            }`}
+          >
+            <HomeIcon /> Home
+          </Link>
+          <span className="h-4 w-px bg-navy-200" aria-hidden="true" />
+          <Link href="/service-patna" className="px-4 py-3 text-sm font-bold text-cta-green hover:text-cta-greenDark">
+            🔧 RO Service Patna
+          </Link>
+          {/* Service-intent hub. The service business is what pays the bills,
+              so the JOB axis gets a top-level slot, not a footer link. */}
+          <Link href="/ro-services-patna" className="px-4 py-3 text-sm font-bold text-navy-700 hover:text-aqua-600">
+            All Services
+          </Link>
+          <Link href="/amc-plans" className="px-4 py-3 text-sm font-bold text-navy-700 hover:text-aqua-600">
+            AMC Plans
+          </Link>
+          <Link href="/products" className="px-4 py-3 text-sm font-bold text-navy-700 hover:text-aqua-600">
+            Shop Products
+          </Link>
+          <Link href="/blog" className="px-4 py-3 text-sm font-bold text-navy-700 hover:text-aqua-600">
+            RO Guide
+          </Link>
+
+          {Object.keys(MEGA_MENU).map((key) => (
+            <div key={key} className="relative" onMouseEnter={() => hoverOpen(key)} onMouseLeave={hoverClose}>
+              <button
+                className={`flex items-center gap-1.5 px-4 py-3 text-sm font-bold transition ${
+                  openMenu === key ? 'text-aqua-600' : 'text-navy-700 hover:text-aqua-600'
+                }`}
+                aria-expanded={openMenu === key} aria-haspopup="true"
+              >
+                {key} <ChevronDown className={openMenu === key ? 'rotate-180' : ''} />
+              </button>
+
+              {openMenu === key && (
+                <div className="absolute left-0 top-full z-50 w-[620px] rounded-2xl border border-navy-50 bg-white p-6 shadow-card-hover">
+                  <div className="grid grid-cols-3 gap-6">
+                    {MEGA_MENU[key].map((col) => (
+                      <div key={col.heading}>
+                        <p className="mb-3 text-xs font-bold uppercase tracking-wide text-aqua-600">{col.heading}</p>
+                        <ul className="space-y-2">
+                          {col.links.map((l) => (
+                            <li key={l.href}>
+                              <Link href={l.href} className="block text-sm text-navy-600 transition hover:translate-x-0.5 hover:text-aqua-600">
+                                {l.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     ))}
                   </div>
-                )}
-              </div>
-              <Link href="/book-service" className="flex items-center gap-2 rounded-lg px-3 py-2 font-semibold text-cta-orange hover:bg-orange-50" onClick={() => setMobileOpen(false)}>
-                <Wrench className="h-5 w-5"/>Patna RO Service ₹200
-              </Link>
-              <Link href="/amc" className="flex items-center gap-2 rounded-lg px-3 py-2 font-semibold text-navy-800 hover:bg-brand-50" onClick={() => setMobileOpen(false)}>
-                <Shield className="h-5 w-5"/>AMC Plans
-              </Link>
-              <Link href="/track-order" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm" onClick={() => setMobileOpen(false)}>
-                <Package className="h-5 w-5"/>Track Order
-              </Link>
-              <div className="my-2 h-px bg-gray-100"/>
-              {session ? (
-                <>
-                  {isAdmin && <Link href="/admin/dashboard" className="block rounded-lg px-3 py-2 text-sm font-semibold text-brand-700" onClick={() => setMobileOpen(false)}>Admin Dashboard</Link>}
-                  <Link href="/orders" className="block rounded-lg px-3 py-2 text-sm" onClick={() => setMobileOpen(false)}>My Orders</Link>
-                  <button onClick={() => {signOut(); setMobileOpen(false);}} className="block w-full text-left rounded-lg px-3 py-2 text-sm text-red-600">Logout</button>
-                </>
-              ) : (
-                <>
-                  <Link href="/auth/login" className="block rounded-lg bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-700" onClick={() => setMobileOpen(false)}>🔐 Login</Link>
-                  <Link href="/auth/register" className="block rounded-lg px-3 py-2 text-sm" onClick={() => setMobileOpen(false)}>Create Account</Link>
-                </>
+                  <div className="mt-5 flex items-center justify-between rounded-xl bg-aqua-50 px-4 py-3">
+                    <p className="text-sm font-semibold text-navy-700">Need help choosing the right purifier?</p>
+                    <a href={CONTACT.primaryTel} className="rounded-lg bg-cta-green px-4 py-2 text-xs font-bold text-white hover:bg-cta-greenDark">
+                      Talk to an expert
+                    </a>
+                  </div>
+                </div>
               )}
             </div>
-          </div>
-        )}
-      </header>
-    </>
+          ))}
+
+
+          <span className="ml-auto flex items-center gap-2 py-3 text-xs font-semibold text-cta-orange">
+            <SparkIcon /> Same-day service in Patna
+          </span>
+        </div>
+      </nav>
+
+      {/* ── Mobile drawer ── */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-[60] lg:hidden" role="dialog" aria-modal="true">
+          <div className="absolute inset-0 bg-navy-900/50 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <aside
+            className="absolute left-0 top-0 flex h-[100dvh] w-[86%] max-w-sm flex-col overflow-y-auto overscroll-contain bg-white p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl"
+          >
+            <div className="mb-5 flex items-center justify-between">
+              <Link href="/" onClick={closeMobile} aria-label={`${BRAND.name} — Home`}>
+                <Image src={BRAND.logo} alt={BRAND.name} width={220} height={52} className="h-11 w-auto" />
+              </Link>
+              <button onClick={() => setMobileOpen(false)} aria-label="Close menu" className="rounded-lg p-2 hover:bg-navy-50">
+                <CloseIcon />
+              </button>
+            </div>
+
+            <Link href="/#book-service" onClick={() => setMobileOpen(false)}
+              className="mb-5 flex items-center justify-center gap-2 rounded-xl bg-cta-green py-3.5 font-bold text-white">
+              <WrenchIcon /> Book RO Service — ₹200
+            </Link>
+
+            {/* Home sabse upar — mobile pe logo chhota lagta hai aur log
+                dhoondte reh jaate hain ki wapas kaise jayein */}
+            <Link href="/" onClick={closeMobile}
+              aria-current={pathname === '/' ? 'page' : undefined}
+              className={`flex items-center justify-between border-b border-navy-50 py-3.5 font-semibold ${
+                pathname === '/' ? 'text-aqua-600' : 'text-navy-700'
+              }`}>
+              <span className="flex items-center gap-2.5"><HomeIcon /> Home</span>
+              <ChevronRight />
+            </Link>
+
+            {PRODUCT_TYPES.map((t) => (
+              <Link key={t.key} href={t.href} onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-between border-b border-navy-50 py-3.5 font-semibold text-navy-700">
+                {t.label} <ChevronRight />
+              </Link>
+            ))}
+            <Link href="/service-patna" onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between border-b border-navy-50 py-3.5 font-semibold text-navy-700">
+              RO Service in Patna <ChevronRight />
+            </Link>
+            {/* ~80% of this site's traffic is mobile, so the service pages
+                have to be reachable from the drawer, not just the desktop bar. */}
+            <Link href="/ro-services-patna" onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between border-b border-navy-50 py-3.5 font-semibold text-navy-700">
+              All RO Services &amp; Rates <ChevronRight />
+            </Link>
+            {SERVICE_INTENTS.map((s) => (
+              <Link key={s.slug} href={s.path} onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-between border-b border-navy-50 py-3 pl-4 text-sm text-navy-600">
+                {s.footerLabel} <ChevronRight />
+              </Link>
+            ))}
+            <Link href="/amc-plans" onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between border-b border-navy-50 py-3.5 font-semibold text-navy-700">
+              AMC Plans <ChevronRight />
+            </Link>
+            <Link href="/blog" onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between border-b border-navy-50 py-3.5 font-semibold text-navy-700">
+              RO Guide &amp; Tips <ChevronRight />
+            </Link>
+
+            <div className="mt-6 space-y-2 rounded-xl bg-navy-50 p-4">
+              <p className="text-xs font-bold uppercase text-muted">Talk to us</p>
+              <a href={CONTACT.primaryTel} className="block font-bold text-navy-700">📞 {CONTACT.primaryPhone}</a>
+              <a href={CONTACT.secondaryTel} className="block font-bold text-navy-700">📞 {CONTACT.secondaryPhone}</a>
+              <a href={CONTACT.whatsappLink()} className="block font-bold text-emerald-700">💬 WhatsApp Chat</a>
+            </div>
+          </aside>
+        </div>
+      )}
+    </header>
   );
 }
+
+/* ── Icons ──────────────────────────────────────────────────────────────── */
+const HomeIcon = () => <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75" /></svg>;
+const Burger = () => <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" /></svg>;
+const CloseIcon = () => <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" d="M6 18L18 6M6 6l12 12" /></svg>;
+const CartIcon = () => <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.4c.5 0 .94.35 1.05.84L5.4 6m0 0l1.7 7.9c.11.5.55.85 1.06.85h8.3c.5 0 .93-.34 1.05-.83l1.6-6.6a.75.75 0 00-.73-.93H5.4zM8.25 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm10.5 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" /></svg>;
+const WrenchIcon = () => <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M14.5 2a4.5 4.5 0 00-4.24 6L3.3 14.96a1.5 1.5 0 002.12 2.12l6.96-6.96A4.5 4.5 0 1014.5 2z" clipRule="evenodd" /></svg>;
+const SparkIcon = () => <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.2 5.3L18 8l-5.8 1.7L10 15l-2.2-5.3L2 8l5.8-1.7L10 1z" /></svg>;
+const ChevronDown = ({ className = '' }) => <svg className={`h-4 w-4 transition-transform ${className}`} fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" d="M19 9l-7 7-7-7" /></svg>;
+const ChevronRight = () => <svg className="h-4 w-4 text-muted" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" d="M9 5l7 7-7 7" /></svg>;

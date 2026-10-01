@@ -1,94 +1,160 @@
 'use client';
-import Link from 'next/link';
+
 import Image from 'next/image';
-import { Star, ShoppingCart, Check } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { formatPrice, calculateDiscount } from '@/lib/utils';
-import { useCart } from '@/lib/store';
-import toast from 'react-hot-toast';
-import type { ProductCard as P } from '@/types';
+import Link from 'next/link';
+import { useCartStore } from '@/store/cart';
+import { formatINR, discountPercent } from '@/lib/utils/format';
+import { toast } from 'sonner';
+import WishlistButton from './WishlistButton';
 
-export default function ProductCard({ product }: { product: P }) {
-  const discount = calculateDiscount(product.compareAtPrice ?? 0, product.price);
-  const add = useCart(s => s.add);
+export interface ProductCardData {
+  id: string;
+  slug: string;
+  name: string;
+  sellingPrice: unknown;
+  mrp: unknown;
+  stockQuantity: number;
+  ratingAvg: unknown;
+  ratingCount: number;
+  purificationTech: string[];
+  isBestseller?: boolean;
+  brand?: { name: string; slug: string } | null;
+  images: { url: string; thumbUrl: string | null; altText: string }[];
+}
 
-  const handleAdd = (e: React.MouseEvent) => {
+export default function ProductCard({
+  product,
+  compact = false,
+}: {
+  product: ProductCardData;
+  compact?: boolean;
+}) {
+  const addItem = useCartStore((s) => s.addItem);
+
+  const price = Number(product.sellingPrice);
+  const mrp = Number(product.mrp);
+  const rating = Number(product.ratingAvg);
+  const off = discountPercent(mrp, price);
+  const inStock = product.stockQuantity > 0;
+  const lowStock = inStock && product.stockQuantity <= 5;
+  const img = product.images[0];
+
+  function handleAdd(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    add({
+    if (!inStock) return;
+    addItem({
       productId: product.id,
       name: product.name,
       slug: product.slug,
-      image: product.primaryImage,
-      price: product.price,
-      compareAtPrice: product.compareAtPrice,
-      brand: product.brand?.name || null,
+      image: img?.url ?? '',
+      price,
+      mrp,
+      maxQty: product.stockQuantity,
     });
-    toast.success(`${product.name.slice(0, 30)}... cart mein add ho gaya!`, { icon: '🛒' });
-  };
+    toast.success('Added to cart', { description: product.name });
+  }
 
   return (
-    <Card className="group relative flex flex-col overflow-hidden p-0 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-      {discount > 0 && (
-        <Badge variant="orange" className="absolute left-3 top-3 z-10">{discount}% OFF</Badge>
-      )}
-      {product.isCommercial && (
-        <Badge variant="navy" className="absolute right-3 top-3 z-10">Commercial</Badge>
-      )}
+    <article className="group relative flex flex-col overflow-hidden rounded-xl border border-navy-100 bg-white transition duration-200 sm:rounded-2xl lg:hover:-translate-y-1 lg:hover:border-aqua-100 lg:hover:shadow-card-hover">
+      <Link href={`/products/${product.slug}`} className="flex flex-1 flex-col">
+        {/* Image */}
+        <div className="relative aspect-square bg-gradient-to-br from-slate-50 to-aqua-50 p-2 sm:p-4">
+          {img ? (
+            <Image
+              src={img.thumbUrl ?? img.url}
+              alt={img.altText}
+              fill
+              sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 280px"
+              className="object-contain p-2 mix-blend-multiply"
+            />
+          ) : (
+            <div className="grid h-full place-items-center text-4xl">💧</div>
+          )}
 
-      <Link href={`/product/${product.slug}`} className="relative block aspect-square overflow-hidden bg-gradient-to-b from-brand-50/50 to-white">
-        {product.primaryImage ? (
-          <Image
-            src={product.primaryImage}
-            alt={product.name}
-            fill
-            sizes="(max-width:768px) 50vw, (max-width:1200px) 33vw, 25vw"
-            className="object-contain p-4 transition-transform duration-500 group-hover:scale-110"
-            unoptimized={product.primaryImage.startsWith('data:')}
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gray-100 text-gray-300">No Image</div>
-        )}
-        {/* Quick Buy overlay */}
-        <div className="absolute inset-x-3 bottom-3 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-          <Button size="sm" className="w-full bg-white !text-navy-900 shadow-lg hover:!bg-brand-500 hover:!text-white" onClick={handleAdd}>
-            <ShoppingCart className="h-4 w-4"/> Quick Add
-          </Button>
+          {off > 0 && (
+            <span className="absolute left-1.5 top-1.5 rounded bg-cta-green px-1.5 py-0.5 text-[10px] font-bold text-white sm:left-3 sm:top-3 sm:rounded-md sm:px-2 sm:py-1 sm:text-xs">
+              {off}% OFF
+            </span>
+          )}
+          {product.isBestseller && (
+            <span className="absolute right-1.5 top-1.5 rounded bg-cta-orange px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white sm:right-3 sm:top-3 sm:rounded-md sm:px-2 sm:py-1 sm:text-[10px]">
+              Bestseller
+            </span>
+          )}
+
+          {/* Wishlist heart — stops the parent Link from firing on tap */}
+          <span
+            className={`absolute right-1.5 sm:right-3 ${
+              product.isBestseller ? 'top-8 sm:top-12' : 'top-1.5 sm:top-3'
+            }`}
+          >
+            <WishlistButton
+              productId={product.id}
+              productSlug={product.slug}
+              className="grid h-8 w-8 place-items-center rounded-full bg-white/95 text-navy-500 shadow-card ring-1 ring-navy-100 transition hover:text-red-500 sm:h-9 sm:w-9"
+            />
+          </span>
+        </div>
+
+        {/* Body */}
+        <div className="flex flex-1 flex-col p-2.5 sm:p-4">
+          {product.brand && (
+            <span className="text-[10px] font-bold uppercase tracking-widest text-aqua-600">
+              {product.brand.name}
+            </span>
+          )}
+
+          <h3 className="mt-1 line-clamp-2 min-h-[36px] text-[13px] font-semibold leading-snug text-navy-700 sm:min-h-[40px] sm:text-sm">
+            {product.name}
+          </h3>
+
+          {product.ratingCount > 0 && (
+            <div className="mt-2 flex items-center gap-2">
+              <span className="flex items-center gap-1 rounded bg-cta-green px-1.5 py-0.5 text-[11px] font-bold text-white">
+                {rating.toFixed(1)} ★
+              </span>
+              <span className="text-[11px] text-muted">({product.ratingCount.toLocaleString('en-IN')})</span>
+            </div>
+          )}
+
+          {/* Mobile par 4 chips do line le lete the aur card lamba-cluttered
+              ho jaata tha — isliye mobile par 2, bade screen par 4. */}
+          {!compact && product.purificationTech.length > 0 && (
+            <div className="mt-2 flex gap-1 overflow-hidden">
+              {product.purificationTech.slice(0, 4).map((t, i) => (
+                <span
+                  key={t}
+                  className={`shrink-0 rounded bg-aqua-50 px-1.5 py-0.5 text-[9px] font-bold text-aqua-700 sm:text-[10px] ${
+                    i >= 2 ? 'hidden sm:inline-block' : ''
+                  }`}
+                >
+                  {t.replace(/_/g, ' ')}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="font-display text-base font-extrabold text-navy-700 sm:text-xl">{formatINR(price)}</span>
+            {off > 0 && <span className="text-xs text-muted line-through">{formatINR(mrp)}</span>}
+          </div>
+
+          <p className={`mt-1 text-[11px] font-semibold ${lowStock ? 'text-cta-orange' : inStock ? 'text-cta-green' : 'text-red-600'}`}>
+            {inStock ? (lowStock ? `Only ${product.stockQuantity} left!` : 'In Stock') : 'Out of Stock'}
+          </p>
         </div>
       </Link>
 
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        {product.brand && (
-          <span className="text-xs font-medium uppercase tracking-wider text-brand-600">{product.brand.name}</span>
-        )}
-        <Link href={`/product/${product.slug}`}>
-          <h3 className="line-clamp-2 min-h-[2.75rem] text-sm font-semibold text-navy-900 hover:text-brand-600">{product.name}</h3>
-        </Link>
-
-        <div className="flex items-center gap-1">
-          <div className="flex items-center gap-0.5 rounded bg-green-600 px-1.5 py-0.5 text-xs font-bold text-white">
-            {Number(product.avgRating).toFixed(1)} <Star className="h-3 w-3 fill-white"/>
-          </div>
-          <span className="text-xs text-gray-500">({product.reviewCount})</span>
-        </div>
-
-        <div className="mt-auto flex items-end justify-between gap-2 pt-2">
-          <div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-lg font-bold text-navy-900">{formatPrice(product.price)}</span>
-              {product.compareAtPrice && Number(product.compareAtPrice) > product.price && (
-                <span className="text-xs text-gray-400 line-through">{formatPrice(product.compareAtPrice)}</span>
-              )}
-            </div>
-            {discount > 0 && <p className="text-xs text-green-600 font-semibold">You save {discount}%</p>}
-          </div>
-          <Button size="icon" variant="primary" className="h-9 w-9 rounded-full" aria-label="Add to cart" onClick={handleAdd}>
-            <ShoppingCart className="h-4 w-4"/>
-          </Button>
-        </div>
+      <div className="p-2.5 pt-0 sm:p-4 sm:pt-0">
+        <button
+          onClick={handleAdd}
+          disabled={!inStock}
+          className="w-full rounded-lg bg-navy-700 py-2 text-[13px] font-bold text-white transition active:scale-95 hover:bg-aqua-600 disabled:cursor-not-allowed disabled:bg-slate-300 sm:py-2.5 sm:text-sm"
+        >
+          {inStock ? 'Add to Cart' : 'Notify Me'}
+        </button>
       </div>
-    </Card>
+    </article>
   );
 }

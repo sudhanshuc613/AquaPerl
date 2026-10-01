@@ -1,0 +1,197 @@
+'use client';
+
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useCallback, useState } from 'react';
+import { FILTER_FACETS } from '@/lib/constants';
+import { useBodyScrollLock, useEscapeKey } from '@/lib/hooks/useBodyScrollLock';
+
+interface Props {
+  brands: { name: string; slug: string }[];
+  totalCount: number;
+  /**
+   * Desktop column ke andar render karte waqt `true` bhejo.
+   * Tab mobile-only "Filters" button chhupa rehta hai — warna wahi button
+   * do baar aa jaata (ek control bar mein, ek yahan) aur layout tootta.
+   */
+  desktopOnly?: boolean;
+}
+
+const FilterIcon = () => (
+  <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 4.5h18M6.75 12h10.5M11.25 19.5h1.5" />
+  </svg>
+);
+
+export default function FilterSidebar({ brands, totalCount, desktopOnly = false }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const [open, setOpen] = useState(false);
+  const closeDrawer = useCallback(() => setOpen(false), []);
+
+  /* Drawer khule to page scroll band — warna peeche ka content hilta hai */
+  useBodyScrollLock(open);
+  useEscapeKey(open, closeDrawer);
+
+  function setParam(key: string, value: string | null) {
+    const sp = new URLSearchParams(params.toString());
+    if (value === null || value === '') sp.delete(key);
+    else sp.set(key, value);
+    sp.delete('page');
+    router.push(`${pathname}?${sp.toString()}`);
+  }
+
+  function toggleMulti(key: string, value: string) {
+    const current = params.get(key)?.split(',').filter(Boolean) ?? [];
+    const next = current.includes(value)
+      ? current.filter((v) => v !== value)
+      : [...current, value];
+    setParam(key, next.join(','));
+  }
+
+  const activeTech = params.get('tech')?.split(',').filter(Boolean) ?? [];
+  const activeBrands = params.get('brand')?.split(',').filter(Boolean) ?? [];
+  const activePrice = params.get('price') ?? '';
+  const hasFilters = activeTech.length || activeBrands.length || activePrice || params.get('inStock');
+  /** Badge mein kitne filter lage hain — mobile pe saaf pata chalta hai. */
+  const activeCount =
+    activeTech.length + activeBrands.length + (activePrice ? 1 : 0) + (params.get('inStock') ? 1 : 0);
+
+  const body = (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <p className="font-display font-bold text-navy-700">Filters</p>
+        {hasFilters ? (
+          <button
+            onClick={() => router.push(pathname)}
+            className="text-xs font-bold text-cta-orange hover:underline"
+          >
+            Clear all
+          </button>
+        ) : null}
+      </div>
+
+      {/* Price */}
+      <fieldset>
+        <legend className="mb-2.5 text-sm font-bold text-navy-700">Price</legend>
+        <div className="space-y-2">
+          {FILTER_FACETS.priceRanges.map((r) => (
+            <label key={r.value} className="flex cursor-pointer items-center gap-2.5 text-sm text-navy-600">
+              <input
+                type="radio"
+                name="price"
+                checked={activePrice === r.value}
+                onChange={() => {
+                  setParam('price', r.value);
+                  setParam('minPrice', String(r.min));
+                  setParam('maxPrice', r.max === null ? '' : String(r.max));
+                }}
+                className="h-4 w-4 border-navy-200 text-aqua-500 focus:ring-aqua-400"
+              />
+              {r.label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      {/* Purification technology */}
+      <fieldset className="border-t border-navy-50 pt-5">
+        <legend className="mb-2.5 text-sm font-bold text-navy-700">Purification</legend>
+        <div className="space-y-2">
+          {FILTER_FACETS.purificationTech.map((t) => (
+            <label key={t.value} className="flex cursor-pointer items-center gap-2.5 text-sm text-navy-600">
+              <input
+                type="checkbox"
+                checked={activeTech.includes(t.value)}
+                onChange={() => toggleMulti('tech', t.value)}
+                className="h-4 w-4 rounded border-navy-200 text-aqua-500 focus:ring-aqua-400"
+              />
+              {t.label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      {/* Brands */}
+      {brands.length > 0 && (
+        <fieldset className="border-t border-navy-50 pt-5">
+          <legend className="mb-2.5 text-sm font-bold text-navy-700">Brand</legend>
+          <div className="space-y-2">
+            {brands.map((b) => (
+              <label key={b.slug} className="flex cursor-pointer items-center gap-2.5 text-sm text-navy-600">
+                <input
+                  type="checkbox"
+                  checked={activeBrands.includes(b.slug)}
+                  onChange={() => toggleMulti('brand', b.slug)}
+                  className="h-4 w-4 rounded border-navy-200 text-aqua-500 focus:ring-aqua-400"
+                />
+                {b.name}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      )}
+
+      {/* Availability */}
+      <fieldset className="border-t border-navy-50 pt-5">
+        <label className="flex cursor-pointer items-center gap-2.5 text-sm font-medium text-navy-600">
+          <input
+            type="checkbox"
+            checked={params.get('inStock') === 'true'}
+            onChange={(e) => setParam('inStock', e.target.checked ? 'true' : null)}
+            className="h-4 w-4 rounded border-navy-200 text-aqua-500 focus:ring-aqua-400"
+          />
+          In stock only
+        </label>
+      </fieldset>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Mobile trigger */}
+      {!desktopOnly && (
+        <button
+          onClick={() => setOpen(true)}
+          className="flex shrink-0 items-center gap-2 rounded-xl border border-navy-200 bg-white px-4 py-2.5 text-sm font-bold text-navy-700 shadow-sm active:scale-95 lg:hidden"
+        >
+          <FilterIcon />
+          Filters
+          {hasFilters ? (
+            <span className="grid h-5 w-5 place-items-center rounded-full bg-cta-orange text-[11px] font-bold text-white">
+              {activeCount}
+            </span>
+          ) : null}
+        </button>
+      )}
+
+      {/* Desktop */}
+      <aside className="hidden w-60 shrink-0 lg:block">
+        <div className="sticky top-32 rounded-2xl border border-navy-100 p-5">{body}</div>
+      </aside>
+
+      {/* Mobile drawer */}
+      {open && (
+        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
+          <div className="absolute inset-0 bg-navy-900/50" onClick={() => setOpen(false)} />
+          <div className="absolute inset-y-0 right-0 flex h-[100dvh] w-[85%] max-w-xs flex-col overflow-y-auto overscroll-contain bg-white p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl">
+            <button
+              onClick={() => setOpen(false)}
+              className="mb-4 ml-auto block rounded-lg p-2 hover:bg-navy-50"
+              aria-label="Close filters"
+            >
+              ✕
+            </button>
+            {body}
+            <button
+              onClick={() => setOpen(false)}
+              className="mt-6 w-full rounded-xl bg-navy-700 py-3 font-bold text-white"
+            >
+              Show {totalCount} products
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

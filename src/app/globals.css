@@ -4,76 +4,334 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 215 35% 15%;
-    --card: 0 0% 100%;
-    --card-foreground: 215 35% 15%;
-    --primary: 188 94% 42%;        /* brand-500 cyan */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 224 64% 29%;      /* navy-700 */
-    --secondary-foreground: 0 0% 100%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 24 100% 55%;         /* cta orange */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 188 94% 42%;
-    --radius: 0.75rem;
+    --aqua: 21 144 165;
+    --navy: 10 31 60;
+    --gold: 192 154 62;
+
+    /* Fluid type scale — headings track viewport instead of jumping at
+       breakpoints. This is what stops a "designed for desktop" hero from
+       looking cramped on a 360px Patna budget Android. */
+    --step-hero: clamp(2rem, 1.35rem + 3.1vw, 3.6rem);
+    --step-h2: clamp(1.5rem, 1.2rem + 1.35vw, 2.25rem);
+    --step-h3: clamp(1.15rem, 1.05rem + 0.5vw, 1.4rem);
   }
 
-  * { @apply border-border; }
-  html { scroll-behavior: smooth; }
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-feature-settings: "cv11", "ss01";
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
-  h1,h2,h3,h4,h5,h6 { @apply font-bold tracking-tight text-navy-900; }
-  h1 { @apply text-3xl md:text-5xl; }
-  h2 { @apply text-2xl md:text-4xl; }
-  h3 { @apply text-xl md:text-2xl; }
-  p  { @apply leading-relaxed; }
+
+  body {
+    @apply bg-sand-100 text-ink antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'cv11' 1;
+  }
+
+  /* Display type: tighter tracking at large sizes is the single clearest
+     "typeset by someone" signal. Default tracking looks loose and amateur. */
+  h1, h2, h3 {
+    @apply font-display;
+    letter-spacing: -0.022em;
+  }
+
+  /* Tabular figures so prices never shift width while updating */
+  .tnum, table td, table th {
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-aqua-500 ring-offset-2 ring-offset-sand-100;
+  }
+
+  ::selection {
+    @apply bg-aqua-100 text-navy-700;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+/* ── 🔴 FORM CONTROL COLOUR — reported bug, 9 Sep 2026 ────────────────────
+   The area dropdown on the booking form rendered as a white box with
+   invisible option text; the names only appeared on hover.
+
+   CAUSE: no form control on the site set an explicit `color`. Text colour
+   inherits, and QuickBookForm is rendered inside dark hero panels
+   (bg-navy-gradient) on /ro-service-patna/[area], /ro-services-patna and all
+   six intent pages. The <select> carried bg-white but inherited the hero's
+   white text — white on white. On hover the browser paints its own highlight
+   background, which is exactly why the text "appeared" only then.
+
+   Native <option> elements are rendered by the OS, not the page, so the rule
+   has to be set on the option itself; styling the parent select is not enough.
+
+   `color-scheme: light` stops Chrome and Android WebView from repainting the
+   popup list dark when the phone is in dark mode. That produces the identical
+   invisible-text symptom for a different reason, and India runs a high share
+   of dark-mode Android.
+
+   🔴 WHY THIS SITS OUTSIDE @layer base:
+   Tailwind tree-shakes anything inside a @layer that it cannot match to
+   content it scanned. Bare element selectors like `select option` never match
+   a class in the JSX, so the rule was silently dropped from the compiled
+   bundle — verified by grepping .next/static/css after a build. Outside the
+   layer it is emitted verbatim and always ships. Do not move this back in. */
+input,
+select,
+textarea {
+  color: theme('colors.navy.700');
+  color-scheme: light;
+}
+
+select option,
+select optgroup {
+  background-color: #fff;
+  color: theme('colors.navy.700');
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: theme('colors.slate.400');
+}
+
+/* Disabled controls must stay readable, not fade into the field. */
+input:disabled,
+select:disabled,
+textarea:disabled {
+  color: theme('colors.slate.500');
 }
 
 @layer components {
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-cta-orange px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-orange-600 hover:shadow-md active:scale-[0.98] disabled:opacity-50;
+  .container {
+    @apply mx-auto w-full max-w-[1280px] px-4 sm:px-5;
   }
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-600 active:scale-[0.98];
+
+  /* ── Buttons ──────────────────────────────────────────────────────────
+     Every button gets: a subtle top inset highlight (reads as a physical
+     surface), a coloured shadow matching its own hue, and a 2px press
+     travel. These three details are what make a button feel "real". */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-bold
+           transition-all duration-200 active:translate-y-px
+           disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none;
+  }
+  .btn-primary {
+    @apply btn bg-aqua-600 px-6 py-3 text-white shadow-card
+           hover:bg-aqua-700 hover:shadow-card-hover;
+  }
+  .btn-cta {
+    @apply btn bg-cta-orange px-6 py-3 text-white shadow-cta
+           hover:bg-cta-orangeDark hover:shadow-lift;
+  }
+  .btn-call {
+    @apply btn bg-cta-green px-6 py-3 text-white shadow-call
+           hover:bg-cta-greenDark hover:shadow-lift;
   }
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border-2 border-brand-500 bg-white px-5 py-2.5 text-sm font-semibold text-brand-600 transition-all hover:bg-brand-50;
+    @apply btn border border-navy-200 bg-white px-6 py-3 text-navy-700
+           hover:border-navy-300 hover:bg-navy-50;
   }
-  .btn-navy {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-navy-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-navy-900 active:scale-[0.98];
+  .btn-gold {
+    @apply btn bg-gold-sheen px-6 py-3 text-navy-900 shadow-card hover:brightness-105;
   }
-  .btn-whatsapp {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#1fb855] active:scale-[0.98];
+
+  /* ── Surfaces ─────────────────────────────────────────────────────────
+     Hairline ring + tinted shadow instead of a hard 1px grey border.
+     Borders make a page look like a spreadsheet; rings make it look layered. */
+  .card {
+    @apply rounded-2xl bg-white shadow-card ring-1 ring-navy-100/70;
   }
-  .card-surface {
-    @apply rounded-xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-md;
+  .card-hover {
+    @apply card transition-all duration-300
+           hover:-translate-y-1 hover:shadow-card-hover hover:ring-navy-200;
   }
-  .container-pad { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
-  .section { @apply py-12 md:py-20; }
+  .panel {
+    @apply rounded-2xl bg-sand-50 p-5 ring-1 ring-navy-100/60;
+  }
+
   .input {
-    @apply w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none transition-all focus:border-brand-500 focus:ring-2 focus:ring-brand-100;
+    @apply w-full rounded-xl border-navy-200 bg-white px-4 py-3 text-[15px]
+           shadow-[inset_0_1px_2px_rgba(10,31,60,.04)]
+           placeholder:text-navy-300 focus:border-aqua-500 focus:outline-none
+           focus:ring-2 focus:ring-aqua-200;
   }
-  .badge {
-    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold;
+
+  /* Small-caps eyebrow above a heading — editorial cue used by premium brands */
+  .eyebrow {
+    @apply text-[11px] font-bold uppercase tracking-[0.14em] text-aqua-600;
   }
-  .link-underline {
-    @apply relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-500 after:transition-all hover:text-brand-600 hover:after:w-full;
+
+  /* Credibility chip — this is the ONLY place gold appears in body content */
+  .seal {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-gold-50 px-3 py-1
+           text-xs font-bold text-gold-700 ring-1 ring-gold-200;
   }
-  .gradient-text {
-    @apply bg-gradient-to-r from-brand-600 via-cyan-500 to-navy-700 bg-clip-text text-transparent;
+
+  /* Glass strip for dark hero sections */
+  .glass {
+    @apply rounded-xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm;
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden bg-navy-50;
+  }
+  .skeleton::after {
+    @apply absolute inset-0 -translate-x-full animate-shimmer
+           bg-gradient-to-r from-transparent via-white/70 to-transparent;
+    content: '';
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Hairline divider that fades at both ends — softer than a full-width rule */
+  .rule-fade {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-navy-200 to-transparent;
   }
 }
 
 @layer utilities {
-  .text-balance { text-wrap: balance; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  .text-hero { font-size: var(--step-hero); line-height: 1.04; }
+  .text-h2 { font-size: var(--step-h2); line-height: 1.15; }
+  .text-h3 { font-size: var(--step-h3); line-height: 1.25; }
+
+  /* Fine grain over dark gradients — kills the banding that makes big
+     gradient blocks look cheap on 6-bit phone panels. */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   STICKY ACTION BAR SPACING
+   The mobile call/WhatsApp bar is position:fixed, so without this the last
+   block of every page sits underneath it and becomes untappable.
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 1023px) {
+  body.has-sticky-bar {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOTION SYSTEM
+   Every duration here is ≤ 400ms on purpose. Slow animation reads as cheap,
+   not premium — the effect should register without ever making the user wait.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes aqp-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes aqp-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes aqp-scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes aqp-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+@keyframes aqp-pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
+  70%  { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+@keyframes aqp-shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-3px); }
+  40%, 60% { transform: translateX(3px); }
+}
+
+@layer utilities {
+  /* Scroll-reveal. Applied by useRevealOnScroll — the element starts hidden
+     and only animates once, when it actually enters the viewport. */
+  .reveal {
+    opacity: 0;
+    will-change: opacity, transform;
+  }
+  .reveal-in {
+    animation: aqp-fade-up 380ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .anim-fade-in  { animation: aqp-fade-in 260ms ease-out both; }
+  .anim-scale-in { animation: aqp-scale-in 220ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .anim-shake    { animation: aqp-shake 400ms ease-in-out; }
+
+  /* WhatsApp button breathing ring — draws the eye without moving layout. */
+  .pulse-ring { animation: aqp-pulse-ring 2.4s ease-out infinite; }
+
+  /* Skeleton shimmer. Perceived load time drops noticeably versus a blank
+     box, because the user can see the shape of what is arriving. */
+  .skeleton {
+    background: linear-gradient(90deg, #EFEDE8 25%, #F7F5F1 50%, #EFEDE8 75%);
+    background-size: 800px 100%;
+    animation: aqp-shimmer 1.4s linear infinite;
+  }
+
+  /* Frosted glass — used by the navbar once the page scrolls. */
+  .glass {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+  }
+  .glass-dark {
+    background: rgba(10, 31, 60, 0.72);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+  }
+
+  /* Card lift. transform+shadow only — never animate width/height/top, those
+     force layout on every frame and stutter on mid-range Android. */
+  .lift {
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px -12px rgba(10, 31, 60, 0.22);
+  }
+
+  /* Focus ring for keyboard users — visible, on-brand, never on mouse click. */
+  .focus-ring:focus-visible {
+    outline: 2px solid #1590A5;
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Reveal elements must not stay invisible when animation is disabled. */
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
+
+@media print {
+  .no-print { display: none !important; }
 }
