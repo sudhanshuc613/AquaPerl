@@ -46,8 +46,7 @@ export const PHONES = {
   whatsapp: '9241536586',
 };
 
-// Patna areas (30+ SEO-focused)
-// Competitor analysis ke baad jo areas log actually search karte hai
+// Patna areas (40+ SEO-focused - competitor analysis ke baad jo areas log actually search karte hai)
 export const PATNA_AREAS = [
   { slug: 'boring-road', name: 'Boring Road', pincode: '800001', landmarks: 'Nageshwar Colony, Boring Canal Road, Sri Krishna Puri' },
   { slug: 'kankarbagh', name: 'Kankarbagh', pincode: '800020', landmarks: 'Rajiv Nagar, Punaichak, Bhootnath Road' },
@@ -65,7 +64,7 @@ export const PATNA_AREAS = [
   { slug: 'lohia-nagar', name: 'Lohia Nagar', pincode: '800020', landmarks: 'Kankarbagh, Mithapur Bypass' },
   { slug: 'khemnichak', name: 'Khemnichak', pincode: '800027', landmarks: 'New Jaganpura Road, Ram Krishna Nagar' },
   { slug: 'khagaul', name: 'Khagaul', pincode: '801105', landmarks: 'Danapur, Bihta Road' },
-  { slug: 'saguna-more', name: 'Saguna More', pincode: '801503', landmarks: 'Bailey Road, Danapur' },
+  { slug: 'saguna-more', name: 'Saguna More', pincode: '801503', landmarks: 'Bailey Road, Danapur, RPS More' },
   { slug: 'beur', name: 'Beur', pincode: '800002', landmarks: 'Anisabad, Phulwari Sharif' },
   { slug: 'bihta', name: 'Bihta', pincode: '801103', landmarks: 'IIT Patna, NH-98' },
   { slug: 'gardanibagh', name: 'Gardanibagh', pincode: '800002', landmarks: 'Anisabad, Patna Airport' },
@@ -73,7 +72,6 @@ export const PATNA_AREAS = [
   { slug: 'sri-krishna-puri', name: 'Sri Krishna Puri', pincode: '800001', landmarks: 'Boring Road, Nageshwar Colony' },
   { slug: 'bakerganj', name: 'Bakerganj', pincode: '800004', landmarks: 'Gandhi Maidan, Patna Sahib' },
   { slug: 'machuatoli', name: 'Machuatoli', pincode: '800004', landmarks: 'Patna City, Ashok Rajpath' },
-  { slug: 'srikrishnapuri', name: 'Srikrishnapuri', pincode: '800013', landmarks: 'Patliputra, North Patna' },
   { slug: 'kurji', name: 'Kurji', pincode: '800010', landmarks: 'Patna Sahib Road, Kurji Holy Family Hospital' },
   { slug: 'dikshanti-nagar', name: 'Dikshanti Nagar', pincode: '800010', landmarks: 'Patna City' },
   { slug: 'chitkohra', name: 'Chitkohra', pincode: '800008', landmarks: 'Patna Sahib' },
@@ -81,6 +79,17 @@ export const PATNA_AREAS = [
   { slug: 'rajiv-nagar', name: 'Rajiv Nagar', pincode: '800024', landmarks: 'Kankarbagh, Punaichak' },
   { slug: 'ashok-nagar', name: 'Ashok Nagar', pincode: '800020', landmarks: 'Kankarbagh' },
   { slug: 'jp-nagar', name: 'JP Nagar', pincode: '800013', landmarks: 'Patliputra' },
+  { slug: 'digha', name: 'Digha', pincode: '800011', landmarks: 'Digha Ghat, Patliputra, Danapur Road' },
+  { slug: 'kadamkuan', name: 'Kadamkuan', pincode: '800003', landmarks: 'Rajendra Nagar, Nala Road, Patna Junction' },
+  { slug: 'kumhrar', name: 'Kumhrar', pincode: '800026', landmarks: 'Kankarbagh, Patna City' },
+  { slug: 'raja-bazar', name: 'Raja Bazar', pincode: '800014', landmarks: 'Patna Junction, Boring Road, Nala Road' },
+  { slug: 'khajpura', name: 'Khajpura', pincode: '800014', landmarks: 'Boring Road, Patliputra' },
+  { slug: 'boring-canal-road', name: 'Boring Canal Road', pincode: '800001', landmarks: 'Boring Road, Nageshwar Colony' },
+  { slug: 'rukanpura', name: 'Rukanpura', pincode: '800014', landmarks: 'Bailey Road, Patliputra' },
+  { slug: 'patel-nagar', name: 'Patel Nagar', pincode: '800023', landmarks: 'Bailey Road, Patliputra, RPS More' },
+  { slug: 'nala-road', name: 'Nala Road', pincode: '800003', landmarks: 'Kadamkuan, Raja Bazar, Patna Junction' },
+  { slug: 'ag-colony', name: 'AG Colony', pincode: '800023', landmarks: 'Patliputra, Patel Nagar' },
+  { slug: 'mahendru', name: 'Mahendru', pincode: '800006', landmarks: 'Patna Sahib, Ashok Rajpath' },
 ];
 
 // All RO brands serviced with logos
@@ -176,7 +185,7 @@ export const FAQ = [
   { q: 'Naya RO kharidna bhi chahte hain?', a: 'Bilkul! Hum naye RO purifiers, commercial plants, aur genuine spare parts bhi bechte hain. Website se order karein ya seedha call karo — free delivery pan-India, Patna mein free installation.' },
 ];
 
-// SEO keywords jo log Google pe search karte hai
+// SEO keywords jo log Google pe search karte hai (competitor analysis ke baad)
 export const SEO_KEYWORDS = [
   'ro service in patna',
   'ro repair patna',
@@ -201,7 +210,23 @@ export const SEO_KEYWORDS = [
   'ro shop patna',
   'commercial ro plant patna',
   'ro spare parts patna',
-  'ro purifier price patna'
+  'ro purifier price patna',
+  'ro service boring road',
+  'ro service kankarbagh',
+  'ro repair danapur patna',
+  'ro repair near me patna',
+  'kent ro repair patna',
+  'ro water problem patna',
+  'ro leakage repair patna',
+  'ro tds problem patna',
+  'water purifier mechanic near me',
+  'ro installation near me',
+  'domestic ro service patna',
+  '24 hour ro service patna',
+  'same day ro service patna',
+  'ro repair patna contact number',
+  'ro service patna number',
+  'eureka forbes service patna',
 ];
 
 export function waLink(phone: string, msg?: string) {

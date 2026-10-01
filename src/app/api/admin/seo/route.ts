@@ -1,93 +1,46 @@
-/**
- * PUT /api/admin/seo — upsert SEO metadata for any entity or static page.
- *
- * The storefront reads these rows in generateMetadata(), so a save here
- * changes the live <title> and <meta description> on the next ISR revalidation.
- */
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { revalidatePath } from 'next/cache';
-import { z } from 'zod';
-import { prisma } from '@/lib/db/prisma';
+import { prisma } from '@/lib/prisma';
 import { authOptions } from '@/lib/auth';
-import { logAudit } from '@/server/services/audit.service';
 
-const schema = z.object({
-  entityType: z.enum(['PRODUCT', 'CATEGORY', 'STATIC_PAGE', 'BLOG_POST', 'SERVICE_AREA', 'BRAND']),
-  entityId: z.string().uuid().nullable().optional(),
-  path: z.string().min(1).max(300),
-  metaTitle: z.string().max(200).optional().or(z.literal('')),
-  metaDescription: z.string().max(500).optional().or(z.literal('')),
-  metaKeywords: z.string().max(1000).optional().or(z.literal('')),
-  ogTitle: z.string().max(200).optional().or(z.literal('')),
-  ogDescription: z.string().max(500).optional().or(z.literal('')),
-  ogImageUrl: z.string().max(500).optional().or(z.literal('')),
-  robotsIndex: z.boolean().default(true),
-  robotsFollow: z.boolean().default(true),
-});
-
-export async function PUT(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user || !['ADMIN', 'SUPER_ADMIN'].includes(session.user.role)) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-  }
-
-  const parsed = schema.safeParse(await req.json());
-  if (!parsed.success) {
-    return NextResponse.json(
-      { message: 'Validation failed', errors: parsed.error.flatten().fieldErrors },
-      { status: 422 },
-    );
-  }
-
-  const d = parsed.data;
-  const data = {
-    entityType: d.entityType,
-    entityId: d.entityId ?? null,
-    path: d.path,
-    metaTitle: d.metaTitle || null,
-    metaDescription: d.metaDescription || null,
-    metaKeywords: d.metaKeywords || null,
-    ogTitle: d.ogTitle || null,
-    ogDescription: d.ogDescription || null,
-    ogImageUrl: d.ogImageUrl || null,
-    robotsIndex: d.robotsIndex,
-    robotsFollow: d.robotsFollow,
-    updatedBy: session.user.id,
-  };
-
+async function isAdmin() {
   try {
-    // Entity-scoped rows key on (entityType, entityId); static pages key on path
-    const saved = d.entityId
-      ? await prisma.seoMetadata.upsert({
-          where: { entityType_entityId: { entityType: d.entityType, entityId: d.entityId } },
-          update: data,
-          create: data,
-        })
-      : await prisma.seoMetadata.upsert({
-          where: { path: d.path },
-          update: data,
-          create: data,
-        });
+    const session: any = await getServerSession(authOptions as any);
+    return session && ['ADMIN','SUPER_ADMIN'].includes(session?.user?.role);
+  } catch { return false; }
+}
 
-    // Push the change to the live page immediately
-    try {
-      revalidatePath(d.path);
-    } catch {
-      /* path may not be statically known — ISR will pick it up */
-    }
+export async function GET() {
+  if (!await isAdmin()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const rows = await prisma.seoMeta.findMany({ orderBy: { pagePath: 'asc' } });
+  return NextResponse.json({ items: rows });
+}
 
-    await logAudit({
-      actorId: session.user.id,
-      action: 'seo.update',
-      entityType: 'SEO_METADATA',
-      entityId: saved.id,
-      afterData: saved,
+export async function POST(req: Request) {
+  if (!await isAdmin()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  try {
+    const { pagePath, metaTitle, metaDescription, metaKeywords, ogImage } = await req.json();
+    if (!pagePath || !metaTitle) return NextResponse.json({ error: 'pagePath and metaTitle required' }, { status: 400 });
+    const keywords = typeof metaKeywords === 'string'
+      ? metaKeywords.split(',').map((k: string) => k.trim()).filter(Boolean)
+      : Array.isArray(metaKeywords) ? metaKeywords : [];
+
+    const saved = await prisma.seoMeta.upsert({
+      where: { pagePath },
+      create: { pagePath, metaTitle, metaDescription: metaDescription || '', metaKeywords: keywords, ogImage },
+      update: { metaTitle, metaDescription: metaDescription || '', metaKeywords: keywords, ogImage },
     });
-
-    return NextResponse.json({ success: true, seo: saved });
-  } catch (err) {
-    console.error('[admin/seo:PUT]', err);
-    return NextResponse.json({ message: 'Could not save SEO settings' }, { status: 500 });
+    return NextResponse.json({ ok: true, item: saved });
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
   }
+}
+
+export async function DELETE(req: Request) {
+  if (!await isAdmin()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const { searchParams } = new URL(req.url);
+  const pagePath = searchParams.get('pagePath');
+  if (!pagePath) return NextResponse.json({ error: 'pagePath required' }, { status: 400 });
+  await prisma.seoMeta.delete({ where: { pagePath } }).catch(() => {});
+  return NextResponse.json({ ok: true });
 }

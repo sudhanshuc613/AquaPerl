@@ -1,1081 +1,531 @@
-// Aqua Perl — Prisma schema (mirrors db/schema.sql)
-// Generate with: npx prisma generate
-// Push to a fresh DB with: npx prisma db push
+// ============================================================
+// RO Service Patna - Database Schema (PostgreSQL via Prisma ORM)
+// Domain: roserviceinpatna.in | Business: RO Purifiers + Patna Service Booking
+// ============================================================
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-//── ENUMS ─────────────────────────────────────────────────────────────────
+// -------------------- USERS & AUTH --------------------
+model User {
+  id              String    @id @default(cuid())
+  name            String
+  email           String?   @unique
+  phone           String    @unique
+  passwordHash    String?
+  role            Role      @default(CUSTOMER)
+  avatar          String?
+  emailVerified   DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
-enum UserRole {
+  // Relations
+  addresses       Address[]
+  orders          Order[]
+  cartItems       CartItem[]
+  serviceRequests ServiceRequest[] @relation("ServiceCustomer")
+  assignedServices ServiceRequest[] @relation("ServiceTechnician")
+  reviews         Review[]
+  wishlists       Wishlist[]
+  abandonedCarts  AbandonedCart[]
+
+  @@index([email])
+  @@index([phone])
+}
+
+enum Role {
   CUSTOMER
   TECHNICIAN
-  STAFF
   ADMIN
   SUPER_ADMIN
 }
-enum AddressType {
-  HOME
-  OFFICE
-  OTHER
+
+model Address {
+  id          String  @id @default(cuid())
+  userId      String
+  label       String  // Home, Office, etc.
+  recipient   String
+  phone       String
+  line1       String
+  line2       String?
+  city        String
+  state       String
+  pincode     String
+  isDefault   Boolean @default(false)
+
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders      Order[]
 }
+
+// -------------------- CATALOG --------------------
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  image       String?
+  parentId    String?
+  parent      Category? @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  type        CatalogType @default(PRODUCT) // PRODUCT or SERVICE
+  isActive    Boolean   @default(true)
+  sortOrder   Int       @default(0)
+
+  products    Product[]
+
+  @@index([slug])
+}
+
+enum CatalogType {
+  PRODUCT
+  SERVICE
+}
+
+model Brand {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  logo      String?
+  website   String?
+  isActive  Boolean   @default(true)
+  products  Product[]
+}
+
+model Product {
+  id                  String           @id @default(cuid())
+  name                String
+  slug                String           @unique
+  sku                 String           @unique
+  shortDescription    String?
+  description         String?          @db.Text
+  categoryId          String
+  brandId             String?
+  type                ProductType      @default(RO_PURIFIER)
+  price               Decimal          @db.Decimal(10,2)
+  compareAtPrice      Decimal?         @db.Decimal(10,2) // MRP
+  costPrice           Decimal?         @db.Decimal(10,2)
+  stockQty            Int              @default(0)
+  lowStockThreshold   Int              @default(5)
+  weight              Decimal?         @db.Decimal(8,2) // kg
+  isActive            Boolean          @default(true)
+  isFeatured          Boolean          @default(false)
+  isCommercial        Boolean          @default(false)
+  warrantyMonths      Int              @default(12)
+  avgRating           Decimal          @default(0.0) @db.Decimal(3,2)
+  reviewCount         Int              @default(0)
+
+  // Tech specs stored as JSON (flexible schema per product)
+  specifications      Json?
+
+  // SEO
+  metaTitle           String?
+  metaDescription     String?
+  metaKeywords        String[]
+
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  category            Category         @relation(fields: [categoryId], references: [id])
+  brand               Brand?           @relation(fields: [brandId], references: [id])
+  images              ProductImage[]
+  variants            ProductVariant[]
+  orderItems          OrderItem[]
+  cartItems           CartItem[]
+  reviews             Review[]
+  serviceRequests     ServiceRequest[]
+  wishlists           Wishlist[]
+
+  @@index([slug])
+  @@index([categoryId])
+  @@index([brandId])
+  @@index([type])
+  @@index([isActive])
+}
+
 enum ProductType {
-  NEW_RO
+  RO_PURIFIER
+  UV_PURIFIER
+  COMMERCIAL_PLAN
   SPARE_PART
-  COMMERCIAL_PLANT
   ACCESSORY
-  AMC_PLAN
 }
-enum ProductStatus {
-  DRAFT
-  ACTIVE
-  OUT_OF_STOCK
-  ARCHIVED
+
+model ProductImage {
+  id         String   @id @default(cuid())
+  productId  String
+  url        String
+  alt        String?
+  sortOrder  Int      @default(0)
+  isPrimary  Boolean  @default(false)
+
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
-enum OrderStatus {
+
+model ProductVariant {
+  id         String   @id @default(cuid())
+  productId  String
+  name       String   // e.g. "10L", "Blue"
+  sku        String   @unique
+  priceDelta Decimal  @default(0) @db.Decimal(10,2)
+  stockQty   Int      @default(0)
+  isActive   Boolean  @default(true)
+
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+// -------------------- CART & WISHLIST --------------------
+model CartItem {
+  id         String   @id @default(cuid())
+  userId     String?
+  sessionId  String?  // for guest carts
+  productId  String
+  variantId  String?
+  quantity   Int      @default(1)
+  addedAt    DateTime @default(now())
+
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId, variantId])
+  @@unique([sessionId, productId, variantId])
+}
+
+model Wishlist {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  addedAt   DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+model AbandonedCart {
+  id          String   @id @default(cuid())
+  userId      String
+  cartSnapshot Json
+  reminderSentAt DateTime?
+  recovered   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// -------------------- ORDERS --------------------
+model Order {
+  id              String       @id @default(cuid())
+  orderNumber     String       @unique // AQN-YYYYMMDD-XXXX
+  userId          String?
+  addressId       String?
+  subtotal        Decimal      @db.Decimal(10,2)
+  discountAmount  Decimal      @default(0) @db.Decimal(10,2)
+  shippingAmount  Decimal      @default(0) @db.Decimal(10,2)
+  taxAmount       Decimal      @default(0) @db.Decimal(10,2)
+  totalAmount     Decimal      @db.Decimal(10,2)
+  couponCode      String?
+  paymentMethod   PaymentMethod
+  paymentStatus   PaymentStatus @default(PENDING)
+  paymentId       String?      // Razorpay/Stripe payment id
+  orderStatus     OrderStatus  @default(PENDING)
+  notes           String?      @db.Text
+  trackingNumber  String?
+  courierName     String?
+  estimatedDelivery DateTime?
+  deliveredAt     DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  user            User?        @relation(fields: [userId], references: [id])
+  address         Address?     @relation(fields: [addressId], references: [id])
+  items           OrderItem[]
+  statusHistory   OrderStatusHistory[]
+  transactions    Transaction[]
+
+  @@index([orderNumber])
+  @@index([userId])
+  @@index([orderStatus])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  productId   String
+  productName String   // snapshot
+  productSlug String   // snapshot
+  image       String?  // snapshot
+  quantity    Int
+  unitPrice   Decimal  @db.Decimal(10,2)
+  totalPrice  Decimal  @db.Decimal(10,2)
+
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id])
+}
+
+model OrderStatusHistory {
+  id          String      @id @default(cuid())
+  orderId     String
+  status      OrderStatus
+  note        String?
+  updatedBy   String?     // admin user id
+  createdAt   DateTime    @default(now())
+
+  order       Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+enum PaymentMethod {
+  RAZORPAY
+  STRIPE
+  COD
+  UPI
+  NETBANKING
+}
+
+enum PaymentStatus {
   PENDING
-  CONFIRMED
-  PACKED
-  SHIPPED
+  PAID
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum OrderStatus {
+  PENDING          // payment not confirmed
+  CONFIRMED        // payment received, processing
+  PROCESSING       // being packed
+  SHIPPED          // handed to courier
   OUT_FOR_DELIVERY
   DELIVERED
   CANCELLED
-  RETURN_REQUESTED
   RETURNED
   REFUNDED
 }
-enum PaymentStatus {
-  UNPAID
-  AUTHORIZED
-  PAID
-  FAILED
-  PARTIALLY_REFUNDED
-  REFUNDED
+
+model Transaction {
+  id            String    @id @default(cuid())
+  orderId       String
+  gateway       String    // RAZORPAY, STRIPE
+  gatewayTxnId  String
+  amount        Decimal   @db.Decimal(10,2)
+  currency      String    @default("INR")
+  status        String
+  rawResponse   Json?
+  createdAt     DateTime  @default(now())
+
+  order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
-enum PaymentMethod {
-  RAZORPAY
-  UPI
-  CARD
-  NETBANKING
-  WALLET
-  COD
+
+model Coupon {
+  id             String   @id @default(cuid())
+  code           String   @unique
+  type           CouponType
+  value          Decimal  @db.Decimal(10,2) // flat or percentage
+  minOrderValue  Decimal  @default(0) @db.Decimal(10,2)
+  maxDiscount    Decimal? @db.Decimal(10,2)
+  usageLimit     Int?
+  usageCount     Int      @default(0)
+  validFrom      DateTime
+  validUntil     DateTime
+  isActive       Boolean  @default(true)
+
+  @@index([code])
 }
-enum ServiceType {
-  REPAIR
+
+enum CouponType {
+  FLAT
+  PERCENTAGE
+}
+
+// -------------------- REVIEWS --------------------
+model Review {
+  id          String   @id @default(cuid())
+  userId      String
+  productId   String
+  rating      Int      // 1-5
+  title       String?
+  content     String?  @db.Text
+  isApproved  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+// -------------------- SERVICE BOOKING (Patna Local) --------------------
+model ServiceRequest {
+  id              String       @id @default(cuid())
+  ticketNumber    String       @unique // SR-YYYYMMDD-XXXX
+  customerName    String
+  phone           String
+  altPhone        String?
+  email           String?
+  address         String       @db.Text
+  city            String       @default("Patna")
+  pincode         String
+  machineBrand    String?
+  machineModel    String?
+  issueType       ServiceIssueType
+  issueDescription String      @db.Text
+  preferredDate   DateTime?
+  preferredSlot   TimeSlot?
+  status          ServiceStatus @default(NEW)
+  technicianId    String?
+  technician      User?        @relation("ServiceTechnician", fields: [technicianId], references: [id])
+  visitCharge     Decimal      @default(100) @db.Decimal(10,2)
+  partsCost       Decimal      @default(0) @db.Decimal(10,2)
+  laborCost       Decimal      @default(0) @db.Decimal(10,2)
+  totalCost       Decimal      @default(0) @db.Decimal(10,2)
+  paymentStatus   PaymentStatus @default(PENDING)
+  resolutionNotes String?      @db.Text
+  productId       String?      // if related to a purchased unit
+  product         Product?     @relation(fields: [productId], references: [id])
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  resolvedAt      DateTime?
+
+  userId          String?
+  user            User?        @relation("ServiceCustomer", fields: [userId], references: [id])
+
+  @@index([phone])
+  @@index([status])
+  @@index([createdAt])
+  @@index([technicianId])
+}
+
+enum ServiceIssueType {
   INSTALLATION
-  AMC_VISIT
+  REPAIR
+  AMC
   FILTER_CHANGE
-  WATER_TEST
-  UNINSTALL_SHIFT
+  RO_MEMBRANE_CHANGE
+  NOT_WORKING
+  LEAKAGE
+  LOW_WATER_PRESSURE
+  BAD_TASTE
+  OTHER
 }
+
 enum ServiceStatus {
   NEW
   CONTACTED
   SCHEDULED
-  ASSIGNED
+  TECHNICIAN_ASSIGNED
   IN_PROGRESS
-  ON_HOLD_PARTS
   COMPLETED
   CANCELLED
   NO_RESPONSE
 }
-enum ServicePriority {
-  LOW
-  NORMAL
-  HIGH
-  EMERGENCY
-}
-enum CartStatus {
-  ACTIVE
-  CONVERTED
-  ABANDONED
-  RECOVERED
-  EXPIRED
-}
-enum DiscountType {
-  PERCENT
-  FLAT
-  FREE_SHIPPING
-}
-enum NotifChannel {
-  WHATSAPP
-  SMS
-  EMAIL
-  PUSH
-}
-enum NotifStatus {
-  QUEUED
-  SENT
-  DELIVERED
-  READ
-  FAILED
-}
-enum SeoEntityType {
-  PRODUCT
-  CATEGORY
-  STATIC_PAGE
-  BLOG_POST
-  SERVICE_AREA
-  BRAND
+
+enum TimeSlot {
+  MORNING    // 9 AM - 12 PM
+  AFTERNOON  // 12 PM - 3 PM
+  EVENING    // 3 PM - 6 PM
 }
 
-//── IDENTITY & CRM ────────────────────────────────────────────────────────
-
-model User {
-  id                String    @id @default(uuid()) @db.Uuid
-  fullName          String    @map("full_name") @db.VarChar(120)
-  email             String?   @unique
-  phone             String    @unique @db.VarChar(15)
-  phoneVerifiedAt   DateTime? @map("phone_verified_at") @db.Timestamptz
-  emailVerifiedAt   DateTime? @map("email_verified_at") @db.Timestamptz
-  passwordHash      String?   @map("password_hash")
-  role              UserRole  @default(CUSTOMER)
-  avatarUrl         String?   @map("avatar_url")
-  lifetimeValue     Decimal   @default(0) @map("lifetime_value") @db.Decimal(12, 2)
-  totalOrders       Int       @default(0) @map("total_orders")
-  totalServices     Int       @default(0) @map("total_services")
-  customerSegment   String?   @default("NEW") @map("customer_segment") @db.VarChar(32)
-  acquisitionSource String?   @map("acquisition_source") @db.VarChar(64)
-  referredByUserId  String?   @map("referred_by_user_id") @db.Uuid
-  whatsappOptIn     Boolean   @default(true) @map("whatsapp_opt_in")
-  marketingOptIn    Boolean   @default(true) @map("marketing_opt_in")
-  lastLoginAt       DateTime? @map("last_login_at") @db.Timestamptz
-  notes             String?
-  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz
-  deletedAt         DateTime? @map("deleted_at") @db.Timestamptz
-
-  addresses        Address[]
-  carts            Cart[]
-  orders           Order[]
-  serviceRequests  ServiceRequest[]
-  reviews          ProductReview[]
-  wishlists        Wishlist[]
-  notifications    Notification[]
-  amcSubscriptions AmcSubscription[]
-  auditLogs        AuditLog[]
-  technician       Technician?
-  searchQueries    SearchQuery[]
-  mediaAssets      MediaAsset[]
-  machines         CustomerMachine[]
-
-  @@index([phone])
-  @@index([role])
-  @@index([customerSegment])
-  @@map("users")
-}
-
-model Address {
-  id           String      @id @default(uuid()) @db.Uuid
-  userId       String      @map("user_id") @db.Uuid
-  label        AddressType @default(HOME)
-  contactName  String      @map("contact_name") @db.VarChar(120)
-  contactPhone String      @map("contact_phone") @db.VarChar(15)
-  line1        String      @db.VarChar(255)
-  line2        String?     @db.VarChar(255)
-  landmark     String?     @db.VarChar(160)
-  city         String      @db.VarChar(80)
-  state        String      @db.VarChar(80)
-  pincode      String      @db.VarChar(6)
-  country      String      @default("IN") @db.VarChar(2)
-  latitude     Decimal?    @db.Decimal(10, 7)
-  longitude    Decimal?    @db.Decimal(10, 7)
-  isDefault    Boolean     @default(false) @map("is_default")
-  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt    DateTime    @updatedAt @map("updated_at") @db.Timestamptz
-
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  amcSubscriptions AmcSubscription[]
-  machines         CustomerMachine[]
-
-  @@index([userId])
-  @@index([pincode])
-  @@map("addresses")
-}
-
-//── CATALOG ───────────────────────────────────────────────────────────────
-
-model Brand {
-  id          String    @id @default(uuid()) @db.Uuid
-  name        String    @unique @db.VarChar(80)
-  slug        String    @unique @db.VarChar(96)
-  logoUrl     String?   @map("logo_url")
-  description String?
-  isFeatured  Boolean   @default(false) @map("is_featured")
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
-
-  products Product[]
-
-  @@map("brands")
-}
-
-model Category {
-  id           String      @id @default(uuid()) @db.Uuid
-  parentId     String?     @map("parent_id") @db.Uuid
-  name         String      @db.VarChar(120)
-  slug         String      @unique @db.VarChar(140)
-  kind         ProductType
-  description  String?
-  imageUrl     String?     @map("image_url")
-  iconKey      String?     @map("icon_key") @db.VarChar(48)
-  displayOrder Int         @default(0) @map("display_order")
-  isActive     Boolean     @default(true) @map("is_active")
-  showInNav    Boolean     @default(true) @map("show_in_nav")
-  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt    DateTime    @updatedAt @map("updated_at") @db.Timestamptz
-
-  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
-  children Category[] @relation("CategoryTree")
-  products Product[]
-
-  @@index([parentId])
-  @@map("categories")
-}
-
-model Product {
-  id                   String        @id @default(uuid()) @db.Uuid
-  sku                  String        @unique @db.VarChar(64)
-  slug                 String        @unique @db.VarChar(200)
-  name                 String        @db.VarChar(220)
-  shortDescription     String?       @map("short_description") @db.VarChar(500)
-  description          String?
-  type                 ProductType
-  status               ProductStatus @default(DRAFT)
-  brandId              String?       @map("brand_id") @db.Uuid
-  categoryId           String        @map("category_id") @db.Uuid
-  mrp                  Decimal       @db.Decimal(12, 2)
-  sellingPrice         Decimal       @map("selling_price") @db.Decimal(12, 2)
-  costPrice            Decimal?      @map("cost_price") @db.Decimal(12, 2)
-  taxRate              Decimal       @default(18) @map("tax_rate") @db.Decimal(5, 2)
-  hsnCode              String?       @map("hsn_code") @db.VarChar(12)
-  stockQuantity        Int           @default(0) @map("stock_quantity")
-  lowStockThreshold    Int           @default(5) @map("low_stock_threshold")
-  allowBackorder       Boolean       @default(false) @map("allow_backorder")
-  weightGrams          Int?          @map("weight_grams")
-  lengthCm             Decimal?      @map("length_cm") @db.Decimal(6, 2)
-  widthCm              Decimal?      @map("width_cm") @db.Decimal(6, 2)
-  heightCm             Decimal?      @map("height_cm") @db.Decimal(6, 2)
-  isPanIndia           Boolean       @default(true) @map("is_pan_india")
-  requiresInstallation Boolean       @default(false) @map("requires_installation")
-  freeShipping         Boolean       @default(false) @map("free_shipping")
-  purificationTech     String[]      @map("purification_tech")
-  storageLitres        Decimal?      @map("storage_litres") @db.Decimal(6, 2)
-  capacityLph          Int?          @map("capacity_lph")
-  warrantyMonths       Int?          @map("warranty_months")
-  isFeatured           Boolean       @default(false) @map("is_featured")
-  isBestseller         Boolean       @default(false) @map("is_bestseller")
-  ratingAvg            Decimal       @default(0) @map("rating_avg") @db.Decimal(3, 2)
-  ratingCount          Int           @default(0) @map("rating_count")
-  viewCount            Int           @default(0) @map("view_count")
-  soldCount            Int           @default(0) @map("sold_count")
-  createdBy            String?       @map("created_by") @db.Uuid
-  createdAt            DateTime      @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt            DateTime      @updatedAt @map("updated_at") @db.Timestamptz
-  deletedAt            DateTime?     @map("deleted_at") @db.Timestamptz
-
-  brand          Brand?                 @relation(fields: [brandId], references: [id])
-  category       Category               @relation(fields: [categoryId], references: [id])
-  images         ProductImage[]
-  specifications ProductSpecification[]
-  variants       ProductVariant[]
-  reviews        ProductReview[]
-  cartItems      CartItem[]
-  orderItems     OrderItem[]
-  wishlists      Wishlist[]
-  searchClicks   SearchQuery[]
-
-  compatibleWith ProductCompatibility[] @relation("PartToMachine")
-  compatibleParts ProductCompatibility[] @relation("MachineToPart")
-
-  @@index([categoryId])
-  @@index([brandId])
-  @@index([status])
-  @@index([sellingPrice])
-  @@map("products")
-}
-
-model ProductImage {
-  id           String   @id @default(uuid()) @db.Uuid
-  productId    String   @map("product_id") @db.Uuid
-  url          String
-  thumbUrl     String?  @map("thumb_url")
-  zoomUrl      String?  @map("zoom_url")
-  altText      String   @map("alt_text") @db.VarChar(200)
-  displayOrder Int      @default(0) @map("display_order")
-  isPrimary    Boolean  @default(false) @map("is_primary")
-  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
-
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-
-  @@index([productId, displayOrder])
-  @@map("product_images")
-}
-
-model ProductSpecification {
-  id           String @id @default(uuid()) @db.Uuid
-  productId    String @map("product_id") @db.Uuid
-  specGroup    String @default("General") @map("spec_group") @db.VarChar(80)
-  specKey      String @map("spec_key") @db.VarChar(120)
-  specValue    String @map("spec_value") @db.VarChar(300)
-  displayOrder Int    @default(0) @map("display_order")
-
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-
-  @@unique([productId, specGroup, specKey])
-  @@map("product_specifications")
-}
-
-model ProductVariant {
-  id            String  @id @default(uuid()) @db.Uuid
-  productId     String  @map("product_id") @db.Uuid
-  sku           String  @unique @db.VarChar(64)
-  variantName   String  @map("variant_name") @db.VarChar(120)
-  attributes    Json    @default("{}")
-  sellingPrice  Decimal @map("selling_price") @db.Decimal(12, 2)
-  mrp           Decimal @db.Decimal(12, 2)
-  stockQuantity Int     @default(0) @map("stock_quantity")
-  imageUrl      String? @map("image_url")
-  isActive      Boolean @default(true) @map("is_active")
-
-  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
-  cartItems  CartItem[]
-  orderItems OrderItem[]
-
-  @@index([productId])
-  @@map("product_variants")
-}
-
-model ProductCompatibility {
-  partProductId    String @map("part_product_id") @db.Uuid
-  machineProductId String @map("machine_product_id") @db.Uuid
-
-  partProduct    Product @relation("PartToMachine", fields: [partProductId], references: [id], onDelete: Cascade)
-  machineProduct Product @relation("MachineToPart", fields: [machineProductId], references: [id], onDelete: Cascade)
-
-  @@id([partProductId, machineProductId])
-  @@map("product_compatibility")
-}
-
-model ProductReview {
-  id           String   @id @default(uuid()) @db.Uuid
-  productId    String   @map("product_id") @db.Uuid
-  userId       String?  @map("user_id") @db.Uuid
-  orderId      String?  @map("order_id") @db.Uuid
-  rating       Int      @db.SmallInt
-  title        String?  @db.VarChar(160)
-  body         String?
-  imageUrls    String[] @map("image_urls")
-  isVerified   Boolean  @default(false) @map("is_verified")
-  isApproved   Boolean  @default(false) @map("is_approved")
-  helpfulCount Int      @default(0) @map("helpful_count")
-  adminReply   String?  @map("admin_reply")
-  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
-
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  user    User?   @relation(fields: [userId], references: [id])
-  order   Order?  @relation(fields: [orderId], references: [id])
-
-  @@index([productId])
-  @@map("product_reviews")
-}
-
-//── SERVICEABILITY ────────────────────────────────────────────────────────
-
+// -------------------- PINCODE SERVICEABILITY --------------------
 model Pincode {
-  pincode             String   @id @db.VarChar(6)
-  city                String   @db.VarChar(80)
-  district            String?  @db.VarChar(80)
-  state               String   @db.VarChar(80)
-  zone                String?  @db.VarChar(16)
-  isCodAvailable      Boolean  @default(true) @map("is_cod_available")
-  isDeliveryAvailable Boolean  @default(true) @map("is_delivery_available")
-  isServiceAvailable  Boolean  @default(false) @map("is_service_available")
-  visitCharge         Decimal  @default(100) @map("visit_charge") @db.Decimal(8, 2)
-  standardEtaDays     Int      @default(5) @map("standard_eta_days") @db.SmallInt
-  expressEtaDays      Int?     @map("express_eta_days") @db.SmallInt
-  shippingZoneRate    Decimal  @default(0) @map("shipping_zone_rate") @db.Decimal(8, 2)
-  updatedAt           DateTime @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@index([isServiceAvailable])
-  @@index([city])
-  @@map("pincodes")
+  pincode      String   @id
+  city         String
+  state        String
+  country      String   @default("India")
+  deliveryDays Int      @default(5)
+  codAvailable Boolean  @default(true)
+  serviceAvailable Boolean @default(true) // local service available
+  isPatnaService Boolean @default(false)
 }
 
-//── CART ──────────────────────────────────────────────────────────────────
-
-model Cart {
-  id               String     @id @default(uuid()) @db.Uuid
-  userId           String?    @map("user_id") @db.Uuid
-  sessionToken     String?    @unique @map("session_token") @db.VarChar(64)
-  status           CartStatus @default(ACTIVE)
-  subtotal         Decimal    @default(0) @db.Decimal(12, 2)
-  couponId         String?    @map("coupon_id") @db.Uuid
-  discountAmount   Decimal    @default(0) @map("discount_amount") @db.Decimal(12, 2)
-  lastActivityAt   DateTime   @default(now()) @map("last_activity_at") @db.Timestamptz
-  abandonedAt      DateTime?  @map("abandoned_at") @db.Timestamptz
-  recoveryStage    Int        @default(0) @map("recovery_stage") @db.SmallInt
-  recoverySentAt   DateTime?  @map("recovery_sent_at") @db.Timestamptz
-  recoveryToken    String?    @unique @map("recovery_token") @db.VarChar(64)
-  recoveredAt      DateTime?  @map("recovered_at") @db.Timestamptz
-  convertedOrderId String?    @map("converted_order_id") @db.Uuid
-  createdAt        DateTime   @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt        DateTime   @updatedAt @map("updated_at") @db.Timestamptz
-
-  user   User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  coupon Coupon?    @relation(fields: [couponId], references: [id])
-  items  CartItem[]
-  orders Order[]
-
-  @@index([userId])
-  @@index([status, lastActivityAt])
-  @@map("carts")
-}
-
-model CartItem {
-  id        String   @id @default(uuid()) @db.Uuid
-  cartId    String   @map("cart_id") @db.Uuid
-  productId String   @map("product_id") @db.Uuid
-  variantId String?  @map("variant_id") @db.Uuid
-  quantity  Int
-  unitPrice Decimal  @map("unit_price") @db.Decimal(12, 2)
-  addedAt   DateTime @default(now()) @map("added_at") @db.Timestamptz
-
-  cart    Cart            @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  product Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
-  variant ProductVariant? @relation(fields: [variantId], references: [id])
-
-  @@unique([cartId, productId, variantId])
-  @@index([cartId])
-  @@map("cart_items")
-}
-
-model Wishlist {
-  userId    String   @map("user_id") @db.Uuid
-  productId String   @map("product_id") @db.Uuid
-  addedAt   DateTime @default(now()) @map("added_at") @db.Timestamptz
-
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-
-  @@id([userId, productId])
-  @@map("wishlists")
-}
-
-//── COUPONS ───────────────────────────────────────────────────────────────
-
-model Coupon {
-  id              String       @id @default(uuid()) @db.Uuid
-  code            String       @unique @db.VarChar(40)
-  description     String?      @db.VarChar(240)
-  discountType    DiscountType @map("discount_type")
-  discountValue   Decimal      @map("discount_value") @db.Decimal(10, 2)
-  maxDiscount     Decimal?     @map("max_discount") @db.Decimal(10, 2)
-  minOrderValue   Decimal      @default(0) @map("min_order_value") @db.Decimal(10, 2)
-  usageLimitTotal Int?         @map("usage_limit_total")
-  usageLimitUser  Int          @default(1) @map("usage_limit_user")
-  usedCount       Int          @default(0) @map("used_count")
-  appliesToType   ProductType? @map("applies_to_type")
-  isRecoveryOnly  Boolean      @default(false) @map("is_recovery_only")
-  startsAt        DateTime     @default(now()) @map("starts_at") @db.Timestamptz
-  endsAt          DateTime?    @map("ends_at") @db.Timestamptz
-  isActive        Boolean      @default(true) @map("is_active")
-  createdAt       DateTime     @default(now()) @map("created_at") @db.Timestamptz
-
-  carts       Cart[]
-  orders      Order[]
-  redemptions CouponRedemption[]
-
-  @@map("coupons")
-}
-
-model CouponRedemption {
-  id       String   @id @default(uuid()) @db.Uuid
-  couponId String   @map("coupon_id") @db.Uuid
-  userId   String?  @map("user_id") @db.Uuid
-  orderId  String?  @map("order_id") @db.Uuid
-  amount   Decimal  @db.Decimal(10, 2)
-  usedAt   DateTime @default(now()) @map("used_at") @db.Timestamptz
-
-  coupon Coupon @relation(fields: [couponId], references: [id], onDelete: Cascade)
-  order  Order? @relation(fields: [orderId], references: [id])
-
-  @@map("coupon_redemptions")
-}
-
-//── ORDERS ────────────────────────────────────────────────────────────────
-
-model Order {
-  id                String        @id @default(uuid()) @db.Uuid
-  orderNumber       String        @unique @map("order_number") @db.VarChar(24)
-  userId            String?       @map("user_id") @db.Uuid
-  guestEmail        String?       @map("guest_email")
-  guestPhone        String?       @map("guest_phone") @db.VarChar(15)
-  status            OrderStatus   @default(PENDING)
-  paymentStatus     PaymentStatus @default(UNPAID) @map("payment_status")
-  paymentMethod     PaymentMethod? @map("payment_method")
-  subtotal          Decimal       @db.Decimal(12, 2)
-  discountAmount    Decimal       @default(0) @map("discount_amount") @db.Decimal(12, 2)
-  shippingAmount    Decimal       @default(0) @map("shipping_amount") @db.Decimal(12, 2)
-  taxAmount         Decimal       @default(0) @map("tax_amount") @db.Decimal(12, 2)
-  codCharge         Decimal       @default(0) @map("cod_charge") @db.Decimal(12, 2)
-  totalAmount       Decimal       @map("total_amount") @db.Decimal(12, 2)
-  currency          String        @default("INR") @db.VarChar(3)
-  couponId          String?       @map("coupon_id") @db.Uuid
-  shippingAddress   Json          @map("shipping_address")
-  billingAddress    Json?         @map("billing_address")
-  shippingPincode   String        @map("shipping_pincode") @db.VarChar(6)
-  courierPartner    String?       @map("courier_partner") @db.VarChar(60)
-  trackingNumber    String?       @map("tracking_number") @db.VarChar(80)
-  trackingUrl       String?       @map("tracking_url")
-  shippedAt         DateTime?     @map("shipped_at") @db.Timestamptz
-  deliveredAt       DateTime?     @map("delivered_at") @db.Timestamptz
-  estimatedDelivery DateTime?     @map("estimated_delivery") @db.Date
-  customerNote      String?       @map("customer_note")
-  adminNote         String?       @map("admin_note")
-  cancelReason      String?       @map("cancel_reason")
-  sourceCartId      String?       @map("source_cart_id") @db.Uuid
-  utmSource         String?       @map("utm_source") @db.VarChar(64)
-  placedAt          DateTime      @default(now()) @map("placed_at") @db.Timestamptz
-  updatedAt         DateTime      @updatedAt @map("updated_at") @db.Timestamptz
-
-  user          User?                @relation(fields: [userId], references: [id])
-  coupon        Coupon?              @relation(fields: [couponId], references: [id])
-  sourceCart    Cart?                @relation(fields: [sourceCartId], references: [id])
-  items         OrderItem[]
-  statusHistory OrderStatusHistory[]
-  payments      Payment[]
-  reviews       ProductReview[]
-  redemptions   CouponRedemption[]
-
-  @@index([userId])
-  @@index([status])
-  @@index([placedAt])
-  @@index([paymentStatus])
-  @@map("orders")
-}
-
-model OrderItem {
-  id              String  @id @default(uuid()) @db.Uuid
-  orderId         String  @map("order_id") @db.Uuid
-  productId       String? @map("product_id") @db.Uuid
-  variantId       String? @map("variant_id") @db.Uuid
-  productName     String  @map("product_name") @db.VarChar(220)
-  productSku      String  @map("product_sku") @db.VarChar(64)
-  productImageUrl String? @map("product_image_url")
-  quantity        Int
-  unitPrice       Decimal @map("unit_price") @db.Decimal(12, 2)
-  taxRate         Decimal @default(18) @map("tax_rate") @db.Decimal(5, 2)
-  lineTotal       Decimal @map("line_total") @db.Decimal(12, 2)
-
-  order   Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product Product?        @relation(fields: [productId], references: [id])
-  variant ProductVariant? @relation(fields: [variantId], references: [id])
-
-  @@index([orderId])
-  @@map("order_items")
-}
-
-model OrderStatusHistory {
-  id         String       @id @default(uuid()) @db.Uuid
-  orderId    String       @map("order_id") @db.Uuid
-  fromStatus OrderStatus? @map("from_status")
-  toStatus   OrderStatus  @map("to_status")
-  note       String?
-  changedBy  String?      @map("changed_by") @db.Uuid
-  createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz
-
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  @@index([orderId, createdAt])
-  @@map("order_status_history")
-}
-
-model Payment {
-  id               String         @id @default(uuid()) @db.Uuid
-  orderId          String         @map("order_id") @db.Uuid
-  gateway          String         @default("RAZORPAY") @db.VarChar(24)
-  gatewayOrderId   String?        @map("gateway_order_id") @db.VarChar(80)
-  gatewayPaymentId String?        @unique @map("gateway_payment_id") @db.VarChar(80)
-  gatewaySignature String?        @map("gateway_signature")
-  method           PaymentMethod?
-  amount           Decimal        @db.Decimal(12, 2)
-  status           PaymentStatus  @default(UNPAID)
-  failureReason    String?        @map("failure_reason")
-  rawPayload       Json?          @map("raw_payload")
-  refundAmount     Decimal        @default(0) @map("refund_amount") @db.Decimal(12, 2)
-  refundedAt       DateTime?      @map("refunded_at") @db.Timestamptz
-  createdAt        DateTime       @default(now()) @map("created_at") @db.Timestamptz
-
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  @@index([orderId])
-  @@map("payments")
-}
-
-//── LOCAL SERVICE ─────────────────────────────────────────────────────────
-
+// -------------------- TECHNICIANS (extension data) --------------------
 model Technician {
-  id              String   @id @default(uuid()) @db.Uuid
-  userId          String?  @unique @map("user_id") @db.Uuid
-  employeeCode    String   @unique @map("employee_code") @db.VarChar(24)
-  fullName        String   @map("full_name") @db.VarChar(120)
-  phone           String   @db.VarChar(15)
-  skills          String[]
-  servicePincodes String[] @map("service_pincodes")
-  isAvailable     Boolean  @default(true) @map("is_available")
-  activeJobs      Int      @default(0) @map("active_jobs")
-  maxDailyJobs    Int      @default(8) @map("max_daily_jobs")
-  ratingAvg       Decimal  @default(0) @map("rating_avg") @db.Decimal(3, 2)
-  jobsCompleted   Int      @default(0) @map("jobs_completed")
-  joinedAt        DateTime? @map("joined_at") @db.Date
-  isActive        Boolean  @default(true) @map("is_active")
-  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz
-
-  user            User?            @relation(fields: [userId], references: [id])
-  serviceRequests ServiceRequest[]
-
-  @@map("technicians")
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  employeeCode  String   @unique
+  aadhar        String?
+  phone         String
+  area          String   // Patna zone assigned
+  isAvailable   Boolean  @default(true)
+  totalJobs     Int      @default(0)
+  avgRating     Decimal  @default(0) @db.Decimal(3,2)
+  joinedAt      DateTime @default(now())
 }
 
-model ServiceRequest {
-  id                   String          @id @default(uuid()) @db.Uuid
-  ticketNumber         String          @unique @map("ticket_number") @db.VarChar(24)
-  userId               String?         @map("user_id") @db.Uuid
-  customerName         String          @map("customer_name") @db.VarChar(120)
-  customerPhone        String          @map("customer_phone") @db.VarChar(15)
-  altPhone             String?         @map("alt_phone") @db.VarChar(15)
-  customerEmail        String?         @map("customer_email")
-  addressLine          String          @map("address_line") @db.VarChar(320)
-  landmark             String?         @db.VarChar(160)
-  area                 String?         @db.VarChar(120)
-  city                 String          @default("Patna") @db.VarChar(80)
-  state                String          @default("Bihar") @db.VarChar(80)
-  pincode              String          @db.VarChar(6)
-  latitude             Decimal?        @db.Decimal(10, 7)
-  longitude            Decimal?        @db.Decimal(10, 7)
-  serviceType          ServiceType     @default(REPAIR) @map("service_type")
-  machineBrand         String?         @map("machine_brand") @db.VarChar(80)
-  machineModel         String?         @map("machine_model") @db.VarChar(120)
-  purchaseYear         Int?            @map("purchase_year") @db.SmallInt
-  issueCategory        String?         @map("issue_category") @db.VarChar(80)
-  issueDescription     String          @map("issue_description")
-  issueImageUrls       String[]        @map("issue_image_urls")
-  preferredDate        DateTime?       @map("preferred_date") @db.Date
-  preferredSlot        String?         @map("preferred_slot") @db.VarChar(24)
-  scheduledAt          DateTime?       @map("scheduled_at") @db.Timestamptz
-  status               ServiceStatus   @default(NEW)
-  priority             ServicePriority @default(NORMAL)
-  assignedTechnicianId String?         @map("assigned_technician_id") @db.Uuid
-  assignedAt           DateTime?       @map("assigned_at") @db.Timestamptz
-  startedAt            DateTime?       @map("started_at") @db.Timestamptz
-  completedAt          DateTime?       @map("completed_at") @db.Timestamptz
-  visitCharge          Decimal         @default(100) @map("visit_charge") @db.Decimal(8, 2)
-  partsCharge          Decimal         @default(0) @map("parts_charge") @db.Decimal(10, 2)
-  labourCharge         Decimal         @default(0) @map("labour_charge") @db.Decimal(10, 2)
-  totalCharge          Decimal         @default(0) @map("total_charge") @db.Decimal(10, 2)
-  paymentStatus        PaymentStatus   @default(UNPAID) @map("payment_status")
-  resolutionNote       String?         @map("resolution_note")
-  partsReplaced        Json?           @map("parts_replaced")
-  warrantyDays         Int             @default(30) @map("warranty_days")
-  customerRating       Int?            @map("customer_rating") @db.SmallInt
-  customerFeedback     String?         @map("customer_feedback")
-  source               String          @default("WEBSITE_FORM") @db.VarChar(32)
-  internalNote         String?         @map("internal_note")
-  createdAt            DateTime        @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt            DateTime        @updatedAt @map("updated_at") @db.Timestamptz
+// -------------------- SEO & CONTENT --------------------
+model SeoMeta {
+  id            String   @id @default(cuid())
+  pagePath      String   @unique // e.g. "/", "/book-service"
+  metaTitle     String
+  metaDescription String
+  metaKeywords  String[]
+  ogImage       String?
+  schemaJson    Json?    // structured data
+  updatedAt     DateTime @updatedAt
+}
 
-  user               User?                  @relation(fields: [userId], references: [id])
-  assignedTechnician Technician?            @relation(fields: [assignedTechnicianId], references: [id])
-  statusHistory      ServiceStatusHistory[]
+model Banner {
+  id          String   @id @default(cuid())
+  title       String
+  subtitle    String?
+  description String?  @db.Text
+  image       String
+  link        String?
+  position    String   // hero, sidebar, footer
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  startDate   DateTime?
+  endDate     DateTime?
+  ctaText     String?
+  ctaLink     String?
+}
 
-  @@index([status])
-  @@index([assignedTechnicianId])
+// -------------------- LOGS & ANALYTICS --------------------
+model ActivityLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  action      String
+  entityType  String?
+  entityId    String?
+  ip          String?
+  userAgent   String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
   @@index([createdAt])
-  @@index([customerPhone])
-  @@index([pincode])
-  @@map("service_requests")
-}
-
-model ServiceStatusHistory {
-  id         String         @id @default(uuid()) @db.Uuid
-  requestId  String         @map("request_id") @db.Uuid
-  fromStatus ServiceStatus? @map("from_status")
-  toStatus   ServiceStatus  @map("to_status")
-  note       String?
-  changedBy  String?        @map("changed_by") @db.Uuid
-  createdAt  DateTime       @default(now()) @map("created_at") @db.Timestamptz
-
-  request ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
-
-  @@map("service_status_history")
-}
-
-/// A customer's actual RO unit at home.
-///
-/// WHY THIS EXISTS — this is the retention feature, not a vanity one.
-/// Eureka Forbes wins ~23% market share on service network, not product specs.
-/// The mechanic that locks a customer in is knowing their machine: brand,
-/// model, install date, and when each filter was last changed.
-///
-/// Once we hold that, we can say "your sediment filter is 7 months old, due
-/// now" instead of waiting for the customer to notice bad taste and call
-/// whoever answers first. No RO shop in Patna does this — they all work off
-/// a WhatsApp history and memory.
-///
-/// Filter dates are stored as plain dates because that is how a technician
-/// records them on site, and nextServiceDue is computed, never guessed.
-model CustomerMachine {
-  id             String    @id @default(uuid()) @db.Uuid
-  userId         String    @map("user_id") @db.Uuid
-  nickname       String?   @db.VarChar(80)
-  brand          String    @db.VarChar(80)
-  model          String?   @db.VarChar(120)
-  serialNumber   String?   @map("serial_number") @db.VarChar(80)
-  purchaseDate   DateTime? @map("purchase_date") @db.Date
-  installedDate  DateTime? @map("installed_date") @db.Date
-  warrantyEndsOn DateTime? @map("warranty_ends_on") @db.Date
-  addressId      String?   @map("address_id") @db.Uuid
-  capacityLitres Decimal?  @map("capacity_litres") @db.Decimal(6, 2)
-  purificationTech String[] @map("purification_tech")
-  inletTds       Int?      @map("inlet_tds") @db.SmallInt
-  outletTds      Int?      @map("outlet_tds") @db.SmallInt
-  tdsCheckedOn   DateTime? @map("tds_checked_on") @db.Date
-
-  // Consumable ages — the whole point of the feature
-  sedimentChangedOn DateTime? @map("sediment_changed_on") @db.Date
-  carbonChangedOn   DateTime? @map("carbon_changed_on") @db.Date
-  membraneChangedOn DateTime? @map("membrane_changed_on") @db.Date
-  uvChangedOn       DateTime? @map("uv_changed_on") @db.Date
-
-  nextServiceDue DateTime? @map("next_service_due") @db.Date
-  notes          String?
-  isActive       Boolean   @default(true) @map("is_active")
-  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz
-
-  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  address Address? @relation(fields: [addressId], references: [id], onDelete: SetNull)
-
-  @@index([userId])
-  @@index([nextServiceDue])
-  @@map("customer_machines")
-}
-
-model AmcSubscription {
-  id             String    @id @default(uuid()) @db.Uuid
-  userId         String    @map("user_id") @db.Uuid
-  planName       String    @map("plan_name") @db.VarChar(80)
-  machineBrand   String?   @map("machine_brand") @db.VarChar(80)
-  machineModel   String?   @map("machine_model") @db.VarChar(120)
-  addressId      String?   @map("address_id") @db.Uuid
-  price          Decimal   @db.Decimal(10, 2)
-  visitsIncluded Int       @default(4) @map("visits_included") @db.SmallInt
-  visitsUsed     Int       @default(0) @map("visits_used") @db.SmallInt
-  startsOn       DateTime  @map("starts_on") @db.Date
-  endsOn         DateTime  @map("ends_on") @db.Date
-  nextServiceDue DateTime? @map("next_service_due") @db.Date
-  isActive       Boolean   @default(true) @map("is_active")
-  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz
-
-  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  address Address? @relation(fields: [addressId], references: [id])
-
-  @@map("amc_subscriptions")
-}
-
-//── SEO ───────────────────────────────────────────────────────────────────
-
-model SeoMetadata {
-  id              String        @id @default(uuid()) @db.Uuid
-  entityType      SeoEntityType @map("entity_type")
-  entityId        String?       @map("entity_id") @db.Uuid
-  path            String?       @unique @db.VarChar(300)
-  metaTitle       String?       @map("meta_title") @db.VarChar(200)
-  metaDescription String?       @map("meta_description") @db.VarChar(500)
-  metaKeywords    String?       @map("meta_keywords")
-  canonicalUrl    String?       @map("canonical_url")
-  ogTitle         String?       @map("og_title") @db.VarChar(200)
-  ogDescription   String?       @map("og_description") @db.VarChar(500)
-  ogImageUrl      String?       @map("og_image_url")
-  twitterCard     String?       @default("summary_large_image") @map("twitter_card") @db.VarChar(32)
-  robotsIndex     Boolean       @default(true) @map("robots_index")
-  robotsFollow    Boolean       @default(true) @map("robots_follow")
-  schemaJson      Json?         @map("schema_json")
-  priority        Decimal?      @default(0.7) @db.Decimal(2, 1)
-  changeFrequency String?       @default("weekly") @map("change_frequency") @db.VarChar(16)
-  updatedBy       String?       @map("updated_by") @db.Uuid
-  updatedAt       DateTime      @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@unique([entityType, entityId])
-  @@map("seo_metadata")
-}
-
-model ServiceArea {
-  id             String   @id @default(uuid()) @db.Uuid
-  areaName       String   @map("area_name") @db.VarChar(120)
-  slug           String   @unique @db.VarChar(140)
-  city           String   @default("Patna") @db.VarChar(80)
-  state          String   @default("Bihar") @db.VarChar(80)
-  pincodes       String[]
-  latitude       Decimal? @db.Decimal(10, 7)
-  longitude      Decimal? @db.Decimal(10, 7)
-  heroHeading    String?  @map("hero_heading") @db.VarChar(220)
-  contentHtml    String?  @map("content_html")
-  landmarks      String[]
-  avgResponseMin Int?     @default(120) @map("avg_response_min")
-  isActive       Boolean  @default(true) @map("is_active")
-  displayOrder   Int      @default(0) @map("display_order")
-
-  @@map("service_areas")
-}
-
-model Redirect {
-  id         String   @id @default(uuid()) @db.Uuid
-  fromPath   String   @unique @map("from_path") @db.VarChar(300)
-  toPath     String   @map("to_path") @db.VarChar(300)
-  statusCode Int      @default(301) @map("status_code") @db.SmallInt
-  hitCount   Int      @default(0) @map("hit_count")
-  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
-
-  @@map("redirects")
-}
-
-//── NOTIFICATIONS ─────────────────────────────────────────────────────────
-
-model NotificationTemplate {
-  id           String       @id @default(uuid()) @db.Uuid
-  key          String       @unique @db.VarChar(80)
-  channel      NotifChannel
-  waTemplateId String?      @map("wa_template_id") @db.VarChar(120)
-  language     String       @default("en") @db.VarChar(8)
-  subject      String?      @db.VarChar(200)
-  body         String
-  variables    String[]
-  isActive     Boolean      @default(true) @map("is_active")
-
-  @@map("notification_templates")
+  @@index([action])
 }
 
 model Notification {
-  id            String       @id @default(uuid()) @db.Uuid
-  userId        String?      @map("user_id") @db.Uuid
-  channel       NotifChannel
-  templateKey   String?      @map("template_key") @db.VarChar(80)
-  recipient     String       @db.VarChar(160)
-  payload       Json?
-  status        NotifStatus  @default(QUEUED)
-  providerMsgId String?      @map("provider_msg_id") @db.VarChar(160)
-  errorMessage  String?      @map("error_message")
-  relatedType   String?      @map("related_type") @db.VarChar(40)
-  relatedId     String?      @map("related_id") @db.Uuid
-  attempts      Int          @default(0) @db.SmallInt
-  scheduledFor  DateTime     @default(now()) @map("scheduled_for") @db.Timestamptz
-  sentAt        DateTime?    @map("sent_at") @db.Timestamptz
-  createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  body        String
+  type        String   // ORDER, SERVICE, PROMO, SYSTEM
+  link        String?
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
 
-  user User? @relation(fields: [userId], references: [id])
-
-  @@index([status, scheduledFor])
-  @@index([relatedType, relatedId])
-  @@map("notifications")
+  @@index([userId, isRead])
 }
 
-//── ANALYTICS & AUDIT ─────────────────────────────────────────────────────
-
-model DailyMetric {
-  metricDate          DateTime @id @map("metric_date") @db.Date
-  revenueEcommerce    Decimal  @default(0) @map("revenue_ecommerce") @db.Decimal(14, 2)
-  revenueService      Decimal  @default(0) @map("revenue_service") @db.Decimal(14, 2)
-  ordersCount         Int      @default(0) @map("orders_count")
-  ordersDelivered     Int      @default(0) @map("orders_delivered")
-  ordersCancelled     Int      @default(0) @map("orders_cancelled")
-  avgOrderValue       Decimal  @default(0) @map("avg_order_value") @db.Decimal(12, 2)
-  serviceRequestsNew  Int      @default(0) @map("service_requests_new")
-  serviceRequestsDone Int      @default(0) @map("service_requests_done")
-  newCustomers        Int      @default(0) @map("new_customers")
-  sessions            Int      @default(0)
-  cartsCreated        Int      @default(0) @map("carts_created")
-  cartsAbandoned      Int      @default(0) @map("carts_abandoned")
-  cartsRecovered      Int      @default(0) @map("carts_recovered")
-  recoveredRevenue    Decimal  @default(0) @map("recovered_revenue") @db.Decimal(14, 2)
-  computedAt          DateTime @default(now()) @map("computed_at") @db.Timestamptz
-
-  @@map("daily_metrics")
-}
-
-model SearchQuery {
-  id               BigInt   @id @default(autoincrement())
-  query            String   @db.VarChar(200)
-  userId           String?  @map("user_id") @db.Uuid
-  resultCount      Int      @default(0) @map("result_count")
-  clickedProductId String?  @map("clicked_product_id") @db.Uuid
-  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz
-
-  user           User?    @relation(fields: [userId], references: [id])
-  clickedProduct Product? @relation(fields: [clickedProductId], references: [id])
-
-  @@index([query])
-  @@map("search_queries")
-}
-
-model AuditLog {
-  id         BigInt   @id @default(autoincrement())
-  actorId    String?  @map("actor_id") @db.Uuid
-  action     String   @db.VarChar(80)
-  entityType String   @map("entity_type") @db.VarChar(60)
-  entityId   String?  @map("entity_id") @db.Uuid
-  beforeData Json?    @map("before_data")
-  afterData  Json?    @map("after_data")
-  ipAddress  String?  @map("ip_address") @db.Inet
-  userAgent  String?  @map("user_agent")
-  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
-
-  actor User? @relation(fields: [actorId], references: [id])
-
-  @@index([entityType, entityId, createdAt])
-  @@map("audit_logs")
-}
-
-/// In-app alert for the OWNER, shown in the admin bell menu.
-///
-/// Deliberately separate from `Notification`: that table is the outbound
-/// customer queue (WhatsApp/SMS templates, delivery status, retry attempts).
-/// This one is inbound-to-owner, has no delivery concept, and is read by
-/// polling from the admin UI. Mixing the two would mean the bell has to filter
-/// out every customer message on every poll.
-///
-/// Rows are written by `alert.service.ts` whenever something happens the owner
-/// would want to know about within minutes: a new service request, a new
-/// order, a COD order needing confirmation, or stock running out.
-model AdminAlert {
-  id         String    @id @default(uuid()) @db.Uuid
-  /// SERVICE_REQUEST | ORDER | STOCK | REVIEW | SYSTEM
-  kind       String    @db.VarChar(40)
-  /// low | normal | high — drives colour and whether the browser notifies.
-  priority   String    @default("normal") @db.VarChar(10)
-  title      String    @db.VarChar(160)
-  body       String    @db.VarChar(400)
-  /// Where the bell should navigate when this alert is clicked.
-  link       String?   @db.VarChar(300)
-  /// Customer phone, when the alert is about a person — powers 1-tap call.
-  phone      String?   @db.VarChar(20)
-  /// Money involved, for order alerts.
-  amount     Decimal?  @db.Decimal(12, 2)
-  relatedType String?  @map("related_type") @db.VarChar(40)
-  relatedId   String?  @map("related_id") @db.Uuid
-  isRead     Boolean   @default(false) @map("is_read")
-  readAt     DateTime? @map("read_at") @db.Timestamptz
-  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz
-
-  @@index([isRead, createdAt])
-  @@index([kind, createdAt])
-  @@map("admin_alerts")
-}
-
-/// Web Push subscription for the owner's phone.
-///
-/// This is what makes a notification arrive on the phone even when the browser
-/// tab is closed — the Push API delivers to the service worker, which raises a
-/// system notification. One row per device, so the owner can register a phone
-/// and a laptop and get both.
-///
-/// Keys come straight from the browser's PushSubscription object. VAPID keys
-/// live in env vars, never in the database.
-model PushSubscription {
-  id        String   @id @default(uuid()) @db.Uuid
-  /// Unique per browser/device — the natural dedupe key.
-  endpoint  String   @unique @db.VarChar(500)
-  p256dh    String   @db.VarChar(200)
-  auth      String   @db.VarChar(100)
-  /// Free-text so the owner can tell "Redmi phone" from "shop laptop".
-  label     String?  @db.VarChar(80)
-  userId    String?  @map("user_id") @db.Uuid
-  lastUsed  DateTime @default(now()) @map("last_used") @db.Timestamptz
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
-
-  @@map("push_subscriptions")
-}
-
-/// Phone verification challenge.
-///
-/// WHY IN POSTGRES AND NOT REDIS: the original OTP code used
-/// `redis?.setex(...)`. With no REDIS_URL that optional-chain silently does
-/// nothing — the code is never stored, so verification always fails and the
-/// whole login is dead with no error anywhere. Postgres is already required
-/// for the app to run at all, so storing challenges here removes an entire
-/// class of "works on my machine" failure.
-///
-/// Rows are short-lived; expired ones are cleaned on each new challenge.
-model OtpChallenge {
-  id        String   @id @default(uuid()) @db.Uuid
-  phone     String   @db.VarChar(15)
-  /// bcrypt hash — a DB leak must not hand out working codes.
-  codeHash  String   @map("code_hash")
-  /// LOGIN | ORDER_COD | SERVICE_BOOKING — what the code unlocks.
-  purpose   String   @default("LOGIN") @db.VarChar(24)
-  /// SMS | WHATSAPP | WHATSAPP_REVERSE | DEV
-  channel   String   @default("DEV") @db.VarChar(24)
-  attempts  Int      @default(0) @db.SmallInt
-  /// Set when the customer's WhatsApp message arrives (reverse flow).
-  verifiedAt DateTime? @map("verified_at") @db.Timestamptz
-  /// Random token the browser polls with — never exposes the phone number.
-  pollToken String   @unique @map("poll_token") @db.VarChar(64)
-  expiresAt DateTime @map("expires_at") @db.Timestamptz
-  ip        String?  @db.VarChar(45)
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
-
-  @@index([phone, purpose])
-  @@index([expiresAt])
-  @@map("otp_challenges")
-}
-
+// -------------------- SETTINGS --------------------
 model SiteSetting {
-  key         String   @id @db.VarChar(80)
+  key         String   @id
   value       Json
-  description String?
-  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
-
-  @@map("site_settings")
+  updatedAt   DateTime @updatedAt
 }
-
-/// Uploaded images from the admin panel.
-///
-/// WHY BYTES IN POSTGRES: Vercel's filesystem is read-only at runtime, so we
-/// physically cannot write into public/. The two real options are an object
-/// store (Vercel Blob / S3 / Cloudinary — all need an account + token) or the
-/// database. We support BOTH and pick automatically:
-///   - BLOB_READ_WRITE_TOKEN set  → file goes to Vercel Blob, `externalUrl` filled
-///   - no token                   → bytes live here, served by /api/media/[id]
-/// This way uploads work on day one with zero configuration, and moving to a
-/// CDN later needs no code change and no re-linking of existing products.
-///
-/// Images are converted to WebP before storing, so a 4 MB phone photo lands at
-/// roughly 150-250 KB. The admin can opt out per upload.
-model MediaAsset {
-  id          String   @id @default(uuid()) @db.Uuid
-  filename    String   @db.VarChar(255)
-  mimeType    String   @map("mime_type") @db.VarChar(64)
-  bytes       Int
-  width       Int?
-  height      Int?
-  data        Bytes?
-  thumbData   Bytes?   @map("thumb_data")
-  externalUrl String?  @map("external_url")
-  altText     String?  @map("alt_text") @db.VarChar(200)
-  folder      String   @default("products") @db.VarChar(40)
-  checksum    String   @unique @db.VarChar(64)
-  uploadedBy  String?  @map("uploaded_by") @db.Uuid
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
-
-  uploader User? @relation(fields: [uploadedBy], references: [id], onDelete: SetNull)
-
-  @@index([folder, createdAt])
-  @@map("media_assets")
-}
+// Keys will include:
+// - contact.phones : ["9241536586", "9534037266"]
+// - contact.whatsapp : "9241536586"
+// - contact.email : "service@roserviceinpatna.in"
+// - shipping.freeAbove : 999
+// - shipping.standardCharge : 79
+// - razorpay.keyId, stripe.keyId
+// - social.links

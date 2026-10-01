@@ -1,277 +1,88 @@
-/**
- * POST /api/orders — place an order.
- *
- * Flow:
- *   validate → price server-side → create order + reserve stock →
- *   COD ? confirm immediately : create Razorpay order and return checkout config
- *
- * The client never sends prices. It sends product IDs and quantities only.
- */
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { prisma } from '@/lib/prisma';
 import { authOptions } from '@/lib/auth';
-import { rateLimit } from '@/lib/db/redis';
-import { createOrder, confirmOrderPaid, releaseOrderStock, quoteCart, OrderError } from '@/server/services/order.service';
-import { createGatewayOrder, buildCheckoutOptions } from '@/lib/payments/razorpay';
-import { prisma } from '@/lib/db/prisma';
-import { getAvailablePaymentMethods, getOtpSettings } from '@/lib/settings';
-import { consumeVerification, isPhoneVerified } from '@/server/services/otp.service';
-import { notifyAdmins } from '@/lib/integrations/whatsapp';
-import { alertNewOrder } from '@/server/services/alert.service';
+import { generateOrderNumber } from '@/lib/utils';
+import { z } from 'zod';
 
-const addressSchema = z.object({
-  contactName: z.string().trim().min(2).max(120),
-  contactPhone: z.string().regex(/^[6-9]\d{9}$/, 'Enter a valid 10-digit mobile'),
-  line1: z.string().trim().min(5).max(255),
-  line2: z.string().max(255).optional().or(z.literal('')),
-  landmark: z.string().max(160).optional().or(z.literal('')),
-  city: z.string().trim().min(2).max(80),
-  state: z.string().trim().min(2).max(80),
-  pincode: z.string().regex(/^\d{6}$/, 'Enter a valid 6-digit pincode'),
+const itemSchema = z.object({
+  productId: z.string(),
+  productName: z.string(),
+  productSlug: z.string(),
+  image: z.string().optional().nullable(),
+  quantity: z.number().min(1),
+  unitPrice: z.number(),
 });
 
 const schema = z.object({
-  lines: z.array(z.object({
-    productId: z.string().uuid(),
-    variantId: z.string().uuid().nullable().optional(),
-    quantity: z.number().int().min(1, 'Quantity must be at least 1')
-      .max(99, 'Maximum 99 units per item — call us for bulk orders'),
-  })).min(1, 'Cart is empty'),
-  shipping: addressSchema,
-  billing: addressSchema.nullable().optional(),
-  paymentMethod: z.enum(['RAZORPAY', 'COD', 'UPI_MANUAL', 'BANK']),
-  customerNote: z.string().max(500).optional().or(z.literal('')),
-  guestEmail: z.string().email().optional().or(z.literal('')),
-  /** UTR the customer typed after paying by UPI — verified by the admin. */
-  paymentReference: z.string().trim().max(40).optional(),
-  /** Proof-of-phone token from /api/auth/otp, required for COD when enabled. */
-  verificationToken: z.string().trim().max(80).optional(),
+  items: z.array(itemSchema).min(1, 'Cart empty hai'),
+  address: z.object({
+    name: z.string().min(2), phone: z.string().regex(/^[0-9]{10}$/),
+    line1: z.string().min(5), line2: z.string().optional(), city: z.string(), state: z.string(), pincode: z.string().regex(/^[0-9]{6}$/),
+  }),
+  paymentMethod: z.enum(['COD','NETBANKING','UPI','RAZORPAY']).default('COD'),
 });
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const parsed = schema.safeParse(await req.json());
-    if (!parsed.success) {
-      return NextResponse.json(
-        { message: 'Please check your details', errors: parsed.error.flatten().fieldErrors },
-        { status: 422 },
-      );
-    }
-    const d = parsed.data;
-
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0] ?? 'unknown';
-    if (!(await rateLimit(`order:${d.shipping.contactPhone}:${ip}`, 5, 600))) {
-      return NextResponse.json(
-        { message: 'Too many order attempts. Please call us to complete your order.' },
-        { status: 429 },
-      );
-    }
-
     const session = await getServerSession(authOptions);
+    const body = await req.json();
+    const data = schema.parse(body);
 
-    /* ── COD phone verification ──────────────────────────────────────────
-       COD is the only path where stock leaves the building before any money
-       arrives, so it is the only order type worth gating. Prepaid orders are
-       deliberately NOT gated — the payment already cleared, and adding a step
-       there would cost conversions for zero protection. */
-    if (d.paymentMethod === 'COD') {
-      const otpCfg = await getOtpSettings();
-      const phone = d.shipping.contactPhone;
+    const subtotal = data.items.reduce((s, i) => s + i.unitPrice * i.quantity, 0);
+    const shipping = subtotal >= 500 ? 0 : 99;
+    const total = subtotal + shipping;
+    const addr = `${data.address.name} | ${data.address.phone} | ${data.address.line1}${data.address.line2 ? ', ' + data.address.line2 : ''}, ${data.address.city}, ${data.address.state} - ${data.address.pincode}`;
 
-      // Quote first so the threshold is checked against the real total.
-      const provisional = await quoteCart(d.lines, d.shipping.pincode, 'COD');
-      const overThreshold = provisional.total >= otpCfg.codThreshold;
-
-      if (otpCfg.requireForCod && otpCfg.channel !== 'DEV' && overThreshold) {
-        const known = otpCfg.skipIfAlreadyVerified && (await isPhoneVerified(phone));
-
-        if (!known) {
-          const ok = d.verificationToken
-            ? await consumeVerification(d.verificationToken, phone, 'ORDER_COD')
-            : false;
-
-          if (!ok) {
-            return NextResponse.json(
-              {
-                needsVerification: true,
-                message: 'Please verify your mobile number to place a Cash on Delivery order.',
-              },
-              { status: 428 },
-            );
-          }
-
-          // Guests have no user row at verification time, so stamp whichever
-          // row exists now (registered users) — guests get stamped when they
-          // later register and their orders are claimed.
-          await prisma.user
-            .updateMany({ where: { phone }, data: { phoneVerifiedAt: new Date() } })
-            .catch(() => null);
-        }
+    // Build items data — for demo/sample productIds starting with 's' or invalid,
+    // we skip the FK constraint by NOT linking (product becomes snapshot only).
+    const orderItemsData = await Promise.all(data.items.map(async (i) => {
+      const base: any = {
+        productName: i.productName,
+        productSlug: i.productSlug,
+        image: i.image || null,
+        quantity: i.quantity,
+        unitPrice: i.unitPrice,
+        totalPrice: i.unitPrice * i.quantity,
+      };
+      // Only set productId FK if product actually exists in DB (not a sample id)
+      if (!i.productId.startsWith('s')) {
+        try {
+          const exists = await prisma.product.findUnique({ where: { id: i.productId }, select: { id: true } });
+          if (exists) base.productId = i.productId;
+        } catch {}
       }
-    }
+      return base;
+    }));
 
-    // Refuse a method the admin has switched off. Without this a stale browser
-    // tab could place an order through a channel we no longer accept.
-    const available = await getAvailablePaymentMethods(0, true);
-    const methodEnabled =
-      (d.paymentMethod === 'RAZORPAY' && available.razorpay) ||
-      (d.paymentMethod === 'UPI_MANUAL' && available.upiManual) ||
-      (d.paymentMethod === 'BANK' && available.bankTransfer) ||
-      (d.paymentMethod === 'COD' && available.settings.codEnabled);
-
-    if (!methodEnabled) {
-      return NextResponse.json(
-        { message: 'That payment method is not available right now. Please pick another or call us.' },
-        { status: 409 },
-      );
-    }
-
-    // UPI_MANUAL / BANK are stored as their real enum values; the DB has no
-    // 'UPI_MANUAL' member and inventing one would break every existing report.
-    const dbMethod =
-      d.paymentMethod === 'UPI_MANUAL' ? 'UPI'
-      : d.paymentMethod === 'BANK' ? 'NETBANKING'
-      : d.paymentMethod;
-
-    const { order, quote } = await createOrder({
-      userId: session?.user?.id ?? null,
-      guestPhone: d.shipping.contactPhone,
-      guestEmail: d.guestEmail || undefined,
-      lines: d.lines,
-      shipping: d.shipping,
-      billing: d.billing ?? null,
-      paymentMethod: dbMethod,
-      customerNote: d.customerNote || undefined,
+    const order = await prisma.order.create({
+      data: {
+        orderNumber: generateOrderNumber(),
+        userId: session?.user ? (session.user as any).id : undefined,
+        subtotal, shippingAmount: shipping, totalAmount: total,
+        paymentMethod: data.paymentMethod,
+        paymentStatus: 'PENDING',
+        orderStatus: 'CONFIRMED', // COD = confirm immediately
+        notes: `Shipping: ${addr}`,
+        items: { create: orderItemsData },
+      },
     });
 
-    /* ── Manual UPI / bank transfer ──────────────────────────────────────
-       Money moves outside our system, so the order is created UNPAID with the
-       customer's reference recorded. The admin verifies it against the bank
-       and marks it paid from /admin/orders. Honest and auditable — far better
-       than pretending a gateway confirmed it. */
-    if (d.paymentMethod === 'UPI_MANUAL' || d.paymentMethod === 'BANK') {
-      if (d.paymentReference) {
-        await prisma.payment.create({
-          data: {
-            orderId: order.id,
-            gateway: 'MANUAL',
-            gatewayPaymentId: d.paymentReference,
-            method: dbMethod as never,
-            amount: quote.total,
-            status: 'UNPAID',
-            rawPayload: {
-              source: 'CUSTOMER_DECLARED',
-              declaredAt: new Date().toISOString(),
-              channel: d.paymentMethod,
-            },
-          },
-        });
-        await prisma.order.update({
-          where: { id: order.id },
-          data: {
-            customerNote: [d.customerNote, `Customer reference: ${d.paymentReference}`]
-              .filter(Boolean).join(' | ').slice(0, 500),
-          },
-        });
-      }
-
-      void notifyAdmins(
-        'admin_new_order_alert',
-        [order.orderNumber, d.shipping.contactName, `₹${quote.total}`, d.shipping.city],
-        'ORDER',
-        order.id,
-      );
-
-      /* In-app + phone push. Unlike the WhatsApp fan-out above, this does not
-         depend on Meta credentials being configured. */
-      void alertNewOrder({
-        orderNumber: order.orderNumber,
-        customerName: d.shipping.contactName,
-        phone: d.shipping.contactPhone,
-        amount: quote.total,
-        itemCount: quote.lines.length,
-        paymentMethod: d.paymentMethod,
-        orderId: order.id,
-      }).catch(() => {});
-
-      return NextResponse.json({
-        success: true,
-        awaitingVerification: true,
-        orderId: order.id,
-        orderNumber: order.orderNumber,
-        paymentMethod: d.paymentMethod,
-        redirectTo: `/checkout/success?order=${order.orderNumber}&pending=1`,
-      });
-    }
-
-    /* ── Cash on Delivery: confirm right away ── */
-    if (dbMethod === 'COD') {
-      await confirmOrderPaid(order.id);
-
-      /* COD is the highest-priority alert: the owner has to ring the customer
-         to confirm before dispatching, or risk shipping to a fake order. */
-      void alertNewOrder({
-        orderNumber: order.orderNumber,
-        customerName: d.shipping.contactName,
-        phone: d.shipping.contactPhone,
-        amount: quote.total,
-        itemCount: quote.lines.length,
-        paymentMethod: 'COD',
-        orderId: order.id,
-      }).catch(() => {});
-
-      return NextResponse.json(
-        {
-          success: true,
-          paymentMethod: 'COD',
-          orderId: order.id,
-          orderNumber: order.orderNumber,
-          total: quote.total,
-          redirectTo: `/checkout/success?order=${order.orderNumber}`,
-        },
-        { status: 201 },
-      );
-    }
-
-    /* ── Prepaid: hand off to Razorpay ── */
-    try {
-      const gatewayOrder = await createGatewayOrder(quote.total, order.orderNumber, {
-        orderId: order.id,
-        phone: d.shipping.contactPhone,
-      });
-
-      return NextResponse.json(
-        {
-          success: true,
-          paymentMethod: 'RAZORPAY',
-          orderId: order.id,
-          orderNumber: order.orderNumber,
-          total: quote.total,
-          mock: gatewayOrder.mock,
-          checkout: buildCheckoutOptions({
-            gatewayOrder,
-            orderNumber: order.orderNumber,
-            customerName: d.shipping.contactName,
-            customerPhone: d.shipping.contactPhone,
-            customerEmail: d.guestEmail || undefined,
-          }),
-        },
-        { status: 201 },
-      );
-    } catch (gwErr) {
-      // Gateway down — do not leave stock reserved for an order that can't be paid
-      await releaseOrderStock(order.id, 'Payment gateway unavailable');
-      throw gwErr;
-    }
-  } catch (err) {
-    if (err instanceof OrderError) {
-      return NextResponse.json({ message: err.message, errors: err.details }, { status: 409 });
-    }
-    console.error('[orders:POST]', err);
-    return NextResponse.json(
-      { message: 'Could not place the order. Please try again or call us.' },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: true, orderNumber: order.orderNumber, id: order.id, total });
+  } catch (e: any) {
+    console.error('Order create:', e);
+    const msg = e?.issues ? e.issues.map((i: any) => i.message).join(', ') : (e.message || 'Order nahi ho paya');
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
+}
+
+export async function GET(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) return NextResponse.json({ orders: [] });
+  const orders = await prisma.order.findMany({
+    where: { userId: (session.user as any).id },
+    include: { items: true },
+    orderBy: { createdAt: 'desc' },
+  });
+  return NextResponse.json({ orders });
 }

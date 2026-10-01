@@ -226,17 +226,17 @@ export default function HeroSection() {
       </div>
 
       {/* Trusted brands marquee bar */}
-      <div className="border-y border-gray-100 bg-white/60 backdrop-blur py-5 overflow-hidden">
+      <div className="border-y border-gray-100 bg-white/60 backdrop-blur py-8 overflow-hidden">
         <div className="container-pad">
-          <p className="text-center text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">
+          <p className="text-center text-sm font-bold uppercase tracking-widest text-gray-500 mb-5">
             Authorized Service Partner for 18+ Leading RO Brands
           </p>
-          <div className="marquee flex gap-10 items-center whitespace-nowrap animate-marquee">
+          <div className="marquee flex gap-14 items-center whitespace-nowrap animate-marquee">
             {[...Array(2)].map((_, n) => (
-              <div key={n} className="flex gap-10 items-center shrink-0">
+              <div key={n} className="flex gap-14 items-center shrink-0">
                 {BRAND_LOGOS.map(b => (
-                  <div key={b.alt+n} className="h-10 w-28 flex items-center justify-center shrink-0 opacity-70 hover:opacity-100 transition">
-                    <Image src={b.src} alt={b.alt} width={110} height={40} className="object-contain max-h-9 w-auto grayscale hover:grayscale-0 transition"/>
+                  <div key={b.alt+n} className="h-20 w-48 flex items-center justify-center shrink-0 opacity-75 hover:opacity-100 transition-all duration-300 hover:scale-110">
+                    <Image src={b.src} alt={b.alt} width={190} height={76} className="object-contain max-h-16 w-auto grayscale hover:grayscale-0 transition-all duration-300"/>
                   </div>
                 ))}
               </div>
