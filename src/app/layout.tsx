@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   creator: 'RO Service Patna',
   publisher: 'RO Service Patna',
   category: 'Local Service',
-  alternates: { canonical: '/' },
+  alternates: { canonical: './' },
   openGraph: {
     type: 'website', url: '/', title: 'RO Service in Patna | ₹200 Visit Charge - Same-Day Service',
     description: 'Patna ka #1 RO repair service. ₹200 visit charge. Same-day technician at door. All brands supported. Call 9241536586.',

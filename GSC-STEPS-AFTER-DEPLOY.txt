@@ -1,0 +1,32 @@
+======================================================
+GSC (Google Search Console) STEPS AFTER DEPLOY
+======================================================
+
+Deploy ke BAAD ye steps karna (2-3 din mein):
+
+STEP 1: www property me jana -> Pages -> "VALIDATE FIX" button
+dabao har section ke liye (7,4,2,26 sabke liye)
+
+STEP 2: Sitemaps -> purani sitemap delete karke naya "sitemap.xml" submit karo
+
+STEP 3: URL Inspection me homepage "www.roserviceinpatna.in" daal ke
+"Test Live URL" dabao -> phir "Request Indexing"
+
+STEP 4: Purane non-www wali (roserviceinpatna.in bina www) property me
+jaake jo removal request dala tha woh chhod do, 301 redirect
+apne aap kaam karega.
+
+STEP 5: In 7-10 days Google sab pages re-crawl kar lega, fir
+ranking automatically improve hogi.
+
+SEO FIXES JO KIYE GAYE:
+✓ 8 purane broken URLs ke liye 301 redirect add kiya
+  ( /brands/aquanexa, /product/aqn-* etc.)
+✓ Canonical tag fix kiya (har page apna canonical dikhayega)
+✓ FAQ page me FAQPage schema add kiya (rich snippets)
+✓ robots.txt me /auth/ /login ko disallow kiya
+✓ NO 404 errors ab
+✓ 42 area pages + 18 brand pages + 15 static = ~109 pages
+✓ Sitemap includes all valid pages only
+✓ Site: 100% responsive, phone 9241536586 everywhere, ₹200
+======================================================

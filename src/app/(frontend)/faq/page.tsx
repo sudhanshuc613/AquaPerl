@@ -7,12 +7,23 @@ export const metadata: Metadata = {
   title: 'FAQs - RO Service Patna | Common RO Repair Questions Answered',
   description: 'Common questions about RO service, repair, installation, pricing, AMC, warranty in Patna. Get all answers here. Call 9241536586 for any query.',
   keywords: ['RO service Patna FAQ','RO repair questions Patna','RO AMC questions','RO service warranty Patna'],
-  alternates: { canonical: '/faq' },
+  alternates: { canonical: './' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
 };
 
 export default function FAQPage() {
   return (
     <div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <section className="bg-aqua-gradient text-white py-14">
         <div className="container-pad">
           <p className="text-xs text-white/80"><Link href="/" className="hover:text-white">Home</Link> / FAQ</p>

@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 const sample: Record<string, any> = {
   'ro-patna-pro-12l': {
     id: '1', name: 'RO Service Patna Pro 12L RO+UV+UF+TDS Water Purifier', slug: 'ro-patna-pro-12l',
-    sku: 'AQN-PRO-12', price: 12999, compareAtPrice: 18999, stockQty: 42, warrantyMonths: 24,
+    sku: 'RO-PRO-12', price: 12999, compareAtPrice: 18999, stockQty: 42, warrantyMonths: 24,
     shortDescription: 'Premium 12L RO+UV+UF+Copper+TDS controller with 8-stage purification and digital display.',
     description: `The RO Service Patna Pro is our flagship domestic water purifier, built for Indian households with advanced multi-stage purification:
 - **Sediment pre-filter** to remove visible dirt

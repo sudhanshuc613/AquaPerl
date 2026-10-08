@@ -18,6 +18,15 @@ const nextConfig = {
         destination: 'https://www.roserviceinpatna.in/:path*',
         permanent: true,
       },
+      // OLD purane slugs 301 redirect to new pages (GSC mein purane urls the)
+      { source: '/brands/aquanexa', destination: '/', permanent: true },
+      { source: '/brands/generic-local-brands', destination: '/', permanent: true },
+      { source: '/product/aquafresh', destination: '/brands/aquafresh', permanent: true },
+      { source: '/product/aqn-mem-80', destination: '/categories/ro-membranes', permanent: true },
+      { source: '/product/aqn-c100', destination: '/categories/commercial-plants', permanent: true },
+      { source: '/product/commercial-50-lph', destination: '/categories/50-lph', permanent: true },
+      { source: '/product/commercial-frp-100', destination: '/categories/100-lph', permanent: true },
+      { source: '/product/aquanexa-pro-12l', destination: '/product/ro-patna-pro-12l', permanent: true },
     ];
   },
   async headers() {
