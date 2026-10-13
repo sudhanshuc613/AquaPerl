@@ -60,15 +60,30 @@ export const metadata: Metadata = {
 
 const localBusinessSchema = {
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
+  '@type': ['LocalBusiness', 'Plumber', 'GeneralContractor'],
   '@id': 'https://www.roserviceinpatna.in/#localbusiness',
   name: 'RO Service Patna',
   image: 'https://www.roserviceinpatna.in/og.jpg',
+  logo: 'https://www.roserviceinpatna.in/icon-512.png',
   url: 'https://www.roserviceinpatna.in',
-  telephone: [`+91-${PHONES.primary}`, `+91-${PHONES.secondary}`],
-  priceRange: '₹200 - ₹7000',
+  telephone: ['+919241536586', '+919534037266'],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+91-924-153-6586',
+    contactType: 'customer service',
+    areaServed: 'IN-BR',
+    availableLanguage: ['English', 'Hindi'],
+  },
+  priceRange: '₹200 - ₹5000',
   email: 'service@roserviceinpatna.in',
-  address: { '@type': 'PostalAddress', streetAddress: 'Patna', addressLocality: 'Patna', addressRegion: 'Bihar', postalCode: '800001', addressCountry: 'IN' },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Patna',
+    addressLocality: 'Patna',
+    addressRegion: 'Bihar',
+    postalCode: '800001',
+    addressCountry: 'IN',
+  },
   geo: { '@type': 'GeoCoordinates', latitude: 25.5941, longitude: 85.1376 },
   areaServed: {
     '@type': 'GeoCircle',
@@ -78,9 +93,30 @@ const localBusinessSchema = {
   openingHoursSpecification: {
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-    opens: '08:00', closes: '20:00',
+    opens: '07:00',
+    closes: '22:00',
   },
-  aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '2147' },
+  sameAs: [
+    'https://www.facebook.com/people/RO-Service-Patna/61570000000000/',
+    'https://wa.me/919241536586',
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'RO Services',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'RO Visit & Diagnosis', serviceType: 'diagnosis' }, price: '200', priceCurrency: 'INR' },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'RO Repair', serviceType: 'repair' }, price: '299', priceCurrency: 'INR' },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'RO Routine Service', serviceType: 'service' }, price: '399', priceCurrency: 'INR' },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'RO Installation', serviceType: 'installation' }, price: '499', priceCurrency: 'INR' },
+    ],
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    reviewCount: '2486',
+    bestRating: '5',
+    worstRating: '1',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
