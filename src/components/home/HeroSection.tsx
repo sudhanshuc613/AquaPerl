@@ -226,17 +226,17 @@ export default function HeroSection() {
       </div>
 
       {/* Trusted brands marquee bar */}
-      <div className="border-y border-gray-100 bg-white/60 backdrop-blur py-8 overflow-hidden">
+      <div className="border-y border-gray-100 bg-white/60 backdrop-blur py-10 overflow-hidden">
         <div className="container-pad">
-          <p className="text-center text-sm font-bold uppercase tracking-widest text-gray-500 mb-5">
+          <p className="text-center text-sm font-bold uppercase tracking-widest text-gray-500 mb-6">
             Authorized Service Partner for 18+ Leading RO Brands
           </p>
-          <div className="marquee flex gap-14 items-center whitespace-nowrap animate-marquee">
+          <div className="marquee flex gap-10 items-center whitespace-nowrap animate-marquee">
             {[...Array(2)].map((_, n) => (
-              <div key={n} className="flex gap-14 items-center shrink-0">
+              <div key={n} className="flex gap-10 items-center shrink-0">
                 {BRAND_LOGOS.map(b => (
-                  <div key={b.alt+n} className="h-20 w-48 flex items-center justify-center shrink-0 opacity-75 hover:opacity-100 transition-all duration-300 hover:scale-110">
-                    <Image src={b.src} alt={b.alt} width={190} height={76} className="object-contain max-h-16 w-auto grayscale hover:grayscale-0 transition-all duration-300"/>
+                  <div key={b.alt+n} className="h-24 w-56 flex items-center justify-center shrink-0 transition-all duration-300 hover:scale-110 hover:shadow-lg rounded-xl">
+                    <Image src={b.src} alt={b.alt} width={220} height={92} className="object-contain max-h-20 w-auto" priority />
                   </div>
                 ))}
               </div>
@@ -255,7 +255,7 @@ export default function HeroSection() {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
-        .animate-marquee { animation: marquee 25s linear infinite; }
+        .animate-marquee { animation: marquee 35s linear infinite; }
       `}</style>
     </section>
   );
