@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 import { PHONES, telLink, waLink, SERVICE_PACKAGES, AMC_PLANS } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'RO Service Price List in Patna | ₹200 Visit, ₹799 Filter, ₹1499 Membrane - RO Service Patna',
-  description: 'Transparent RO service price list in Patna. Visit @ ₹200, Filter Change @ ₹799, Membrane @ ₹1499, Installation @ ₹499, AMC @ ₹1499/year. No hidden charges. Call 9241536586.',
+  title: 'RO Service Price List Patna 2026 • ☎ 9241536586 | ₹200 Visit',
+  description: 'RO service price list in Patna 2026 — Visit ₹200, Filter Change ₹799, Membrane ₹1499, Installation ₹499, AMC ₹1499/yr. 100% transparent, no hidden charges. Call 9241536586.',
   keywords: ['RO service charges Patna','RO repair price Patna','RO filter change cost Patna','RO membrane price Patna','RO installation charges Patna','RO AMC price Patna','RO service rate card Patna'],
   alternates: { canonical: '/pricing' },
 };

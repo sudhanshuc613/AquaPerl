@@ -4,9 +4,10 @@ import { Phone, CheckCircle2, Shield, Clock, Users, Wrench } from 'lucide-react'
 import { PHONES, telLink, waLink } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'Book RO Service in Patna | ₹200 Visit Charge - RO Service Patna',
-  description: 'Expert RO repair, installation, AMC & filter change service in Patna. Same-day doorstep visit at just ₹200. Verified technicians, genuine parts. Call 9241536586 now.',
-  keywords: ['RO service Patna','RO repair Patna','RO installation Patna','water purifier service Patna','RO Service Patna service','RO AMC Patna'],
+  title: 'Book RO Service Patna ₹200 • ☎ 9241536586 | 2-Hour Visit',
+  description: 'Book RO repair, installation, AMC & filter change in Patna online. ₹200 fixed visit charge, technician in 2 hours, 30-day warranty, genuine parts. Call or WhatsApp 9241536586 now.',
+  keywords: ['RO service Patna','RO repair Patna','RO installation Patna','water purifier service Patna','RO Service Patna service','RO AMC Patna','book RO service Patna','RO mechanic Patna'],
+  alternates: { canonical: '/book-service' },
 };
 
 const steps = [

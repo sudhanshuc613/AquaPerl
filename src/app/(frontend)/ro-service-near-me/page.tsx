@@ -6,13 +6,14 @@ import { Phone, Clock, Shield, CheckCircle2, MapPin, Wrench, Star } from 'lucide
 import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
-  title: 'RO Service Near Me in Patna | Same-Day RO Repair @ ₹200 Visit - RO Service Patna',
-  description: 'Looking for RO service near me in Patna? RO Service Patna provides same-day RO repair, installation, filter & membrane change at ₹200 visit charge. 32+ areas covered. Call 9241536586 now!',
+  title: 'RO Service Near Me Patna ₹200 • ☎ 9241536586 | 2-HR Technician',
+  description: 'RO service near me in Patna. Same-day RO repair, installation, filter & membrane change at ₹200 visit. Technician in 2 hours, 30-day warranty, all areas covered. Call 9241536586!',
   keywords: [
     'RO service near me','RO repair near me','water purifier service near me','RO mechanic near me',
     'RO service near Patna','RO repair near me in Patna','best RO service near me',
     'nearby RO service centre','water purifier repair near me','RO technician near me',
     'Kent RO service near me','Aquaguard service near me','RO installation near me',
+    'same day RO service Patna near me',
   ],
   alternates: { canonical: '/ro-service-near-me' },
 };

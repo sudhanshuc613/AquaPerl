@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 import { AMC_PLANS, PHONES, telLink, waLink, SERVICE_PACKAGES, BRANDS_SERVICED } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'RO AMC Plans in Patna | ₹1499/year - 3 Visits + Free Filters - RO Service Patna',
-  description: 'Best RO AMC plans in Patna starting ₹1499/year. 3 preventive services, free filters, priority support, genuine parts. Kent, Aquaguard, Livpure sab brands. Call 9241536586.',
-  keywords: ['RO AMC Patna','RO annual maintenance contract Patna','RO service plan Patna','RO yearly service Patna','cheap RO AMC Patna','RO maintenance Patna'],
+  title: 'RO AMC Patna ₹1499/yr • ☎ 9241536586 | 3 Free Visits + Filters',
+  description: 'Best RO AMC plans in Patna starting ₹1499/year. 3 preventive services, free filters, priority 2-hour support, genuine parts. All brands Kent/Aquaguard/Livpure. Call 9241536586.',
+  keywords: ['RO AMC Patna','RO annual maintenance contract Patna','RO service plan Patna','RO yearly service Patna','cheap RO AMC Patna','RO maintenance Patna','RO AMC plans Patna 1499'],
 };
 
 export default function AMCPage() {

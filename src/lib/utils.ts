@@ -243,9 +243,11 @@ export function telLink(phone: string) {
 export function getAreaSEO(areaSlug: string) {
   const area = PATNA_AREAS.find(a => a.slug === areaSlug);
   if (!area) return null;
+  // Title ~55 chars (Google poora dikhaye), desc ~150 chars pehle (phone start mein)
+  const phone = '9241536586';
   return {
-    title: `RO Service in ${area.name} Patna | ₹200 Visit Charge | Same-Day Repair - RO Service Patna`,
-    description: `Best RO service in ${area.name}, Patna. Same-day RO repair, installation, filter & membrane change starting ₹200 visit charge. All brands — Kent, Aquaguard, Livpure. Call 9241536586 now!`,
+    title: `RO Service ${area.name} Patna ₹200 • ☎ ${phone}`,
+    description: `RO repair & installation in ${area.name}, Patna. ₹200 visit, technician in 2 HRS. All brands, 30-day warranty, genuine parts. Call ${phone} now!`,
     keywords: [
       `RO service in ${area.name}`,
       `RO repair ${area.name} Patna`,
@@ -259,6 +261,9 @@ export function getAreaSEO(areaSlug: string) {
       `best RO service near ${area.name}`,
       `RO AMC ${area.name} Patna`,
       `water purifier repair ${area.name} Patna`,
+      `RO service Patna ${area.pincode || ''}`,
+      `RO mechanic ${area.name} Patna`,
+      `same day RO service ${area.name}`,
     ],
   };
 }

@@ -17,14 +17,21 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { brand: string } }): Promise<Metadata> {
   const brand = getBrand(params.brand);
   if (!brand) return { title: 'Brand Not Found' };
+  const phone = '9241536586';
   return {
-    title: `${brand.name} RO Service in Patna | Same-Day Repair @ ₹200 - RO Service Patna`,
-    description: `Expert ${brand.name} RO repair, installation & service in Patna. Same-day visit @ ₹200. Genuine ${brand.name} spare parts, trained technicians, 30-day warranty. Call 9241536586.`,
+    title: `${brand.name} RO Service Patna ₹200 • ☎ ${phone}`,
+    description: `${brand.name} RO repair & installation in Patna. ₹200 visit, technician in 2 HRS. Genuine ${brand.name} parts, 30-day warranty, same-day service. Call ${phone} now!`,
     keywords: [
       `${brand.name} RO service Patna`,`${brand.name} water purifier service Patna`,`${brand.name} RO repair Patna`,
       `${brand.name} service centre Patna`,`${brand.name} RO installation Patna`,`${brand.name} AMC Patna`,
+      `${brand.name} RO service centre near me`,
     ],
     alternates: { canonical: `/brands/${params.brand}` },
+    openGraph: {
+      title: `${brand.name} RO Service Patna ₹200 • ☎ ${phone}`,
+      description: `${brand.name} RO repair in Patna. ₹200 visit, 2 hour technician, 30-day warranty. Call ${phone}.`,
+      type: 'website', locale: 'en_IN',
+    },
   };
 }
 

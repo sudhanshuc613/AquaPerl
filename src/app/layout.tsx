@@ -21,11 +21,11 @@ export const metadata: Metadata = {
     apple: '/icon-512.png',
   },
   title: {
-    default: 'RO Service in Patna | ₹200 Visit Charge | Same-Day Repair & Installation - RO Service Patna',
-    template: '%s | RO Service Patna',
+    default: 'RO Service Patna ₹200 • ☎ 9241536586 | 2-Hour Technician',
+    template: '%s | RO Service Patna ☎ 9241536586',
   },
   description:
-    'Patna ka #1 trusted RO repair & installation service. Same-day doorstep service in all Patna areas for just ₹200 visit charge. We service Kent, Aquaguard, Livpure, Pureit, AO Smith and all brands. 10,000+ happy customers. Call 9241536586 now! Genuine spare parts, 30-day service warranty. Also sell RO purifiers, membranes & filters at best price in Patna.',
+    'RO repair & installation in Patna. ₹200 visit charge, technician in 2 HRS. All brands (Kent, Aquaguard, Livpure, Pureit, AO Smith). Genuine parts, 30-day warranty, same-day service. Call 9241536586 now! Free TDS test on every visit.',
   keywords: [
     'RO service in Patna','RO repair Patna','RO installation Patna','water purifier service Patna',
     'Kent RO service Patna','Aquaguard service Patna','Livpure service Patna','RO mechanic Patna',
@@ -48,12 +48,12 @@ export const metadata: Metadata = {
   category: 'Local Service',
   alternates: { canonical: './' },
   openGraph: {
-    type: 'website', url: '/', title: 'RO Service in Patna | ₹200 Visit Charge - Same-Day Service',
-    description: 'Patna ka #1 RO repair service. ₹200 visit charge. Same-day technician at door. All brands supported. Call 9241536586.',
+    type: 'website', url: '/', title: 'RO Service Patna ₹200 • ☎ 9241536586 | 2-Hour Technician',
+    description: 'RO repair & installation in Patna. ₹200 visit, 2-hour technician, 30-day warranty, all brands. Call 9241536586.',
     siteName: BRAND.name, locale: 'en_IN',
-    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: 'RO Service Patna' }],
+    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: 'RO Service Patna — ₹200 visit, 2 hour service, Call 9241536586' }],
   },
-  twitter: { card: 'summary_large_image', title: 'RO Service Patna - ₹200 Visit Charge' },
+  twitter: { card: 'summary_large_image', title: 'RO Service Patna ₹200 • ☎ 9241536586' },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
   formatDetection: { telephone: true, email: true, address: true },
 };
