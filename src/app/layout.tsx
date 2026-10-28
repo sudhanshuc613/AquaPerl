@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
   title: {
     default: 'RO Service Patna ₹200 • ☎ 9241536586 | 2-Hour Technician',
-    template: '%s | RO Service Patna ☎ 9241536586',
+    template: '%s',
   },
   description:
     'RO repair & installation in Patna. ₹200 visit charge, technician in 2 HRS. All brands (Kent, Aquaguard, Livpure, Pureit, AO Smith). Genuine parts, 30-day warranty, same-day service. Call 9241536586 now! Free TDS test on every visit.',
