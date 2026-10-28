@@ -64,25 +64,44 @@ export default function HeroSection() {
             </div>
 
             <p className="max-w-2xl text-base md:text-lg text-gray-600 leading-relaxed">
-              24x7 expert RO water purifier service at your doorstep in Patna. Fast, reliable repair,
-              installation and AMC plans for all major brands. Our certified technicians provide same-day
-              support, often within <strong className="text-brand-600">2 hours</strong>.
+              24×7 expert RO water purifier service at your doorstep in Patna. Certified technicians
+              reach you in <strong className="text-brand-600">2 hours</strong>. Genuine spare parts,
+              <strong className="text-orange-600"> transparent pricing, ₹200 fixed visit charge</strong>,
+              and complete 30-day service warranty. 18+ brands supported.
             </p>
 
-            {/* Trust boxes */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+            {/* COMPETITOR-BEATING BADGES ROW */}
+            <div className="flex flex-wrap gap-2 pt-1">
               {[
-                { icon: Clock, title: 'Service in 2 Hours', sub: 'Quick response guaranteed', color:'cyan' },
-                { icon: Shield, title: '30-Day Warranty', sub: 'Complete peace of mind', color:'blue' },
-                { icon: Award, title: 'Starts @ ₹200/-', sub: 'Affordable & transparent', color:'orange' },
+                { t: '₹200 सस्ता vs ROCare/UrbanCompany', c: 'bg-green-50 text-green-700 border-green-200' },
+                { t: 'FREE TDS Test on Every Visit', c: 'bg-blue-50 text-blue-700 border-blue-200' },
+                { t: '2 Hour Response — Patna Local Team', c: 'bg-orange-50 text-orange-700 border-orange-200' },
+                { t: 'Coupon CODE: RO200 — ₹200 Off First Visit', c: 'bg-red-50 text-red-700 border-red-200 animate-pulse' },
+              ].map((b, i) => (
+                <span key={i} className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${b.c}`}>
+                  <CheckCircle2 className="h-3 w-3"/> {b.t}
+                </span>
+              ))}
+            </div>
+
+            {/* Trust boxes */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-1">
+              {[
+                { icon: Clock, title: '2 Hours Mein Technician', sub: 'Quickest in Patna', color:'cyan' },
+                { icon: Shield, title: '30-Day Service Warranty', sub: 'Satisfaction Guaranteed', color:'blue' },
+                { icon: MapPin, title: 'Fixed ₹200 Visit', sub: 'No Hidden Charges', color:'orange' },
+                { icon: Star, title: '4.9★ (2,486+ Reviews)', sub: 'Patna Ka #1 Rated', color:'green' },
               ].map((f, i) => (
-                <div key={i} className="flex items-center gap-3 rounded-xl bg-white/80 backdrop-blur p-3.5 shadow-sm border border-white">
-                  <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${i===2?'bg-orange-100 text-orange-600':'bg-brand-100 text-brand-600'}`}>
+                <div key={i} className="flex items-start gap-2 rounded-xl bg-white/80 backdrop-blur p-3 shadow-sm border border-white">
+                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
+                    i===2?'bg-orange-100 text-orange-600':
+                    i===3?'bg-green-100 text-green-600':
+                    'bg-brand-100 text-brand-600'}`}>
                     <f.icon className="h-5 w-5"/>
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-navy-900">{f.title}</p>
-                    <p className="text-xs text-gray-500">{f.sub}</p>
+                    <p className="text-xs md:text-sm font-bold text-navy-900 leading-tight">{f.title}</p>
+                    <p className="text-[11px] text-gray-500">{f.sub}</p>
                   </div>
                 </div>
               ))}

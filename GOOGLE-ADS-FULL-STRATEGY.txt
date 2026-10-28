@@ -1,0 +1,534 @@
+================================================================
+   GOOGLE ADS FULL STRATEGY  —  RO SERVICE PATNA
+   Monthly Budget: ₹4,000 – ₹5,000
+   Goal: Maximum Genuine Service Calls, Zero Fake/Waste Calls,
+         Competitors se upar raho
+================================================================
+
+Bhai, yeh poora Google Ads blueprint maine Patna ke RO service market
+ke hisaab se banaya hai. Indian Tier-2 city ke CPC rates, GMB ke saath
+integration, aur tumhari budget ko dhyan mein rakhte hue.
+
+Tumhara budget ₹150/day approx hai (₹4500/month). Is budget se agar
+sahi tareeke se chalao to 25-40 GENUINE service calls per month
+aa sakte hain (approx 1-2 calls/day). Matlab ₹110-₹180 per call
+cost mein — jo RO repair ke liye bahut achha hai (kyunki ek service
+visit se average ₹500-₹2000 kamate ho).
+
+----------------------------------------------------------------
+❌ JALDI SE KARNE WALE 5 MUST-DO SETTINGS (fake calls bachane ke liye)
+----------------------------------------------------------------
+
+1. Search Partners = OFF (tumne bola hai ye off rakhna)
+   - Campaign settings → Networks → "Include Google search partners"
+     ka checkbox HATA do.
+   - Is se cheap/wrong-traffic wali sites pe ad nahi dikhega.
+
+2. Display Network = OFF
+   - "Include Google Display Network" bhi OFF karo.
+   - Sirf Google Search + Google Maps pe dikhega ad.
+
+3. Location Targeting = SIRF Patna
+   - Target: Presence: People in or regularly in your targeted
+     locations (ye option select karo, "interest" nahi)
+   - Radius: Patna center (25.5941, 85.1376) se 25 km radius.
+   - Exclude karo: Nalanda, Vaishali, Samastipur, Begusarai ke
+     pincodes — wahan se fake/farji calls aate hain.
+
+4. Ad Schedule = SIRF service hours
+   - Monday-Sunday: 8:00 AM to 9:00 PM
+   - Raat 9 PM se subah 8 AM tak ad OFF (kyunki phone nahi uthaoge,
+     call waste hoga)
+
+5. Devices
+   - Mobile phones: Bid +20% (kyunki 80% local service calls mobile
+     se aati hain)
+   - Tablets: Bid -50%
+   - Desktop: Bid -30%
+
+================================================================
+CAMPAIGN STRUCTURE (Sirf 2 Campaign — budget kam hai to simple rakho)
+================================================================
+
+Tumhe 2 separate campaigns banana hai — alag-alag budget ke saath.
+
+┌──────────────────────────────────────────────────────────────┐
+│ CAMPAIGN 1: RO SERVICE - CALL ADS (70% budget = ₹3150/month) │
+│ Type: Call Ads (call-only)                                   │
+│ Goal: Direct phone calls                                     │
+│ Daily Budget: ₹105                                           │
+├──────────────────────────────────────────────────────────────┤
+│ CAMPAIGN 2: RO SALES/BOOKING - SEARCH (30% = ₹1350/month)   │
+│ Type: Standard Search (text ads)                             │
+│ Goal: Website clicks → form booking / product enquiry        │
+│ Daily Budget: ₹45                                            │
+└──────────────────────────────────────────────────────────────┘
+
+Q? Kyunki ₹4500 mein 3-4 campaign chalane se Google ko data nahi
+milta, aur har campaign pichhdi rahti hai. 2 tight campaigns se
+better results aate hain.
+
+================================================================
+CAMPAIGN 1: CALL ADS (₹105/day — main lead generator)
+================================================================
+
+Call ad kya hota hai?
+→ Mobile pe user ko direct "Call" button dikhta hai, click karte hi
+phone aapke number (9241536586) par lag jata hai. Website pe nahi
+bhejta. Ye local service ke liye SABSE BEST format hai.
+
+👉 SETUP:
+- Campaign type: "Create a campaign without a goal's guidance"
+- Campaign subtype: "Call ads" (phone-only)
+- Phone number: 9241536586 (primary)
+- Country: IN
+- Ad schedule: Mon-Sun, 8 AM - 9 PM
+- Location: Patna + 25km radius
+- Bid strategy starting mein: Manual CPC (max ₹40 bid)
+- 2-3 weeks baad jab 30+ calls aa jayein → switch to
+  "Maximize Conversions" ya "Target CPA" (Target CPA: ₹150 set karna)
+- Conversion action set karo: "Calls from ads" — call duration
+  minimum 30 seconds rakho (30 sec se kam wale calls fake/wrong
+  number hote hain, unhe conversion mat gino)
+
+👉 AD GROUPS (5 alag ad groups, tight themes):
+
+Ad Group A: "RO Repair Near Me" (High Intent - Emergency)
+  Bid: ₹45 max
+  Keywords (EXACT + PHRASE match only — BROAD MAT USE KARNA):
+    [ro service near me]
+    [ro repair near me]
+    [ro mechanic near me]
+    [ro service centre near me]
+    "ro service patna"
+    "ro repair patna"
+    "ro mechanic patna"
+    "ro repair service near me"
+    "water purifier repair near me"
+    "RO repair in Patna"
+    "same day ro service Patna"
+
+Ad Group B: "Brand Specific Service" (High Quality)
+  Bid: ₹40
+  Keywords:
+    [kent ro service patna]
+    [aquaguard service patna]
+    [livpure service patna]
+    [pureit service patna]
+    [ao smith service patna]
+    [blue star ro service patna]
+    [havells ro service patna]
+    "kent ro repair"
+    "aquaguard repair patna"
+    "livpure repair patna"
+    "ro technician for kent"
+    "eureka forbes service patna"
+
+Ad Group C: "Problem Specific" (Ready to Buy)
+  Bid: ₹42
+  Keywords:
+    [ro not working]
+    [ro water leakage]
+    "ro not working patna"
+    "ro water leaking"
+    "ro tds problem"
+    "ro not filtering water"
+    "ro making noise"
+    "ro repair home visit"
+    "ro technician patna"
+    "RO change filter"
+    "ro membrane change patna"
+    "ro filter replacement patna"
+
+Ad Group D: "Installation/AMC" (Higher Ticket)
+  Bid: ₹35
+  Keywords:
+    [ro installation patna]
+    "ro installation service"
+    "new ro installation"
+    "ro amc patna"
+    "ro annual maintenance"
+    "ro repair amc patna"
+    "commercial ro plant service"
+    "commercial RO plant Patna"
+
+Ad Group E: "Competitor Names" (Chura lo unke customers)
+  Bid: ₹25 (low bid kyunki QC 3-5/10 hoga, CPC zyada hoga)
+  Keywords (only PHRASE match):
+    "ro care india patna"
+    "patna aqua care"
+    "doctor fresh ro"
+    "ranjna ro service patna"
+    "rosa lean services"
+    "onedios ro service"
+    "ro service patna"
+    "aquafresh ro service patna"
+  IMPORTANT: Ad copy mein UNKA NAAM MAT LIKHNA (trademark violation).
+  Sirf generic ad chalao: "Best Rated RO Service in Patna — ₹200 Visit
+  Charge, 30-min Response". Unke brand name pe ad dikhega par
+  tumhara naam aayega — isse 20-30% users tumhe try karte hain.
+
+👉 CALL AD COPY (3 ad variations per ad group — Google rotates
+  automatically, best performer zyada dikhata hai):
+
+AD 1 (Main Offer - Price Focus):
+  Headline 1: RO Service Patna - ₹200 Visit
+  Headline 2: Same Day Doorstep Service
+  Headline 3: 18+ Brands Serviced
+  Description 1: Patna ka #1 trusted RO repair. Genuine spare parts,
+   30-day service warranty. Technician 2 ghante mein aapke ghar.
+  Description 2: Kent, Aquaguard, Livpure, Pureit, AO Smith sabki
+   service. Call abhi — free phone consultation.
+  Display Path: /RO-Repair | ₹200-Charge
+  Business Name: AquaMedii - RO Service Patna
+  Phone: 9241536586
+
+AD 2 (Speed Focus):
+  Headline 1: 2-Hour RO Repair Patna
+  Headline 2: 10,000+ Happy Customers
+  Headline 3: 4.9★ Rated on Google
+  Description 1: Phone uthate hi technician nikal jata hai. ₹200 mein
+   full inspection + repair quote. Sab brands, 30-day warranty.
+  Description 2: Filter change, membrane change, leakage fix, TDS
+   problem, AMC plans — sab kuch ek call pe.
+  Display Path: /Same-Day | 2-Hr-Service
+
+AD 3 (Trust Focus):
+  Headline 1: Genuine RO Repair Patna
+  Headline 2: No Fake Parts — No Hidden Charges
+  Headline 3: Book in 1 Click
+  Description 1: 5 saal se Patna mein service. Fixed ₹200 visit charge,
+   parts ke paise sirf lagein to. Transparent billing, WhatsApp quote.
+  Description 2: Boring Road, Kankarbagh, Patliputra, Danapur — poore
+   Patna mein service available.
+  Display Path: /Genuine-Parts | 30-Day-Warranty
+
+👉 CALL AD EXTENSIONS (zaroor lagana — inke bina ad adhura hai):
+- Callout Extensions:
+    * ₹200 Fixed Visit Charge
+    * Same-Day Doorstep Service
+    * 30-Day Service Warranty
+    * All 18+ Brands Supported
+    * Genuine OEM Spare Parts
+    * 10,000+ Customers Served
+- Structured Snippets (Services):
+    RO Repair, RO Installation, Filter Change, Membrane Change,
+    AMC Plan, TDS Adjustment, Leakage Fix, Commercial RO Plant
+- Location Extension: Apne GBP ko Google Ads se LINK karo
+  (is se ad ke saath aapka location pin aur reviews dikhte hain,
+  trust badhta hai aur CPC 15-20% kam hota hai)
+- Call Extension: Already built into call ad
+
+================================================================
+CAMPAIGN 2: SEARCH (Landing Page wale) - ₹45/day
+================================================================
+
+Yeh campaign un logon ke liye jo pehle website dekhna chahte hain,
+products (RO/membrane/filters) browse karna chahte hain, ya form
+bhar ke book karna chahte hain.
+
+👉 SETUP:
+- Campaign type: Search
+- Goal: Website traffic / Leads (form fill)
+- Bid strategy: Manual CPC (max ₹30)
+- Networks: Search Network ONLY, search partners OFF, display OFF
+- Location: Patna + 25km
+- Schedule: Mon-Sun 8 AM - 9 PM
+- Devices: Mobile +20%, Desktop -10%
+- Landing pages:
+    /book-service  (primary)
+    /ro-service-near-me
+    /amc
+    /pricing
+    /areas/boring-road (highest traffic area)
+
+👉 KEYWORDS (sab phrase/exact — broad mat rakna):
+   "ro service in patna online booking"
+   "ro service booking"
+   "book ro mechanic online"
+   "ro amc plan patna"
+   "ro membrane price patna"
+   "ro filter price patna"
+   "new ro purifier price patna"
+   "buy ro online patna"
+   "commercial ro plant patna"
+   "ro repair online patna"
+   [ro service patna online]
+   [ro booking patna]
+
+👉 TEXT ADS (3 Expanded Text Ad / Responsive Search Ad):
+URL: https://www.roserviceinpatna.in/book-service
+
+Headlines (mix-match hone ke liye 10+ daalo):
+   RO Service Patna - Book Online
+   ₹200 Visit Charge - Book Now
+   Same Day RO Repair at Doorstep
+   Book RO Service in 2 Clicks
+   Trusted RO Repair Patna
+   4.9★ Google Rated
+   10,000+ Customers
+   All Brands Serviced
+   30-Day Warranty
+   Free Phone Consultation
+   2-Hour Quick Response
+   Genuine Parts Only
+
+Descriptions:
+   Patna ka #1 RO repair service. Online book karo, 2 ghante mein
+   technician aapke ghar. ₹200 visit charge, 30-day warranty.
+   Call 9241536586 ya online form bharen.
+   Kent, Aquaguard, Livpure, Pureit, AO Smith, Blue Star, Havells
+   sabki repair/service. Boring Road, Kankarbagh, Danapur, Patliputra
+   poore Patna mein service.
+
+👉 Ad Extensions (Campaign 2 mein bhi same callouts/snippets +):
+- Sitelink Extensions:
+    Book Service → /book-service
+    AMC Plans → /amc
+    Pricing → /pricing
+    Spare Parts → /categories/spare-parts
+    Commercial RO → /categories/commercial-plants
+- Lead Form Extension: (optional — Google ka built-in form,
+  user website pe aaye bina form bhar sakta hai)
+    Name, Phone, Problem, Address fields rakhna.
+    Question: "RO ka kya problem hai?" (Dropdown: Not working /
+    Leakage / Filter change / Membrane change / Installation / AMC)
+
+================================================================
+🚫 NEGATIVE KEYWORDS LIST (SABSE ZAROORI — FAKE CALLS YAHI ROKENGE)
+================================================================
+
+Yeh keywords Google Ads ke "Negative Keywords" section mein daalna.
+Agar tum ye nahi karoge to 50% budget bakwas clicks pe chala jayega.
+
+Negative keywords list (copy-paste kar dena, broad match mein):
+
+Job/Training wale (fake - RO ka kaam nahi dhoondh rahe):
+job, vacancy, vacancy in Patna, careers, salary, recruitment,
+internship, training course, ro technician course, ro repairing course
+free training, pdf, online course, ro business kaise kare, franchise
+
+DIY/Spare parts purchase only (service nahi chahiye):
+ro parts wholesale, ro manufacturer, ro plant supplier, ro wholesale
+market, ro factory, ro distributor, dealership, how to repair ro at
+home, ro repair yourself, diy ro, youtube
+
+Product buying from e-commerce (Amazon/Flipkart wale):
+amazon, flipkart, snapdeal, meesho, olx, second hand ro, used ro,
+ro under 5000, cheapest ro, ro price list pdf
+
+Free/Information only (paise nahi denge):
+free ro service, free ro installation, government free ro,
+ro complaint number, customer care number, kent customer care,
+aquaguard complaint, eureka forbes complaint, pureit customer care
+ro kaise kam karta hai, ro tds chart, ro working principle pdf
+
+Out of Patna:
+delhi, mumbai, kolkata, bangalore, chennai, hyderabad, pune,
+ahmedabad, jaipur, lucknow, kanpur, ranchi, muzaffarpur, darbhanga,
+gaya, bhagalpur, nalanda, bihar sharif
+
+Fake/Other products:
+kent water purifier price, kent new ro price, livpure new model,
+new ro purchase, ro on rent, rent ro, ro rental, water can,
+bisleri, kinley, bottled water, water dispenser, kent gravity,
+uf water purifier, candle filter, cloth filter, iron removal filter
+
+Complaints/Reviews (not buying):
+kent ro complaint, aquaguard bad service, ro service complaint,
+ro service review, ro service fraud, fake, scam, ro service chor
+
+Software/Digital (unrelated):
+ro player, ro water in computer, ram, ro software, reverse osmosis
+movie, ro film, ro tv serial
+
+IMPORTANT: Har 3 din baad "Search Terms" report dekhna — aur jo bhi
+irrelevant keywords dikhen unko immediately negative list mein daal
+dena. Pehla 10 din ye karna zaroori hai, baad mein automatic ho
+jayega.
+
+================================================================
+📞 CONVERSION TRACKING (Ye nahi kiya to kuch nahi pata chalega)
+================================================================
+
+1. Google Ads mein "Conversions" set karo:
+   - Call from ad: Minimum 30 seconds duration → count as conversion
+   - Call from website (call extension): 30 seconds → conversion
+   - Book Service form submit (on /book-service): thank you page pe
+     Google Ads conversion tag lagao (weightage 1)
+   - WhatsApp click (optional — advance hai baad mein kar lena)
+
+2. Apne website mein Google Ads global site tag lagao.
+   (Main next update mein isko website ke layout.tsx pe hardcode
+   kar dunga — tumhe sirf Google Ads se Conversion ID mil jayega.)
+
+3. Call reporting ON karna — is se Google aapko call recording
+   bhi dega, aur sikhne ko milega kaunsa keyword kitna de raha.
+
+================================================================
+📅 BIDDING STRATEGY ROADMAP (pehle 6 weeks)
+================================================================
+
+Week 1-2:
+   - Manual CPC (₹35-45 max for high intent groups, ₹25-30 for others)
+   - Har din search terms dekh ke negatives add karo
+   - Ad positions 1.5-2 pe rakho (top 3 mein, not absolute top har waqt)
+
+Week 3-4:
+   - Jab 20+ conversions (calls >30 sec) aa jayein
+   - Enhanced CPC (eCPC) pe switch karo
+   - Ab bhi daily negatives check karo
+
+Week 5-6:
+   - 30+ conversions hone pe Target CPA pe shift ho jao
+   - Target CPA initial: ₹150 rakho (Matlab 1 genuine call ₹150 mein)
+   - Agar ₹150 mein achhe calls aa rahe hain to badha ke ₹180 kar sakte ho
+   - Agar calls kam aayein to CPA thoda badhao ya wapas manual pe aao
+
+================================================================
+💰 EXPECTED RESULTS (REALISTIC)
+================================================================
+
+Monthly spend: ₹4,500
+Average CPC in Patna for RO keywords: ₹25-45
+Expected clicks: 100-150/month (avg 3-5 per day)
+
+Click-to-call conversion rate (call ads): 15-25%
+→ Expected calls: 15-35 calls/month
+Expected genuine service calls (after fake/short/info calls): 60-70%
+→ Genuine calls: 10-24 per month (0.5-1/day)
+
+Cost per genuine call: ₹180-450 (acceptable for RO service)
+Revenue per call (assume 50% booking rate):
+   5-12 booked jobs × avg ₹600 ticket = ₹3,000-7,200
+   Plus filter/membrane upsell = extra ₹2,000-5,000
+   Plus AMC conversions (big ticket) = extra
+→ Expected ROI: 2x to 5x in first month
+
+Jaise-jaise quality score improve hoga (6 weeks ke baad):
+   CPC 30-40% kam hoga
+   CTR 8%+ ho jayega
+   Calls 40-60/month ho jayenge
+   ROI 5x se 8x ho jayega
+
+================================================================
+🏆 COMPETITORS SE AAGE NIKALNE KI TRICKS
+================================================================
+
+1. Apne ad ke headlines mein PRICE aur SPEED mention karo — competitors
+   price nahi likhte. "₹200 Visit Charge" dekh ke log tumhare hi ad pe
+   click karenge.
+
+2. Ad Schedule ke under BID ADJUSTMENT:
+   - Monday-Friday 9 AM - 12 PM: +20% (office jaane se pehle log search
+     karte hain)
+   - Sunday 10 AM - 4 PM: +15% (chhutti ke din log repair karwate hain)
+   - Raat 8-9 PM: -50%
+
+3. Location bid adjustments:
+   - Boring Road, Kankarbagh, Patliputra, Kidwaipuri (affluent areas):
+     +15% bid
+   - Danapur, Khagaul, Bihta (thoda door): -10%
+
+4. Ad Strength "Excellent" rakho — 8+ headlines, 5+ descriptions
+   per ad daalo. Google low ad strength wale ads ko kam dikhata hai.
+
+5. Landing page experience: Jo keyword hai usi se related page pe
+   bhejo. "Kent RO service Patna" search karne wale ko /brands/kent
+   pe bhejo na ki home page pe. Isse quality score 8+ ho jayega, CPC
+   30-40% kam ho jayega.
+
+6. Apne GBP ke reviews badhao — 5+ reviews ke baad ad pe rating stars
+   dikhte hain, CTR 20-30% badh jata hai.
+
+7. Auction Insights report (har hafte): Dekho kaunsa competitor tumse
+   upar hai. Agar rocareindia ya patnaaquacare zyada impression share
+   le raha hai to unke keywords pe bhi bid karo.
+
+================================================================
+📋 FIRST 10 DAYS DAILY CHECKLIST (5 minute har din)
+================================================================
+
+1. Ads account login karo (ads.google.com)
+2. "Search Terms" report kholo (Campaign 1 + 2 dono)
+3. Jo bhi irrelevant lage usko negative keywords mein daalo
+4. Check karo koi ad disapprove to nahi hua
+5. Check karo daily spend kitna ho raha (set daily budget se zyada
+   nahi jaana chahiye)
+6. Missed calls check karo → turant call back karo
+7. Apne ad ko incognito se Google pe search karke check karo ki dikh
+   raha hai ya nahi (apne ad par mat click karna — khud ka paise
+   kat jayega)
+
+================================================================
+🛡️ FAKE / SPAM CALLS SE BACHAO (Extra Tips)
+================================================================
+
+1. Ads sirf 8 AM to 9 PM chalao — is time mein 90% real customers
+   hote hain. Raat ke calls mostly spam ya wrong number hote hain.
+
+2. Minimum call duration 30 seconds set karo — robocalls, miss call
+   fraud wale 2-5 second mein cut karte hain.
+
+3. Auto-call attend mat lagao (IVR). Real aadmi phone uthao, "Hello
+   AquaMedii RO Service, main aapse kaise madad kar sakta hoon?" —
+   is se bhi spam calls ka pata chalta hai.
+
+4. Negative keywords aggressively add karo — yeh #1 tareeka hai
+   waste calls rokne ka.
+
+5. "Search partners" OFF (tumne bola tha, maine already upar mention
+   kiya). Ye sabse bada fake traffic source hai.
+
+6. Agar koi "agency" ya "Google se bol raha hoon" wala call aaye,
+   turant block karo woh number.
+
+================================================================
+⚠️ SETTING UP KARTE WAQT NAHI KARNA YE 5 GALTIYAN
+================================================================
+
+❌ Mat chalao: Broad match keywords (Bohot zyada waste traffic)
+❌ Mat rakho: Search Partners ON
+❌ Mat rakho: 24 ghante ad ON (raat mein waste)
+❌ Mat chalao: Display + Search dono ek saath (alag campaign chahiye)
+❌ Mat bhoolo: Weekly negative keyword audit (pehle 2 mahine)
+❌ Mat use karo: "Maximize Clicks" starting mein (ye Google ko tumhara
+   budget jaldi khatam karne ke liye banaya hai)
+
+================================================================
+🔧 ACCOUNT SETUP KE LIYE STEP BY STEP (Google Ads pe login karke)
+================================================================
+
+Agar account nahi hai to pehle banao: ads.google.com → New account
+- Billing country: India
+- Time zone: Asia/Kolkata
+- Currency: INR
+- Manual payments (auto-pay mat rakho pehle — manual se control
+  rehta hai, ₹500 ka top-up daalo pehle test ke liye)
+
+Upar di hui structure ke hisaab se campaigns banao.
+Pehle top-up sirf ₹1000 daalo — 7 days chalao, data dekh ke phir
+budget badhao.
+
+================================================================
+🎯 30-DAY SUCCESS PLAN
+================================================================
+Week 1: Account setup + campaign 1 live (call ads only) + ₹1000 top-up
+Week 2: Search terms dekh ke 50+ negative keywords add; campaign 2
+        live if campaign 1 working; check call quality
+Week 3: Optimize bids; lowest performing ads pause; best ad ko
+        zyada budget do
+Week 4: Review results; target CPA pe switch if 30+ conversions;
+        next ₹3000 top-up; expect 20-25 calls by end of month.
+
+================================================================
+Bhai, yaad rakhna — Google Ads 100% set-it-and-forget-it nahi hai.
+Pehle 3-4 hafte thoda time dena padega har din 5-10 minute. Baad mein
+ye tumhe har mahine 30-50 genuine calls deta rahega, aur tumhara GBP
+bhi isse improve hoga kyunki Google ko lagta hai ki "yeh business
+active hai, iska ad chalta hai, iske pas reviews aa rahe hain" —
+SEO ranking bhi boost hota hai.
+
+Koi bhi step mein confusion ho ya ad create karte waqt atke,
+screenshot bhejna — main exact settings bata dunga!
+================================================================

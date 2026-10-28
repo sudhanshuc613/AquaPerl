@@ -1,0 +1,812 @@
+================================================================
+  GOOGLE ADS BANANE KI POORI CLICK-BY-CLICK GUIDE
+  Har screen, har button, har option — bilkul aise jaise main
+  tumhare saamne baith ke bata raha hoon
+================================================================
+
+Bhai, har step ko poora padh ke waisa hi karo. Main har cheez
+bataunga ki screen pe kya likha hoga, kis button pe click karna hai,
+kya value dalni hai.
+
+================================================================
+STEP 0: PEHLE EK BAAT YAAD RAKHO
+================================================================
+Google Ads kholte hi tumhe "Smart Campaign" ya "Get more calls"
+jaisa easy option dikhayega — USS MAT JAANA. Woh Google ka
+fool-proof option hai jo tumhara paisa zyada udata hai aur calls
+kam deta hai. Hum EXPERT MODE mein kaam karenge.
+
+Agar koi bhi screen pe aage badhne se pehle "Switch to Expert Mode"
+ya "Expert Mode" dikhe, turant us par click kar lena.
+
+================================================================
+STEP 1: GOOGLE ADS ACCOUNT BANAO (shuru mein)
+================================================================
+
+1. Computer pe Chrome browser kholo.
+2. Address bar mein type karo: https://ads.google.com
+3. Upar right side "Sign in" button pe click karo.
+4. Apna wohi Gmail ID login karo jo tumhari GMB (Google Business
+   Profile) se connected hai. Yeh zaroori hai — isse GBP reviews
+   aur location ad mein automatically aa jayenge.
+5. Login ke baad "New Google Ads account" screen ayega.
+   - Agar "What's your main advertising goal?" dikhe to NICHE
+     ek chhota link hoga: "Switch to Expert Mode" — us par click
+     kar do.
+   - Agar "Choose a campaign type" seedha aa jaye to matlab expert
+     mode mein ho, aage badho.
+
+================================================================
+STEP 2: BILLING SETUP (pehli baar karna hai)
+================================================================
+
+1. Upar right side pe Tools (wrench icon 🛠) par click karo.
+2. "Billing" section mein "Settings" par click karo.
+3. Ya directly "Payments" option hoga — wahan click karo.
+4. Details bharo:
+   - Country: India
+   - Time zone: (GMT+05:30) India Standard Time — Asia/Kolkata
+   - Currency: Indian Rupee (INR)
+     ⚠️ Currency ek baar set ho gaya to badal nahi sakta! INR hi
+     select karna.
+   - Account type: Business
+   - Business name: AquaMedii - RO Service Patna
+   - Address: Apna Patna ka address dalo (same as GMB)
+   - Tax info: GST agar hai to daalo, nahi to chhor do (optional)
+   - Payment method: Manual payments select karo (automatic payments
+     mat chuno — manual mein tum apni marzi se ₹1000-₹2000 top-up
+     karoge, automatic mein Google automatically charge karta hai)
+5. Payment method mein UPI/Debit Card/Netbanking select karke
+   PEHLA TOP-UP sirf ₹1000 karo. (Poora ₹5000 mat dalo pehle,
+   7 din test karna hai.)
+
+👉 Payment ho jaye to ₹1000 account mein show honge.
+
+================================================================
+STEP 3: AB PEHLA CAMPAIGN BANATE HAIN — CAMPAIGN 1: CALL ADS
+================================================================
+
+1. Left side menu mein "Campaigns" tab par click karo (yadi left
+   menu nahi dikh raha to upar left side 3 lines ≡ wale button pe
+   click karo, menu khul jayega).
+2. Page ke center mein BLUE BUTTON hoga — "+ New campaign" us par
+   click karo.
+3. Ek naya page khulega "Select a goal".
+   - Wahan par BAHUT SARE option dikhenge: Sales, Leads, Website
+     traffic, Product and brand consideration, Brand awareness...
+   - INME SE KISI PE MAT CLICK KARNA.
+   - Page ke BILKUL NICHE ek chhota link hoga:
+     "Create a campaign without a goal's guidance"
+     ← IS PAR CLICK KARO. (Yehi expert tarika hai.)
+4. Ab "Select a campaign type" screen ayega.
+   - Options dikhenge: Search, Performance Max, Display, Shopping,
+     Video, App, Local...
+   - Tumhe "Search" select karna hai (magnifying glass 🔍 icon).
+   - "Search" par click karo.
+5. Ab poochhega "What results do you want to get from this
+   campaign?"
+   - 4 checkbox honge:
+       [ ] Website visits
+       [ ] Phone calls
+       [ ] App downloads
+       [ ] Store visits
+   - SIRF "Phone calls" wale checkbox ko TICK karo. Baaki sab
+     hata do.
+   - "Phone calls" tick karte hi ek box ayega "Enter your phone
+     number". Wahan apna main number dalo: 9241536586
+   - Country code already +91 hoga, bas number daalo: 9241536586
+   - Phir "Continue" button pe click karo (niche blue button).
+
+6. Ab "General settings" page ayega. Yahan har setting step-by-step
+   fill karni hai:
+
+   (a) Campaign name:
+       Box mein likh do:  "Campaign 1 - RO Service Call Ads"
+       (Koi bhi naam chalega, apni pehchan ke liye)
+
+   (b) Networks:  ← YE SABSE ZAROORI HAI
+       "Search Network" section mein:
+         [✓] Google Search         ← rahne do (tick hi chahiye)
+         [ ] Search partners       ← BOX KO UNTICK KAR DO
+                                   (search partners off karna hai)
+       "Display Network" section mein:
+         [ ] Display Network       ← UNTICK kar do (already untick
+                                   nahi hai to kar do)
+       ⚠️ AGAR YE 2 BOX TICK RAHE TO 50% BUDGET WASTE HOGA.
+       FIR SE CHECK KARO: SIRF "Google Search" TICK RAHE.
+
+   (c) "Location options" (ya "Locations"):
+       - Location section mein "Enter another location" box hoga.
+       - Wahan type karo: Patna
+       - Dropdown mein "Patna, Bihar, India" ayega — us par click.
+       - Ab "Target" ke options expand karo (click "Location
+         options" agar closed hai):
+           TARGET option mein: "Presence: People in or regularly
+           in your targeted locations" ko SELECT karo.
+           ⚠️ Mat chuno: "People in or who show interest in" —
+                yeh bahut se out-of-city calls deta hai.
+       - EXCLUDE section: abhi ke liye chhor do. Baad mein jake
+         "Edit locations" pe jaake neighbouring cities exclude
+         kar sakte ho.
+       - "Radius targeting" use karna ho to Patna pe click karke
+         "Radius" option chuno, 25 km daalo, save karo.
+
+   (d) Languages:
+       - "English" hatao ya rahne do (chalta hai).
+       - "Hindi" add karo (it's Patna, Hindi queries bhi aati hain).
+       - Button: "+ Add language" → search Hindi → tick → Save.
+
+   (e) "Audience segments": Abhi kuch mat karo. Aage badho.
+
+   (f) "More settings" (click karo to expand hoga):
+       - "Ad schedule" yahin pe milega.
+         Click "Ad schedule" → "Create ad schedule" →
+         Har din ke liye time set karo:
+         Monday    → 08:00 AM se 09:00 PM tak
+         Tuesday   → 08:00 AM se 09:00 PM tak
+         Wednesday → 08:00 AM se 09:00 PM tak
+         Thursday  → 08:00 AM se 09:00 PM tak
+         Friday    → 08:00 AM se 09:00 PM tak
+         Saturday  → 08:00 AM se 09:00 PM tak
+         Sunday    → 08:00 AM se 09:00 PM tak
+         (Har ek din ko alag-alag ya "All days" select karke
+         8 AM to 9 PM set kar sakte ho.)
+       - Baaki options (Dynamic search ads, Ad rotation, Final URL
+         expansion etc.) abhi chhor do, default rehne do.
+         - Ad rotation mein "Prefer best performing ads" select
+           kar lena.
+
+7. Ab "Bidding" section ayega:
+   - "Select your bid strategy" hoga.
+   - "Or, select a bid strategy directly" (niche chhota link) par
+     click karo.
+   - Dropdown mein select karo: "Manual CPC"
+   - "Help increase conversions with Enhanced CPC" wale box ko
+     ABHI KE LIYE UNTICK rakho (3-4 hafte baad on karenge).
+   - "Default bid" box mein dalo: 35
+     (Matlab hum har click ke liye max ₹35 bid karenge initially.
+     Baad mein adjust karenge.)
+   - "Set a maximum CPC bid limit" yeh box chhor do.
+
+8. Ab "Budget" section ayega:
+   - Daily budget box mein dalo: 105
+     (Matlab har din ₹105 max spend, ₹3150/month. Agar ₹4500/month
+     70% call ads pe to ₹105/day sahi hai)
+   - "Delivery method": Standard select karo (na ki Accelerated).
+     Standard pura din thoda-thoda karke dikhayega, Accelerated
+     subah hi budget khatm kar deta hai.
+
+9. Ab "Conversions" section:
+   - Abhi ke liye chhor do. Baad mein conversion tracking set
+     karenge.
+
+10. "Campaign URL options" chhor do.
+
+11. Niche blue "Next" button dabao.
+
+================================================================
+STEP 4: AD GROUPS BANAO (Campaign 1 ke andar)
+================================================================
+
+Ab "Create ad groups" page aya hoga. Hum 5 ad groups banayenge.
+PEHLA AD GROUP BANAO, BAAD MEIN BAAR BAAR "+ New ad group"
+karke baaki 4 banayenge.
+
+---
+AD GROUP 1: "RO Repair Near Me"
+---
+
+1. Ad group name box mein likho: "AG1 - Near Me & Emergency"
+2. "Keywords" section mein:
+   - Pehle jo text box hai wahan har keyword ko alag-alag line
+     mein daalo. Match type samajho:
+       * Square brackets [keyword] = Exact match (sirf wohi word)
+       * "keyword" = Phrase match (uske aas paas kuch bhi ho sakta
+         hai but woh words honi chahiye)
+     Hum exact aur phrase dono use karenge.
+
+   - Box mein YE TEXT COPY-PASTE KARO (ek-ek line mein):
+
+[ro service near me]
+[ro repair near me]
+[ro mechanic near me]
+[ro service centre near me]
+"ro service patna"
+"ro repair patna"
+"ro mechanic patna"
+"ro repair service near me"
+"water purifier repair near me"
+"RO repair in Patna"
+"same day ro service Patna"
+"ro service in patna"
+"water purifier service patna"
+[ro patna]
+"best ro service in patna"
+
+   - "Get keyword ideas" wala suggestion box mat use karo.
+3. Abhi ads mat banao (baad mein banayenge).
+4. "+ New ad group" button pe click karo.
+
+---
+AD GROUP 2: "Brand Specific"
+---
+1. Ad group name: "AG2 - Brand Specific"
+2. Default bid: 40 (alag bid set kar sakte ho)
+3. Keywords box mein copy-paste:
+
+[kent ro service patna]
+[aquaguard service patna]
+[livpure service patna]
+[pureit service patna]
+[ao smith service patna]
+[blue star ro service patna]
+[havells ro service patna]
+"kent ro repair patna"
+"aquaguard repair patna"
+"livpure repair patna"
+"ro technician for kent"
+"eureka forbes service patna"
+"lg ro service patna"
+"samsung ro service patna"
+"v guard ro service patna"
+"pureit repair patna"
+
+4. "+ New ad group" pe click karo.
+
+---
+AD GROUP 3: "Problem Specific"
+---
+1. Ad group name: "AG3 - Problem Specific"
+2. Default bid: 42
+3. Keywords box mein:
+
+[ro not working]
+[ro water leakage]
+"ro not working patna"
+"ro water leaking patna"
+"ro tds problem patna"
+"ro not filtering water"
+"ro making noise"
+"ro repair home visit patna"
+"ro technician patna"
+"RO change filter patna"
+"ro membrane change patna"
+"ro filter replacement patna"
+"ro repair home service patna"
+"ro chalu nahi ho raha"
+"ro paani tapak raha hai"
+
+4. "+ New ad group" pe click karo.
+
+---
+AD GROUP 4: "Installation & AMC"
+---
+1. Ad group name: "AG4 - Installation & AMC"
+2. Default bid: 35
+3. Keywords box mein:
+
+[ro installation patna]
+"ro installation service patna"
+"new ro installation patna"
+"ro amc patna"
+"ro annual maintenance patna"
+"ro repair amc patna"
+"commercial ro plant service patna"
+"commercial RO plant Patna"
+"ro uninstallation patna"
+"amc plan for ro patna"
+
+4. "+ New ad group" pe click karo.
+
+---
+AD GROUP 5: "Competitor Names" (low bid)
+---
+1. Ad group name: "AG5 - Competitors"
+2. Default bid: 25 (kam bid rakho, kyunki ye mahanga padta hai)
+3. Keywords box mein (sirf phrase match mein):
+
+"ro care india patna"
+"patna aqua care"
+"doctor fresh ro"
+"ranjna ro service patna"
+"rosa lean services"
+"onedios ro service"
+"ro service patna"
+"aquafresh ro service patna"
+"ro care patna"
+
+4. Bas. Ab niche "Next" button pe click karo (blue button).
+
+================================================================
+STEP 5: AB AD BANAO (CALL AD)
+================================================================
+
+Ab "Create ads" screen ayega. Hum har ad group mein 3 call ads
+banayenge. Pehle ek ad group select karo, usme 3 ads banayo, phir
+next ad group pe jao.
+
+👉 CALL AD KAISE BANAYE?
+
+1. "Create ad" button pe click karo (pencil/new icon).
+2. Ad type mein "Call ad" select karo (agar puchhe to).
+3. Ab form dikhega, har field fill karo:
+
+   (a) Business name:
+       AquaMedii - RO Service Patna
+
+   (b) Phone number:
+       Pehle se filled hoga (9241536586), check kar lo sahi hai.
+
+   (c) Headline 1 (30 characters max):
+       RO Service Patna - ₹200
+
+   (d) Headline 2 (30 characters max):
+       Same Day Doorstep Service
+
+   (e) Description 1 (90 characters max):
+       Patna ka #1 trusted RO repair. Genuine spare parts,
+       30-day warranty. Technician 2 ghante mein aapke ghar.
+
+   (f) Description 2 (90 characters max):
+       Kent, Aquaguard, Livpure, Pureit, AO Smith sabki service.
+       Call abhi — free phone consultation.
+
+   (g) Display path (optional — ad ke URL ko achha banane ke liye):
+       Path 1: RO-Repair
+       Path 2: 200-Charge
+
+   (h) Final URL:
+       https://www.roserviceinpatna.in/
+       (Call ad hai to zyada zaruri nahi, par daal do)
+
+   (i) Website URL (agar verification puche to):
+       https://www.roserviceinpatna.in/
+
+4. Niche "Save ad" ya "Done" dabao.
+
+👉 ISI TARAH 2 AUR ADS BANAO (har ad group mein 3 total)
+
+CALL AD 2:
+  Business: AquaMedii - RO Service Patna
+  Phone: 9241536586
+  Headline 1: 2-Hour RO Repair Patna
+  Headline 2: 10,000+ Happy Customers
+  Description 1: Phone uthate hi technician nikal jata hai. ₹200
+   mein full inspection. Sab brands, 30-day service warranty.
+  Description 2: Filter change, membrane change, leakage fix,
+   TDS problem, AMC — sab kuch ek call pe. Call abhi.
+  Display path: Same-Day | 2-Hr-Service
+  Final URL: https://www.roserviceinpatna.in/book-service
+
+CALL AD 3:
+  Business: AquaMedii - RO Service Patna
+  Phone: 9241536586
+  Headline 1: Genuine RO Repair Patna
+  Headline 2: No Fake Parts - Fixed ₹200
+  Description 1: 5 saal se Patna mein service. Koi hidden charges
+   nahi. Transparent billing, WhatsApp pe quote. Bore gaon.
+  Description 2: Boring Road, Kankarbagh, Patliputra, Danapur —
+   poore Patna mein service available. 4.9★ Google rating.
+  Display path: Genuine-Parts | 30-Day-Warranty
+  Final URL: https://www.roserviceinpatna.in/
+
+(Note: Agar character count red ho jaye to thoda chhota kar lena.)
+
+5. Sab ad groups ke liye 3-3 ads bana lo (ya kam se kam 2 per
+   ad group, baaki baad mein add kar lena).
+
+6. Ab Niche "Publish" ya "Create campaign" button ayega — us par
+   click karo.
+
+🎉 MUBARAK HO! TUMHARA PEHLA CALL AD CAMPAIGN BAN GAYA!
+
+Lekin abhi kaam khatam nahi hua. Ab extensions, devices, negative
+keywords baaki hain.
+
+================================================================
+STEP 6: CAMPAIGN 1 KI REMAINING SETTINGS KARO
+================================================================
+
+Ab campaign list mein jao, "Campaign 1 - RO Service Call Ads"
+pe click karo. Left menu se in settings ko set karo:
+
+---
+6a: AD EXTENSIONS (ad ko bada aur attractive banane ke liye)
+---
+
+Left menu mein "Ads and assets" → "Assets" (ya "Extensions")
+par click karo.
+
+Blue "+" button pe click karo → pehle "Callout" add karo:
+
+CALLOUT EXTENSIONS (alag-alag banayo):
+  - ₹200 Fixed Visit Charge
+  - Same-Day Doorstep Service
+  - 30-Day Service Warranty
+  - All 18+ Brands Supported
+  - Genuine OEM Spare Parts
+  - 10,000+ Customers Served
+  - 2-Hour Response Time
+(Har callout "Add new callout" button se ek-ek karke save karo.)
+
+STRUCTURED SNIPPET:
+  - Type: "Service catalog"
+  - Values (ek-ek daalo):
+      RO Repair
+      RO Installation
+      Filter Change
+      Membrane Change
+      AMC Plan
+      TDS Adjustment
+      Leakage Fix
+      Commercial RO Plant
+
+SITELINK EXTENSIONS (call ads mein kam chalte hain par phir
+bhi add kar do):
+  - "Book Service" → https://www.roserviceinpatna.in/book-service
+  - "AMC Plans" → https://www.roserviceinpatna.in/amc
+  - "Pricing" → https://www.roserviceinpatna.in/pricing
+  - "Spare Parts" → https://www.roserviceinpatna.in/categories/spare-parts
+
+LOCATION EXTENSION (SABSE ZAROORI):
+  - Agar tum apni GBP account is Google Ads se same email pe ho
+    to "Link to a Business Profile" option dikhega.
+  - Us pe click → apni "AquaMedii | Multi-brand | Ro Repair..."
+    wali profile select karo → Link karo.
+  - Is se ad ke saath tumhara Google ka location pin, star rating
+    aur address dikhta hai, aur CPC 15-20% kam ho jata hai.
+
+CALL EXTENSION: Already call ad mein built-in hota hai.
+
+---
+6b: DEVICES BID ADJUSTMENT
+---
+
+Left menu: "Campaigns" → "Campaign 1" pe click → top/side menu
+"Devices" par click karo.
+
+3 option dikhenge: Computers, Mobile phones, Tablets.
+- Mobile phones: Bid adj. mein "+" daal ke 20% set karo
+  (mobile se zyada calls aate hain)
+- Tablets: "-" daal ke -50% set karo
+- Computers: "-" daal ke -30% set karo
+
+Yeh karne se mobile pe ad zyada dikhega, desktop/tablet pe kam.
+
+---
+6c: LOCATION BID ADJUSTMENT (advanced, baad mein kar lena)
+---
+
+"Locations" tab mein jaake Patna ke alag-alag areas pe bid
+adjustment kar sakte ho. Pehle week ke liye chhor do, data dekh
+ke karo.
+
+================================================================
+STEP 7: NEGATIVE KEYWORDS ADD KARO (SABSE ZAROORI)
+================================================================
+
+Ye nahi kiya to paani mein paise jayenge.
+
+1. Left menu "Campaigns" → "Campaign 1 - RO Service Call Ads"
+   par click.
+2. Left side "Keywords" menu expand karo → "Negative keywords"
+   par click.
+3. Blue "+" button pe click karo.
+4. "Add to" select karo: "Campaign 1 - RO Service Call Ads"
+5. "Add negative keywords" box mein NICHE DIYE POORE LIST ko
+   COPY-PASTE KAR DENA. Har keyword alag line pe hona chahiye.
+6. "Match type" — BROAD match rakho (default) — taaki har variant
+   block ho jaye.
+7. Save karo.
+
+NEGATIVE KEYWORDS LIST (yahi paste kar do):
+-----------------------------------------------------------------
+job
+vacancy
+recruitment
+career
+salary
+internship
+training
+course
+franchise
+dealership
+distributor
+wholesale
+manufacturer
+supplier
+factory
+amazon
+flipkart
+snapdeal
+meesho
+olx
+second hand
+used
+free
+government free
+youtube
+how to
+diy
+pdf
+download
+customer care number
+complaint number
+review
+scam
+fraud
+cheap
+cheapest
+rent
+rental
+on rent
+delhi
+mumbai
+kolkata
+bangalore
+chennai
+hyderabad
+pune
+ahmedabad
+lucknow
+kanpur
+ranchi
+muzaffarpur
+darbhanga
+gaya
+bhagalpur
+nalanda
+bihar sharif
+water can
+bisleri
+kinley
+bottled water
+water dispenser
+candle filter
+cloth filter
+iron filter
+ro software
+ro movie
+ro tv serial
+ram
+ro player
+kent new
+new ro price
+ro purchase
+-----------------------------------------------------------------
+
+(80+ keywords — copy-paste kar dena.)
+
+================================================================
+STEP 8: CONVERSION TRACKING SETUP (calls ko count karna)
+================================================================
+
+Yeh step optional hai lekin karna hi chahiye.
+
+1. Upar right side Tools 🛠 icon par click → "Conversions"
+   (Measurement section mein).
+2. Blue "+ New conversion action" button.
+3. Select karo "Phone calls"
+4. 3 option mein se "Calls from ads" select karo, "Continue".
+5. Ab "Phone call conversions" mein settings:
+   - Conversion name: "Ad Call (30+ sec)"
+   - Value: "Don't use a value for this conversion action" chuno,
+     ya ₹1000 maan ke daal do (ek call ki approx value).
+   - Count: "One" (matlab ek call = ek conversion, har redial
+     ko count na kare)
+   - Call length: Set karo 30 seconds (matlab agar call 30 sec
+     se zyada chala to genuine customer tha, chhote calls spam)
+   - Click-through conversion window: 30 days
+   - Include in "Conversions": YES
+   - Attribution model: Last click
+6. Save / "Create and continue" dabao.
+
+Ab Google aapke ads se aane wali 30-second se zyada ki calls ko
+"conversion" maanta hai, aur future mein bidding ko iske hisaab se
+optimize karega.
+
+================================================================
+STEP 9: AB CAMPAIGN 2 BANAO — SEARCH (Website visits) ₹45/day
+================================================================
+
+Ab tumhe doosra search campaign banana hai. Ye un logon ke liye jo
+thoda research kar rahe hain, website pe jaake form bharna chahte
+hain, ya products/AMC dekhna chahte hain.
+
+1. Left menu "Campaigns" → "+ New campaign" (blue button).
+2. "Create a campaign without a goal's guidance" (niche wale link).
+3. Campaign type: "Search" select karo.
+4. "What results do you want?" mein:
+     [✓] Website visits
+   - Website URL box mein: https://www.roserviceinpatna.in/book-service
+     (phone call option mat daalo is campaign mein)
+5. Continue.
+6. Campaign name: "Campaign 2 - Search Booking"
+7. Networks:
+     [✓] Google Search
+     [ ] Search partners  ← OFF
+     [ ] Display Network  ← OFF
+8. Location: Patna (same as campaign 1, 25km radius, presence only)
+9. Languages: English + Hindi
+10. Ad schedule: Mon-Sun 8 AM - 9 PM
+11. Bidding: Manual CPC, default bid 30
+12. Budget: Daily 45
+13. Delivery: Standard
+14. Next.
+
+AD GROUPS for Campaign 2:
+
+AD GROUP 1: "Booking & AMC"
+Keywords:
+"ro service in patna online booking"
+"ro service booking patna"
+"book ro mechanic online patna"
+"ro amc plan patna"
+"ro annual maintenance charges patna"
+"ro amc service patna"
+"book ro repair online"
+
+AD GROUP 2: "Products & Spares"
+Keywords:
+"ro membrane price patna"
+"ro filter price patna"
+"new ro purifier price patna"
+"buy ro online patna"
+"ro spare parts shop patna"
+"commercial ro plant price patna"
+"ro purifier shop in patna"
+
+ADS for Campaign 2 (Responsive Search Ad banayega):
+1. "+ New ad" button → "Responsive Search Ad"
+2. Final URL: https://www.roserviceinpatna.in/book-service
+3. Display Path: Path1 = Book-Now, Path2 = ₹200-Charge
+4. Headlines (kam se kam 8 daalo, Google mix-match karega):
+   - RO Service Patna - Book Online
+   - ₹200 Visit Charge - Book Now
+   - Same Day RO Repair at Doorstep
+   - Book RO Service in 2 Clicks
+   - Trusted RO Repair Patna
+   - 4.9 Star Google Rated
+   - 10,000+ Happy Customers
+   - All Brands Serviced
+   - 30-Day Warranty
+   - 2-Hour Quick Response
+   - Genuine Parts Only
+   - Free Phone Consultation
+5. Descriptions (kam se kam 4 daalo):
+   - Patna ka #1 RO repair service. Online book karo, 2 ghante mein
+     technician aapke ghar. ₹200 visit charge, 30-day warranty. Call
+     9241536586 ya online form bharen.
+   - Kent, Aquaguard, Livpure, Pureit, AO Smith, Blue Star, Havells
+     sabki repair/service. Boring Road, Kankarbagh, Danapur poore
+     Patna mein service available.
+   - 18+ brands ka authorized service partner. Genuine OEM parts,
+     transparent billing, no hidden charges.
+   - Filter change, membrane change, TDS setting, leakage repair,
+     AMC plans, commercial RO plant — har problem ka solution.
+6. Save ad.
+
+EXTENSIONS: Upar wale campaign ke extensions is campaign mein bhi
+import kar lo, ya same account-level extensions bana lo taaki
+dono campaign mein dikhen.
+
+NEGATIVE KEYWORDS: Wohi same list copy-paste kar do is campaign
+ke negative keywords mein bhi.
+
+7. Publish / Create campaign.
+
+================================================================
+STEP 10: AD APPROVAL (1-24 HOURS)
+================================================================
+
+Ab tumhare ads Google ke review mein chala jayenge. Usually 1-3
+ghante mein approve ho jate hain, kabhi kabhi 24 lagte hain.
+
+"Ads and assets" → "Ads" page pe jaake dekh sakte ho status:
+- "Pending review" = abhi review ho raha hai
+- "Eligible" / "Approved" = chalu ho gaya hai
+- "Disapproved" = ad mein kuch galat hai — edit karke theek karo,
+  usually special characters, capital letters zyada, ya "best"
+  "number 1" jaise words — unko hata ke resubmit karo.
+
+================================================================
+STEP 11: CONFIRM KI AD CHAL RAHA HAI
+================================================================
+
+1. Incognito window kholo (Ctrl+Shift+N).
+2. Google pe jao.
+3. Search karo: "RO service in Patna"
+4. Top pe tumhara ad "AquaMedii - RO Service Patna" ka dikhna
+   chahiye, "Ad" label ke saath.
+5. ⚠️ APNE AD PAR MAT CLICK KARNA! — khud ka click karoge to
+   apne paise kat jayenge. Sirf dekh ke confirm karo.
+6. Din mein ek do baar alag keywords se check karo.
+
+================================================================
+STEP 12: PEHLE 10 DIN DAILY KYA KARNA HAI (5 MINUTE)
+================================================================
+
+Har din subah ya shaam 5 minute:
+
+1. Google Ads dashboard login.
+2. Left menu "Keywords" → "Search terms" par click karo.
+3. Wahan list dikhegi ki log aaj kya-kya search karke tumhare
+   ad pe aaye.
+4. Jo bhi irrelevant lage (job, wholesale, youtube, amazon, dusre
+   city, customer care number, review, complaint etc.) uske
+   saamne wale checkbox ko tick karo, aur "Add as negative
+   keyword" button dabao.
+5. Campaign 1 aur Campaign 2 dono ke liye karo.
+6. "Overview" page pe dekh lo kitne clicks aaye, kitni calls aayi.
+7. Agar koi ad disapproved dikhe to theek karo.
+
+================================================================
+✨ FIRST 30 DAYS KI TIMELINE
+================================================================
+
+Day 1-3: Ads approve honge, first 50-100 clicks gather honge.
+Day 4-7: Data aane lagega, kaunsa keyword accha kaunsa bura.
+         Negative keywords add karte raho.
+Day 8-14: Top-performing ads/keywords ko zyada budget do,
+         bakwas ads pause karo.
+Day 15-21: Agar 20+ genuine calls aa chuki hain to bidding strategy
+           change karo: Manual CPC → Enhanced CPC (eCPC).
+Day 22-30: Agar 30+ conversions hain to Target CPA pe shift ho jao,
+           target ₹150 set karo. Calls badh jayengi, CPC kam hoga.
+
+================================================================
+💬 AD KI CTA CALL PAR AAYE TO KYA BOLNA HAI
+================================================================
+
+Ye bhi zaroori hai — ad click karke call kare to phone kaise
+receive karna hai. Jis tareeke se baat karoge usi se booking hogi.
+
+Call attend karte hi:
+"Hello, AquaMedii RO Service, boliye na?"
+(Apne naam se bolo, professional bano)
+
+Customer ka problem suno:
+"Ji haan bhaiya/behenji, aapki RO mein kya problem aa raha hai?
+Konsa company ka RO hai?"
+
+Address poocho:
+"Thik hai bhaiya, aaj hi technician bhej dete hain, 2 ghante mein
+pahuchenge. Aapka address aur location WhatsApp kar deta hoon ishi
+number pe. Visit charge ₹200 hai, service warranty 30 days hai."
+
+Call confirm karo:
+"Bas 10 minute mein aapko technician ka naam aur number WhatsApp kar
+dunga. Thank you!"
+
+👉 Hamesha 2-3 ring mein phone uthao. Missed call = wasted money.
+👉 Har call ke 2 minute andar WhatsApp pe message bhejo:
+   "AquaMedii RO Service se baat karne ke liye dhanyavaad.
+   Aapka address confirm: ______. Technician 2 ghante mein
+   pahuchenga. Helpline: 9241536586"
+
+Is step se booking confirmation rate 40-50% se badh jata hai.
+
+================================================================
+⚠️ COMMON MISTAKES JO MAT KARNA
+================================================================
+
+1. ❌ Apne aap ad pe click karna (paise barbaad)
+2. ❌ Broad match keywords use karna (uncontrolled traffic)
+3. ❌ Search partners ON rakhna (fake traffic)
+4. ❌ Raat 12 baje tak ad chala ke phone off karna (missed calls)
+5. ❌ Pehle din hi ₹5000 ka top-up kar dena (bina test ke)
+6. ❌ Negative keywords nahi daalna (50% waste)
+7. ❌ Google ke "Smart Campaign" suggestion pe click kar dena
+8. ❌ Display network pe ads chala dena (zero calls, sare clicks
+   fake websites se)
+9. ❌ Ad mein phone number alag dalna (GBP aur website se alag)
+10. ❌ Ad copy mein "Best", "No.1", "Top 1" jaisi superlative words
+    mat likho (Google disapprove kar deta hai)
+
+================================================================
+Agar koi bhi step mein screen alag dikhe, ya koi option nahi mil
+raha, ya error aa raha hai — bas SCREENSHOT leke bhej dena. Main
+exact bata dunga ki wahan kya karna hai.
+
+All the best bhai! First call aate hi bata dena! 🎉📞
+================================================================

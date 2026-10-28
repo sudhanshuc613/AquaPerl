@@ -27,6 +27,8 @@ const nextConfig = {
       { source: '/product/commercial-50-lph', destination: '/categories/50-lph', permanent: true },
       { source: '/product/commercial-frp-100', destination: '/categories/100-lph', permanent: true },
       { source: '/product/aquanexa-pro-12l', destination: '/product/ro-patna-pro-12l', permanent: true },
+      // Purane /auth/register aur /auth/login pages hata diye (admin ke liye sirf /login chahiye)
+      { source: '/auth/:path*', destination: '/login', permanent: true },
     ];
   },
   async headers() {
@@ -38,6 +40,43 @@ const nextConfig = {
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
         ],
+      },
+      // NOINDEX for private/user/admin pages — Google inko index nahi karega
+      {
+        source: '/login',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet' }],
+      },
+      {
+        source: '/admin/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet' }],
+      },
+      {
+        source: '/cart',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet' }],
+      },
+      {
+        source: '/checkout/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet' }],
+      },
+      {
+        source: '/wishlist',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet' }],
+      },
+      {
+        source: '/orders/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet' }],
+      },
+      {
+        source: '/api/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet' }],
+      },
+      {
+        source: '/auth/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet' }],
+      },
+      {
+        source: '/track-order',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet' }],
       },
     ];
   },
