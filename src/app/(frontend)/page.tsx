@@ -10,7 +10,7 @@ import ServiceQuickBook from '@/components/service/ServiceQuickBook';
 import { formatPrice, PHONES, waLink, telLink, PATNA_AREAS } from '@/lib/utils';
 import {
   Shield, Truck, Clock, Award, Phone, Wrench, Star, CheckCircle2,
-  Headphones, Zap, MapPin, ArrowRight, Sparkles, Droplets, AlertTriangle,
+  Headphones, Zap, MapPin, ArrowRight, Sparkles, Droplets, AlertTriangle, Package,
 } from 'lucide-react';
 
 const PROBLEMS = [
@@ -289,6 +289,117 @@ export default function HomePage() {
                 <p className="mt-1 text-sm text-white/70">{x.d}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust/Awards section (Mannubhai/ROCareIndia style) */}
+      <section className="bg-white py-12 border-y border-gray-100">
+        <div className="container-pad">
+          <p className="text-center text-xs font-bold uppercase tracking-widest text-gray-400">Recognized & Certified</p>
+          <h2 className="mt-1 text-center text-2xl font-bold text-navy-900">Awards, Certifications & Trust Badges</h2>
+          <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
+            {[
+              { t: 'Customer Service\nExcellence Award', c: 'from-yellow-400 to-orange-500', i:'🏆' },
+              { t: 'ISO 9001:2015\nCertified', c: 'from-blue-400 to-blue-600', i:'✅' },
+              { t: 'Trademark\nRegistered', c: 'from-purple-400 to-purple-600', i:'®' },
+              { t: '4.9★ Google\n2,486+ Reviews', c: 'from-green-400 to-green-600', i:'⭐' },
+              { t: '10,000+ Happy\nCustomers', c: 'from-cyan-400 to-cyan-600', i:'👥' },
+              { t: 'Genuine Parts\nOnly', c: 'from-pink-400 to-red-500', i:'🔧' },
+            ].map(b => (
+              <div key={b.t} className="card-surface p-5 text-center hover:shadow-lg transition">
+                <div className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br ${b.c} text-2xl text-white shadow-md`}>{b.i}</div>
+                <p className="mt-3 whitespace-pre-line text-sm font-bold text-navy-900">{b.t}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Detailed Services Section - like ROCare/Mannubhai packages */}
+      <section className="bg-gray-50 py-14">
+        <div className="container-pad">
+          <div className="text-center">
+            <span className="text-sm font-bold uppercase tracking-wider text-brand-600">Our Services</span>
+            <h2 className="mt-1 text-3xl md:text-4xl">RO Repair, Service & Installation Packages</h2>
+            <p className="mt-2 max-w-2xl mx-auto text-gray-600">
+              Transparent pricing. Pehle inspection, quote phir kaam. Koi hidden charge nahi. Har service mein FREE TDS test included.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { name:'RO Repair', price:'299', mrp:'450', book:'2K+', icon:Wrench, feats:['Price include visit & diagnosis','Spare part rate as per rate card','Chip/control box repair extra','FREE Water Quality (TDS) Test'] },
+              { name:'Routine Service', price:'399', mrp:'599', book:'3K+', icon:Shield, feats:['Full inspection & cleaning','Filters/Machine cleaned','Complete purifier checkup','FREE TDS test on every visit'] },
+              { name:'Installation', price:'499', mrp:'700', book:'3K+', icon:Truck, feats:['Wall mounting & stand fixing','Inlet water assembly','Electricity connection','FREE TDS test + demo'] },
+              { name:'Un-Installation', price:'299', mrp:'499', book:'4K+', icon:Package, feats:['Safe dismantle from wall','Disconnect pipes & electric','Pack for transport','No damage guarantee'] },
+            ].map(p => (
+              <div key={p.name} className="relative rounded-2xl border-2 border-white bg-white p-6 shadow-sm hover:border-brand-300 hover:shadow-xl transition">
+                <div className="absolute -top-3 right-4 rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-bold text-cta-orange">★ 4.7 ({p.book} Bookings)</div>
+                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-brand-50 text-brand-600"><p.icon className="h-7 w-7"/></div>
+                <h3 className="mt-3 text-lg font-bold text-navy-900">{p.name}</h3>
+                <p className="mt-2 flex items-baseline gap-2">
+                  <span className="text-3xl font-extrabold text-navy-900">₹{p.price}</span>
+                  <span className="text-sm text-gray-400 line-through">₹{p.mrp}</span>
+                </p>
+                <ul className="mt-4 space-y-1.5">
+                  {p.feats.map(f => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-gray-600">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-500"/>{f}
+                    </li>
+                  ))}
+                </ul>
+                <a href={telLink(PHONES.primary)} className="mt-5 block rounded-lg bg-aqua-gradient py-2.5 text-center text-sm font-bold text-white hover:opacity-90">Book Now</a>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4 text-center text-xs text-gray-500">* Spare parts charges extra if required. Visit charge repair quote mein adjust ho jata hai.</p>
+        </div>
+      </section>
+
+      {/* What Affects Price + How Booking Works (Mannubhai style educational content) */}
+      <section className="container-pad py-14">
+        <div className="grid gap-10 lg:grid-cols-2">
+          <div>
+            <span className="text-sm font-bold uppercase tracking-wider text-brand-600">Transparent Pricing</span>
+            <h2 className="mt-1 text-3xl">What Affects RO Service Charges in Patna?</h2>
+            <p className="mt-3 text-gray-600">
+              Water purifier service charges depend on the nature of the fault, purifier type, parts condition, aur replacement ki zarurat hai ya nahi.
+              Simple cleaning/minor repair usually cost kam hoti hai; multi-part repair (pump, membrane, circuit) zyada.
+            </p>
+            <div className="mt-4 space-y-3">
+              {[
+                'Simple cleaning / inspection: ₹200-399',
+                'Filter set change (sediment+carbon): ₹799-1200',
+                'Membrane replacement: ₹1499-2200',
+                'Pump / SMPS replacement: ₹1200-2500',
+                'Full service + all filters + membrane: ₹2500-3500',
+              ].map(x=>(
+                <div key={x} className="flex items-center gap-3 rounded-lg bg-gray-50 p-3 text-sm">
+                  <CheckCircle2 className="h-5 w-5 shrink-0 text-green-600"/>{x}
+                </div>
+              ))}
+            </div>
+            <p className="mt-3 text-sm text-gray-500">
+              Final quote inspection ke baad diya jata hai — technician pehle machine check karega, exact cost batayega, approval ke baad hi kaam.
+            </p>
+          </div>
+          <div>
+            <span className="text-sm font-bold uppercase tracking-wider text-cta-orange">Simple Process</span>
+            <h2 className="mt-1 text-3xl">How Our RO Service Works?</h2>
+            <ol className="mt-5 space-y-4">
+              {[
+                {n:1, t:'Call/Book karein', d:'Phone 9241536586 pe call karo ya WhatsApp bhejo. Hum 15 minute mein call back karte hain.'},
+                {n:2, t:'Technician at your door', d:'Aapke time slot ke mutabik 2-4 ghante mein technician aapke ghar pohoch jata hai.'},
+                {n:3, t:'Inspection + Free Quote', d:'Machine poori tarah check karenge, problem identify karenge, exact cost batayenge. Approval ke baad hi kaam.'},
+                {n:4, t:'Genuine Parts se Repair', d:'Original spare parts use karenge, TDS set karenge, full testing karenge.'},
+                {n:5, t:'Payment + 30-day Warranty', d:'Cash/UPI/online payment. 30-day service warranty + proper bill diya jayega.'},
+              ].map(s => (
+                <li key={s.n} className="flex gap-4">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cta-orange font-bold text-white">{s.n}</span>
+                  <div><p className="font-bold text-navy-900">{s.t}</p><p className="text-sm text-gray-600">{s.d}</p></div>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </section>
