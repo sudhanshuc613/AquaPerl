@@ -64,16 +64,16 @@ export default function BrandPage({ params }: { params: { brand: string } }) {
               {[
                 `${brand.name} RO repair & troubleshooting`,
                 `${brand.name} New RO installation`,
-                `${brand} Filter set change (genuine)`,
+                `${brand.name} Filter set change (genuine)`,
                 `${brand.name} RO Membrane replacement (original)`,
-                `${brand} UV lamp replacement`,
-                `${brand} TDS calibration & adjustment`,
-                `${brand} Leakage / water flow fix`,
-                `${brand} Pump / SMPS repair`,
+                `${brand.name} UV lamp replacement`,
+                `${brand.name} TDS calibration & adjustment`,
+                `${brand.name} Leakage / water flow fix`,
+                `${brand.name} Pump / SMPS repair`,
                 `${brand.name} AMC / annual maintenance`,
-                `${brand} Water tank sanitization`,
-                `${brand} Under-sink model service`,
-                `${brand} Commercial unit service`,
+                `${brand.name} Water tank sanitization`,
+                `${brand.name} Under-sink model service`,
+                `${brand.name} Commercial unit service`,
               ].map(s => (
                 <li key={s} className="flex items-start gap-2 p-3 rounded-lg border bg-white">
                   <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0 text-green-600"/>{s}
@@ -86,7 +86,7 @@ export default function BrandPage({ params }: { params: { brand: string } }) {
             {[
               { icon:Clock, title:'Same-Day Visit', sub:'2-4 hours' },
               { icon:Shield, title:'30-Day Warranty', sub:'service par' },
-              { icon:Wrench, title:'Genuine Parts', sub:`original ${brand}` },
+              { icon:Wrench, title:'Genuine Parts', sub:`original ${brand.name}` },
             ].map(f => (
               <div key={f.title} className="card-surface p-4 text-center">
                 <f.icon className="mx-auto h-8 w-8 text-brand-500"/>

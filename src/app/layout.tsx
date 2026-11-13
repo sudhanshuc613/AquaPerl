@@ -99,6 +99,7 @@ const localBusinessSchema = {
   sameAs: [
     'https://www.facebook.com/people/RO-Service-Patna/61570000000000/',
     'https://wa.me/919241536586',
+    'https://g.co/kgs/aquamedii',
   ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
@@ -119,6 +120,35 @@ const localBusinessSchema = {
   },
 };
 
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://www.roserviceinpatna.in/#organization',
+  name: 'AquaMedii | RO Repair - Service | Commercial Plant',
+  alternateName: 'RO Service Patna',
+  url: 'https://www.roserviceinpatna.in',
+  logo: 'https://www.roserviceinpatna.in/icon-512.png',
+  telephone: ['+919241536586', '+919534037266'],
+  email: 'service@roserviceinpatna.in',
+  address: { '@type':'PostalAddress', addressLocality:'Patna', addressRegion:'Bihar', postalCode:'800001', addressCountry:'IN' },
+  areaServed: { '@type':'City', name:'Patna' },
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://www.roserviceinpatna.in/#website',
+  url: 'https://www.roserviceinpatna.in',
+  name: 'RO Service Patna',
+  publisher: { '@id': 'https://www.roserviceinpatna.in/#organization' },
+  inLanguage: 'en-IN',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://www.roserviceinpatna.in/search?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -130,6 +160,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="geo.position" content="25.5941;85.1376" />
         <meta name="ICBM" content="25.5941, 85.1376" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       </head>
       <body className={inter.className}>
         <SessionProvider>
@@ -140,7 +175,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div id="modal-root" />
           <Toaster position="top-right" toastOptions={{ duration: 3500 }} />
         </SessionProvider>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
       </body>
     </html>
   );

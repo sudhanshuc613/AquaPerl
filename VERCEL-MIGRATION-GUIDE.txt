@@ -1,0 +1,377 @@
+================================================================
+  🔄 VERCEL ACCOUNT MIGRATION (ZERO DOWNTIME, ZERO RANKING LOSS)
+  Poora plan step-by-step — ek second ka downtime nahi hoga,
+  Google ranking par koi farak nahi padega
+================================================================
+
+Bhai, Vercel account shift karna bohat aasan hai lekin sahi order
+mein steps karna zaroori hai — agar galat order mein kiya to
+5-10 minute downtime ho sakta hai, ya Google ko confuse kar sakta
+ho (us se ranking girti hai). Main yaha ZERO-DOWNTIME plan de raha
+hoon — isse traffic aur ranking dono safe rahenge.
+
+================================================================
+📋 KYA-KYA CHAHIYE (PEHLE IKATTHA KAR LO)
+================================================================
+
+1. ☐ Naya Gmail ID (jisse new Vercel account banana hai)
+2. ☐ Wohi same GitHub account jahan pe code hai (sudhanc613/AquaPerl)
+3. ☐ Purane Vercel account ki access (sirf last mein domain remove
+   karne ke liye chahiye, migration ke waqt login rehna chahiye)
+4. ☐ Neon Database ka connection string (already .env mein hai)
+5. ☐ Domain DNS access (Godaddy/Namecheap/Cloudflare jahan se
+   roserviceinpatna.in khareeda hai — yeh bahut zaroori hai)
+6. ☐ Google Search Console access (baad mein verify karna hoga)
+
+================================================================
+✅ GOLDEN RULES (YAAD RAKHNA)
+================================================================
+
+1. ❌ Purane project ko TAB TAK NAHI DELETE KARNA jab tak naya project
+   100% LIVE nahi ho jata (DNS switch ke baad bhi 24 ghante rakho)
+2. ❌ Kabhi bhi dono projects ko ek saath band mat karo
+3. ❌ Naya project deploy karne ke baad hi DNS change karo
+4. ✅ Har environment variable exact same copy-paste karo
+5. ✅ Node version 24.x naye project mein bhi same rakho
+6. ✅ Region "bom1" (Mumbai) rakho taaki India mein same speed rahe
+7. ✌️ Last step hamesha DNS change hoga — usse pehle sab verify
+   kar lena
+
+================================================================
+🚀 STEP-BY-STEP MIGRATION (30 minute ka kaam)
+================================================================
+
+---
+STEP 0: Pehle naye Vercel account ki tyari
+---
+1. Chrome mein ek Incognito window kholo (purane Vercel account se
+   logout rehna chahiye).
+2. https://vercel.com/signup par jao.
+3. "Continue with GitHub" select karo → apna wohi GitHub account
+   use karo jahan AquaPerl repo hai (sudhanc613).
+4. Signup complete karo (email verify karo agar puche).
+5. Dashboard pe "Add New..." → "Project" dikhega. Abhi mat banao,
+   aage badho.
+
+---
+STEP 1: Pehle PURANE Vercel se environment variables copy kar lo
+---
+Purane Vercel account mein login raho:
+1. https://vercel.com/dashboard pe jao
+2. Apna AquaPerl project select karo
+3. Left menu → Settings → Environment Variables
+4. Wahan saari variables ek kaghaz/Notepad mein note kar lo, ya
+   screenshot le lo. Ye rahi list (exact values chahiye):
+
+   Name                         Make sure it's exactly
+   ──────────────────────────   ────────────────────────────────
+   DATABASE_URL                 postgresql://neondb_owner:npg_...
+   NEXTAUTH_SECRET              aquanexa-top-secret-key-2026...
+   NEXTAUTH_URL                 https://www.roserviceinpatna.in
+   ADMIN_EMAIL                  admin@roserviceinpatna.in
+   NEXT_PUBLIC_SITE_URL         https://www.roserviceinpatna.in
+   RAZORPAY_KEY_ID              (stub hai to bhi chala do)
+   RAZORPAY_KEY_SECRET
+   STRIPE_SECRET_KEY
+   STRIPE_PUBLISHABLE_KEY
+   TWILIO_ACCOUNT_SID
+   TWILIO_AUTH_TOKEN
+   TWILIO_WHATSAPP_FROM
+   SMTP_HOST
+   SMTP_PORT
+   SMTP_USER
+   SMTP_PASS
+
+   ⚠️  NEXT_PUBLIC_SITE_URL ka Environment "Production" hona
+   chahiye, "Preview" nahi, "Secret" nahi — yeh galti mat karna.
+   Baaki sab "Secret" type ke hain to unko Secret rakho.
+
+5. Project Settings → General me bhi check kar lo:
+   - Framework: Next.js (auto-detect hona chahiye)
+   - Node.js Version: 24.x
+   - Region: Mumbai (bom1) — India fast ke liye
+
+---
+STEP 2: GitHub repo ko naye Vercel se connect karo
+---
+Ab naye Vercel account mein (Incognito mein jo login kiya tha):
+
+1. Dashboard par "Add New..." → "Project" click karo
+2. "Import Git Repository" section mein tumhara AquaPerl repo
+   dikhega. Agar nahi dikh raha:
+   - "Adjust GitHub App Permissions" click karo
+   - GitHub mein AquaPerl repo ko select karke access do
+   - Vercel pe wapas aao, repo dikh jayega
+3. AquaPerl repo ke saamne "Import" button dabao.
+4. "Configure Project" screen ayega:
+
+   Project Name: ro-service-patna (ya koi naam, farak nahi padta)
+   Framework Preset: Next.js (auto select hona chahiye)
+   Root Directory: ./ (default)
+   Build Command: npm run build (default)
+   Output Directory: .next (default)
+   Install Command: npm install --legacy-peer-deps (vercel.json
+                    se auto pick ho jayega, nahi to manual daal do)
+   Node.js Version: 24.x (Project Settings → Functions mein baad
+                       mein bhi set kar sakte ho)
+
+5. Environment Variables section mein HAR EK VARIABLE ko jo
+   STEP 1 mein note kiya tha EXACT same daalo:
+   - Key: NEXTAUTH_SECRET   Value: (purani wali copy paste)
+   - Key: DATABASE_URL      Value: (Neon wali copy paste)
+   - ... sab add karte jao.
+   - Har variable ke liye environment select karo:
+       Production, Preview, Development — teeno select kar lena
+       (safe hai)
+   - NEXT_PUBLIC_SITE_URL ko teeno environments mein dalo.
+
+6. Sab var add ho jayein to "Deploy" button dabao.
+
+---
+STEP 3: Pehla deploy (abhi domain connect nahi hoga, temporary URL se test)
+---
+Deploy start hoga, 2-3 minute mein ho jayega.
+1. Deploy ke baad tumhe ek temporary URL milega jaise:
+   https://ro-service-patna-ab12cde.vercel.app
+2. Is URL ko browser mein kholo:
+   - Homepage sahi khulna chahiye
+   - Phone numbers 9241536586/9534037266 dikhna chahiye
+   - /areas/rajiv-nagar kholo, title mein phone number hona chahiye
+   - /login pe jao, admin login test karo (admin@roserviceinpatna.in / admin@123)
+   - /sitemap.xml kholo — sab URLs https://www.roserviceinpatna.in/..
+     hi dikhna chahiye (vercel.app wale URL nahi, because metadataBase
+     www pe set hai)
+3. Agar koi error aaye to Vercel ke logs mein dekh lo — usually env
+   var missing hoti hai.
+
+---
+STEP 4: Naye project mein DOMAIN add karo (DNS change se PEHLE)
+---
+Ab tak purana site chal raha hai (ZERO downtime).
+Naye Vercel project mein:
+1. Project → Settings → Domains par jao.
+2. "Add Domain" par click karo.
+3. Pehla domain daalo: www.roserviceinpatna.in
+   - "Add" dabao.
+   - Vercel tumhe kuch DNS records dikhayega — usually:
+     Type: CNAME
+     Name: www
+     Value: cname.vercel-dns.com
+   - Abhi DNS change MAT KARO. Bas dekh lo ki kya chahiye.
+
+4. Phir "Add Domain" par click karke second domain daalo:
+   roserviceinpatna.in (bare, no-www)
+   - Iske liye Vercel A-record dikhayega:
+     Type: A
+     Name: @
+     Value: 76.76.21.21
+   - Abhi change mat karo. Bas values note kar lo.
+
+   Important: Vercel automatically non-www → www redirect kar
+   dega agar tum "Redirect all traffic to www" option select karo.
+   HAN KAR LENA — humein www hi canonical rakhna hai.
+
+---
+STEP 5: ADMIN PANEL / DB check kar lo (temporary domain pe)
+---
+1. https://ro-service-patna-ab12cde.vercel.app/login par jao
+2. Admin se login karo. Agar purane admin credentials kaam nahi
+   kar rahe (kyuki Neon DB wohi hai to karna chahiye) to:
+   - Vercel project mein Functions shell ya deploy ke time
+     /api/setup-admin pe jao, admin auto ban jayega.
+3. Dashboard pe jaake dekho ki products/orders/settings sab
+   purane jaise dikh rahe hain. DB same Neon hai to data sab
+   waisa hi hoga (0 data loss).
+4. Phone number / service charge wagairah check karo admin
+   settings mein — same hona chahiye.
+
+---
+STEP 6: DNS SWITCH (yahi se real migration hoga — 5 minute downtime max)
+---
+Ab actual DNS change karna hai. Pehle decide karo DNS kahan hai:
+Usually 3 locations mein se ek hota hai:
+- Godaddy (domain wahi se khareeda)
+- Namecheap
+- Cloudflare (agar tumne pehle shift kiya ho)
+
+👉 Apne domain registrar/Godaddy/Cloudflare mein login karo,
+DNS management mein jao, aur OLDE Vercel ke records ko HATA KE
+naye Vercel ke records lagao:
+
+A. PURANE VERCEL DNS RECORDS HATAO (jo ab kaam nahi karenge):
+   - Purane A-record (76.76.21.21 wale rehne do — Vercel ka same IP
+     hai to chalta rahega, lekin safest hai delete karke naye
+     lagana)
+   - Purane CNAME record (jo cname.vercel-dns.com ki jagah kuch aur
+     ho ya purane verification ke ho)
+   - Baki ke vercel verification TXT records hatane ki zaroorat
+     nahi, rehne do.
+
+B. NAYE VERCEL KE RECORDS LAGAO (Step 4 mein jo note kiye the):
+
+   Record 1 (www subdomain)
+   ──────────────────────
+   Type:     CNAME
+   Name:     www
+   Value:    cname.vercel-dns.com
+   TTL:      300 (5 minute — jaldi propagate ke liye)
+
+   Record 2 (apex/root domain — non-www)
+   ──────────────────────────────────────
+   Type:     A
+   Name:     @ (ya blank, ya root)
+   Value:    76.76.21.21
+   TTL:      300
+
+   ⚠️  Cloudflare use kar rahe ho to Proxy status "DNS only"
+   (grey cloud) rakho initially, naye Vercel ke SSL banne tak
+   (10-15 minute). Baad mein orange proxy kar sakte ho.
+
+C. Save karo. DNS propagation shuru ho jayega. Usually 2-5 minute
+   mein ho jata hai, kabhi kabhi 30 min lagta hai.
+
+---
+STEP 7: Vercel mein domain verify karo
+---
+1. Naye Vercel project → Settings → Domains wapas kholo.
+2. www.roserviceinpatna.in ke saamne "Valid Configuration" ya
+   green checkmark aana chahiye.
+3. Naye tab mein https://www.roserviceinpatna.in/ kholo — ab
+   NAYE Vercel ki site khulni chahiye!
+4. Non-www (https://roserviceinpatna.in/) ko bhi test karo —
+   automatic www pe redirect hona chahiye.
+5. SSL/HTTPS bhi check karo (padlock icon aana chahiye).
+   Vercel auto SSL lagata hai, 2-5 minute mein ready ho jata hai.
+
+---
+STEP 8: 5 CRITICAL TEST (deployment ke baad confirm karna)
+---
+Ek-ek karke browser (incognito) mein test karo:
+
+1. https://www.roserviceinpatna.in/                  → 200 OK, homepage
+2. https://roserviceinpatna.in/                      → 301 → www
+3. https://www.roserviceinpatna.in/sitemap.xml       → 91 URLs
+4. https://www.roserviceinpatna.in/robots.txt        → rules + sitemap
+5. https://www.roserviceinpatna.in/areas/rajiv-nagar → correct title with phone
+
+Phone numbers, book-service form, WhatsApp button, admin login
+sab check kar lo.
+
+---
+STEP 9: GSC / Google ko thoda hint dena (NOT REQUIRED but helpful)
+---
+DNS switch ke baad ranking girne se bachane ke liye:
+1. https://search.google.com/search-console
+2. WWW property select karo (https://www.roserviceinpatna.in)
+3. Left menu → Settings → Ownership verification → ya to already
+   verified hoga (HTML file / meta tag dono abhi bhi naye server pe
+   same hain, kyuki code same hai) → agar "not verified" dikhe to
+   HTML tag wali method se re-verify kar lo (same meta tag pehle
+   se hi hai, bas naya add karne ki zaroorat nahi).
+4. "URL Inspection" → homepage daal ke "TEST LIVE URL" → "REQUEST
+   INDEXING" — ek baar maar do. Is Google ko pata chalta hai ki
+   site ab naye server pe hai lekin content same hai.
+5. Sitemaps page pe jaake sitemap fir se SUBMIT kar do (purani wali
+   hata ke naya sitemap.xml).
+6. Koi special Removal ya change nahi karna — same domain, same
+   content, Google ko samajh jayega ki migration hua hai.
+
+---
+STEP 10: Purane Vercel project ko 24 ghante baad delete/archive karo
+---
+- Pehle 24 ghante tak dono projects chalao. DNS poori tarah propagate
+  ho jata hai globally (kabhi kabhi 24 hr lagte hain kuch countries
+  mein).
+- 24 ghante baad purane project ke Settings → General → "Delete
+  Project" kar sakte ho.
+- Ya "Pause Deployment" bhi kar sakte ho for safety.
+- ⚠️ JALDI MAT KARNA — 24 hours pehle delete kiya to kuch users ko
+  purane DNS se 404 dikh sakta hai.
+
+================================================================
+⚠️  KYA-KYA GALTI HO SAKTI HAI (BACHNA)
+================================================================
+
+1. Environment variable miss/galat
+   → Deploy fail hoga ya 500 error ayega. Double-check karo sab
+     vars.
+
+2. NEXT_PUBLIC_SITE_URL galat / Secret bana diya
+   → Sitemap/canonical mein wrong URL jayega, SEO kharab hoga.
+     NEXT_PUBLIC_ prefix wale variables ko Vercel pe "Encrypted"
+     nahi, "Plain text" rakhna padta hai (publicly browser mein
+     jate hain) — Production environment select karo, Secret mat
+     banao.
+
+3. Node version 24.x set nahi kiya
+   → Build fail hoga (purana error wapas aa jayega). Naye project
+   mein Settings → Functions → Node.js Version 24.x set karo.
+
+4. DNS par purane records nahi hataye
+   → Conflict ho sakta hai. Purane Vercel wale records jinke
+     values alag hon unko hata do.
+
+5. Non-www ka A-record galat lagaya
+   → Non-www kaam nahi karega. 76.76.21.21 Vercel ka fixed IP hai.
+
+6. Cloudflare orange cloud (proxy) on kar diya deploy ke pehle
+   → SSL issue aa sakta hai. Pehle grey cloud (DNS only) rakho
+   15 minute, phir orange kar lo.
+
+7. Admin email/password bhool jane ki tenson nahi — same Neon DB
+   hai, wohi credentials kaam karenge. Backup ke liye naye project
+   mein ek baar /api/setup-admin pe chala jaana (seed ho jayega).
+
+================================================================
+🕐 TOTAL TIME LAGTA HAI: ~30 MINUTES
+================================================================
+- Step 1-5 (prep/new project): 15 min
+- Step 6 (DNS switch): 5 min
+- Step 7-9 (verify): 10 min
+- Downtime: 0 se 5 minute (DNS propagate hote waqt kuch users ko
+  thoda time lag sakta hai, lekin since same content aur DNS TTL
+  300 rakha hai, almost zero downtime)
+
+================================================================
+🔒 RANKING KYUN NAHI GIREGI?
+================================================================
+- Domain wahi hai (www.roserviceinpatna.in) → Google isko same
+  samajhta hai
+- Content bilkul same hai (same repo, same meta, same pages)
+- Sitemap/canonical/meta/schema same URLs pe same content
+- Redirects (non-www→www) same lag rahe hain
+- Server location bhi Mumbai (bom1) — speed same rahegi
+- HTML verification file / meta tag dono present (GSC verified
+  rahega)
+
+Google ko kabhi pata bhi nahi chalega ki server badla hai. Ranking
+bilkul waisi hi rahegi, aur future deployments bhi same tarah se
+honge (GitHub push → Vercel auto deploy).
+
+================================================================
+💡 AGAR PURANE VERCEL ACCOUNT MEIN CUSTOM DOMAIN ADD HUA HAI TO?
+================================================================
+Important note: Ek domain ek hi Vercel account se connected reh
+sakta hai. Isliye jab tum naye project mein domain add karoge to
+Vercel automatically purane project se domain ko detach karne
+ke liye kah sakta hai, ya verification ke liye ek extra TXT record
+de sakta hai. Us case mein:
+1. Vercel ka diya TXT record DNS mein add karo
+2. Ya purane project mein jaake Settings → Domains → www ko remove
+   karo
+3. Phir naye project mein re-add karo
+(Don't worry — jab tak DNS pe CNAME/A record correct hai, site
+chalta rahega. Domain ownership verify hone mein 2 minute lagte
+hain.)
+
+================================================================
+📞 AGAR ATKE TO
+================================================================
+Koi bhi step mein:
+- Vercel deploy fail ho raha hai → Deploy logs ka screenshot
+- DNS nahi lag raha → DNS records ka screenshot
+- Domain verify nahi ho raha → Domains page ka screenshot
+
+Bhej dena, exact batata hoon kya karna hai. Migration 30 minute
+mein ho jayega, ranking/SEO par koi farak nahi padega.
+================================================================

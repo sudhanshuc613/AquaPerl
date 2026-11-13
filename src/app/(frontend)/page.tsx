@@ -10,8 +10,19 @@ import ServiceQuickBook from '@/components/service/ServiceQuickBook';
 import { formatPrice, PHONES, waLink, telLink, PATNA_AREAS } from '@/lib/utils';
 import {
   Shield, Truck, Clock, Award, Phone, Wrench, Star, CheckCircle2,
-  Headphones, Zap, MapPin, ArrowRight, Sparkles,
+  Headphones, Zap, MapPin, ArrowRight, Sparkles, Droplets, AlertTriangle,
 } from 'lucide-react';
+
+const PROBLEMS = [
+  { slug:'ro-leakage-repair', name:'RO Leakage Repair', icon:Droplets, price:'₹299' },
+  { slug:'ro-tds-adjustment', name:'TDS Adjustment / Free Test', icon:Droplets, price:'₹200' },
+  { slug:'ro-no-water', name:'RO Not Giving Water', icon:AlertTriangle, price:'₹299' },
+  { slug:'ro-bad-taste-smell', name:'Bad Taste / Smell Fix', icon:Droplets, price:'₹399' },
+  { slug:'ro-membrane-change', name:'Membrane Change (Original)', icon:Droplets, price:'₹1499' },
+  { slug:'ro-filter-change', name:'Filter Set Change', icon:Droplets, price:'₹799' },
+  { slug:'ro-low-pressure', name:'Low Water Pressure Fix', icon:Droplets, price:'₹299' },
+  { slug:'ro-installation', name:'New RO Installation', icon:Wrench, price:'₹499' },
+];
 import { Button } from '@/components/ui/button';
 
 const sampleProducts = [
@@ -154,6 +165,27 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* RO Problems we fix */}
+      <section className="container-pad py-14">
+        <div className="text-center">
+          <span className="text-sm font-bold uppercase tracking-wider text-cta-orange">RO Problems We Fix</span>
+          <h2 className="mt-1 text-3xl">Har RO Problem ka Solution Ek Hi Jagah</h2>
+          <p className="mt-2 text-gray-600">Patna ke paani ki quality (high TDS 800-1500, hard water, iron, monsoon bacteria) ke hisab se expert technicians:</p>
+        </div>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {PROBLEMS.map(p => (
+            <Link key={p.slug} href={`/problems/${p.slug}`} className="card-surface p-5 hover:border-brand-400 hover:shadow-lg transition group">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600 group-hover:bg-brand-500 group-hover:text-white transition">
+                <p.icon className="h-6 w-6"/>
+              </div>
+              <h4 className="mt-3 text-base">{p.name}</h4>
+              <p className="mt-1 text-sm font-bold text-cta-orange">Starting {p.price}</p>
+              <p className="mt-1 text-xs text-gray-500 flex items-center gap-1">Book Now <ArrowRight className="h-3 w-3"/></p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* Why Choose Us */}
       <section className="container-pad py-14">
         <div className="text-center">
@@ -204,6 +236,57 @@ export default function HomePage() {
                   <p className="font-bold">{t.name}</p>
                   <p className="text-xs text-gray-400">{t.area}</p>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Patna Water Quality Education (SEO-critical, competitors pe bhi ye content hai) */}
+      <section className="bg-gradient-to-br from-navy-900 to-navy-700 py-14 text-white">
+        <div className="container-pad grid gap-8 lg:grid-cols-2">
+          <div>
+            <span className="text-sm font-bold uppercase tracking-wider text-brand-400">Patna Water Quality Guide</span>
+            <h2 className="mt-1 text-3xl md:text-4xl text-white">Patna ke Paani mein TDS, Hardness aur Iron — Kyu Zaruri hai Regular RO Service?</h2>
+            <p className="mt-3 text-white/80">
+              Patna ka groundwater (Ganga basin) usually <strong>800-1500 TDS</strong> ka hota hai, aur monsoon season mein iron aur bacterial contamination bhi aam baat hai.
+              Bina regular servicing ke RO membrane 6 mahine mein hi kharab ho jati hai — aur naya membrane ₹2000+ ka padta hai.
+            </p>
+            <p className="mt-3 text-white/80">
+              Hum har service mein <strong>FREE TDS test</strong> dete hain — taaki aapko paani ki sahi quality pata rahe.
+              Agar TDS 300 se upar hai to membrane change ya service ki zarurat hai.
+            </p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-xl bg-white/10 p-4 backdrop-blur">
+                <p className="text-2xl font-extrabold text-brand-400">800-1500</p>
+                <p className="text-xs text-white/70">Average TDS in Patna (ppm)</p>
+              </div>
+              <div className="rounded-xl bg-white/10 p-4 backdrop-blur">
+                <p className="text-2xl font-extrabold text-brand-400">3-6 mo</p>
+                <p className="text-xs text-white/70">Filter change ideal interval</p>
+              </div>
+              <div className="rounded-xl bg-white/10 p-4 backdrop-blur">
+                <p className="text-2xl font-extrabold text-brand-400">1-2 yr</p>
+                <p className="text-xs text-white/70">Membrane life (with service)</p>
+              </div>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <a href={telLink(PHONES.primary)} className="btn-primary bg-white !text-navy-900"><Phone className="h-4 w-4"/>Call for FREE TDS Test</a>
+              <Link href="/book-service" className="btn-primary border border-white/30 bg-transparent hover:bg-white/10">Book Service ₹200</Link>
+            </div>
+          </div>
+          <div className="space-y-3">
+            <h3 className="text-xl font-bold text-white">Signs that your RO needs service in Patna:</h3>
+            {[
+              {t:'Paani ka taste badla hua hai',d:'Carbon filter kharab hone se aisa hota hai — monsoon mein bacteria bhi ho sakta hai.'},
+              {t:'Water flow slow ho gaya',d:'Filters choke ho gaye hain ya pump pressure kam ho gaya.'},
+              {t:'TDS 300+ dikha raha hai',d:'Membrane expire ho chuki hai — turant badalni chahiye.'},
+              {t:'RO se paani tapak raha hai',d:'Pipe phat gayi hai ya connector loose — turant fix karo warna wall/paint kharab hoga.'},
+              {t:'Awaaz aa rahi hai',d:'Pump bearing ya SMPS kharab — agar jaldi fix nahi kiya to poora pump jal sakta hai.'},
+            ].map(x => (
+              <div key={x.t} className="rounded-xl bg-white/5 p-4 backdrop-blur">
+                <p className="font-bold text-orange-300">⚠️ {x.t}</p>
+                <p className="mt-1 text-sm text-white/70">{x.d}</p>
               </div>
             ))}
           </div>

@@ -58,6 +58,15 @@ export default function AreaPage({ params }: { params: { area: string } }) {
     ],
   };
 
+  const faqLd = {
+    '@context':'https://schema.org',
+    '@type':'FAQPage',
+    mainEntity: FAQ.map(f => ({
+      '@type':'Question', name: f.q,
+      acceptedAnswer: { '@type':'Answer', text: f.a }
+    })),
+  };
+
   const serviceList = [
     'RO Repair & Troubleshooting', 'New RO Installation', 'RO Uninstallation',
     'Filter Set Change (Sediment+Carbon)', 'RO Membrane Replacement (80/100 GPD)',
@@ -71,6 +80,7 @@ export default function AreaPage({ params }: { params: { area: string } }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLd)}}/>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(faqLd)}}/>
       {/* Hero */}
       <section className="bg-aqua-gradient text-white">
         <div className="container-pad py-10 md:py-14">

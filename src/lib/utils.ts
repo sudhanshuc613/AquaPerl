@@ -90,6 +90,28 @@ export const PATNA_AREAS = [
   { slug: 'nala-road', name: 'Nala Road', pincode: '800003', landmarks: 'Kadamkuan, Raja Bazar, Patna Junction' },
   { slug: 'ag-colony', name: 'AG Colony', pincode: '800023', landmarks: 'Patliputra, Patel Nagar' },
   { slug: 'mahendru', name: 'Mahendru', pincode: '800006', landmarks: 'Patna Sahib, Ashok Rajpath' },
+  // Additional areas (competitor analysis ke baad add kiye — ye log search karte hai)
+  { slug: 'ashiana-nagar', name: 'Ashiana Nagar', pincode: '800014', landmarks: 'Digha, Patliputra, Bailey Road' },
+  { slug: 'rupaspur', name: 'Rupaspur', pincode: '800014', landmarks: 'Bailey Road, Patliputra, RPS More' },
+  { slug: 'lodipur', name: 'Lodipur', pincode: '800001', landmarks: 'Boring Road, Sri Krishna Puri' },
+  { slug: 'keshri-nagar', name: 'Keshri Nagar', pincode: '800024', landmarks: 'Rajiv Nagar, Patliputra' },
+  { slug: 'bhootnath-road', name: 'Bhootnath Road', pincode: '800026', landmarks: 'Kankarbagh, Kumhrar' },
+  { slug: 'patna-junction', name: 'Patna Junction', pincode: '800001', landmarks: 'Station Road, Frazer Road, Raja Bazar' },
+  { slug: 'dak-bungalow', name: 'Dak Bungalow', pincode: '800001', landmarks: 'Frazer Road, Gandhi Maidan' },
+  { slug: 'chowk', name: 'Chowk Patna City', pincode: '800008', landmarks: 'Patna Sahib, Ashok Rajpath' },
+  { slug: 'exhibition-road', name: 'Exhibition Road', pincode: '800001', landmarks: 'Dak Bungalow, Frazer Road, Gandhi Maidan' },
+  { slug: 'sheikhpura', name: 'Sheikhpura Patna', pincode: '800014', landmarks: 'Bailey Road, Khajpura, Rukanpura' },
+  { slug: 'hanuman-nagar', name: 'Hanuman Nagar', pincode: '800020', landmarks: 'Kankarbagh, Lohia Nagar' },
+  { slug: 'shastri-nagar', name: 'Shastri Nagar', pincode: '800023', landmarks: 'Patliputra, Punaichak' },
+  { slug: 'ram-krishna-nagar', name: 'Ram Krishna Nagar', pincode: '800027', landmarks: 'Khemnichak, Mithapur, Jaganpura' },
+  { slug: 'jaganpura', name: 'Jaganpura', pincode: '800027', landmarks: 'Ram Krishna Nagar, Khemnichak' },
+  { slug: 'naya-tola', name: 'Naya Tola', pincode: '800004', landmarks: 'Patna Junction, Bakerganj' },
+  { slug: 'new-jakkanpur', name: 'New Jakkanpur', pincode: '800001', landmarks: 'Mithapur, Patna Airport, Punaichak' },
+  { slug: 'patrakar-nagar', name: 'Patrakar Nagar', pincode: '800020', landmarks: 'Kankarbagh, Lohia Nagar' },
+  { slug: 'budh-marg', name: 'Budh Marg', pincode: '800001', landmarks: 'Frazer Road, Dak Bungalow' },
+  { slug: 'station-road', name: 'Station Road Patna', pincode: '800001', landmarks: 'Patna Junction, Frazer Road' },
+  { slug: 'agam-kuan', name: 'Agam Kuan', pincode: '800007', landmarks: 'Patna Sahib, Gulzarbagh' },
+  { slug: 'gulzarbagh', name: 'Gulzarbagh', pincode: '800007', landmarks: 'Patna Sahib, Agam Kuan' },
 ];
 
 // All RO brands serviced with logos

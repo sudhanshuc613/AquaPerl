@@ -1,25 +1,15 @@
 import type { MetadataRoute } from 'next';
+import { PATNA_AREAS } from '@/lib/utils';
 
-// Force Google/Bing to recrawl by updating lastmod to now
 export const revalidate = 60;
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://www.roserviceinpatna.in';
+  const now = new Date();
 
   const categories = [
     'ro-purifiers','domestic-ro','uv-uf','under-sink','wall-mount',
     'spare-parts','ro-membranes','filters','uv-lamps','pumps','connectors','accessories',
     'commercial-plants','50-lph','100-lph','250-lph',
-  ];
-
-  // Import areas and brands
-  const areas = [
-    'boring-road','kankarbagh','patna-sahib','danapur','bailey-road','rajendra-nagar',
-    'gandhi-maidan','mithapur','anisabad','phulwari-sharif','patliputra','kidwaipuri',
-    'frazer-road','lohia-nagar','khemnichak','khagaul','saguna-more','beur','bihta',
-    'gardanibagh','punaichak','sri-krishna-puri','bakerganj','machuatoli','kurji',
-    'dikshanti-nagar','chitkohra','west-patel-nagar','rajiv-nagar','ashok-nagar',
-    'jp-nagar','digha','kadamkuan','kumhrar','raja-bazar','khajpura','boring-canal-road',
-    'rukanpura','patel-nagar','nala-road','ag-colony','mahendru',
   ];
 
   const brands = [
@@ -28,7 +18,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     'nasaka','aquafresh','aqua-natural','tata-swach','eureka-forbes',
   ];
 
-  const now = new Date();
+  // Problem-specific long-tail pages
+  const problems = [
+    'ro-leakage-repair','ro-tds-adjustment','ro-no-water','ro-bad-taste-smell',
+    'ro-membrane-change','ro-filter-change','ro-low-pressure','ro-noise-sound',
+    'ro-installation','ro-service-near-me',
+  ];
 
   const staticUrls = [
     { path: '/', pri: 1.0, freq: 'daily' as const },
@@ -61,8 +56,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.75,
     })),
-    ...areas.map(slug => ({
-      url: `${base}/areas/${slug}`,
+    ...PATNA_AREAS.map(a => ({
+      url: `${base}/areas/${a.slug}`,
       lastModified: now,
       changeFrequency: 'weekly' as const,
       priority: 0.85,
@@ -72,6 +67,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: 'monthly' as const,
       priority: 0.75,
+    })),
+    ...problems.map(slug => ({
+      url: `${base}/problems/${slug}`,
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
     })),
   ];
 }
