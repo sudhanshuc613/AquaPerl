@@ -23,6 +23,9 @@ const DEFAULTS: Record<string, any> = {
   'seo.metaKeywords': 'ro service in patna, ro repair patna, ro water purifier service patna, kent ro service patna, aquaguard service patna, ro installation patna, ro service near me, water purifier repair patna, ro membrane change patna, best ro service in patna, patna ro service centre, ro amc patna, ro purifier price patna, commercial ro plant patna',
   'seo.patnaAreas': ['Boring Road','Kankarbagh','Patna Sahib','Danapur','Bailey Road','Rajendra Nagar','Gandhi Maidan','Mithapur','Anisabad','Phulwari Sharif','Patliputra','Kidwaipuri','Frazer Road','Lohia Nagar','Khemnichak','Khagaul','Saguna More','Beur','Bihta','Gardanibagh','Punaichak','Sri Krishna Puri','Bakerganj','Machuatoli','Kurji','Chitkohra','West Patel Nagar','Rajiv Nagar','Ashok Nagar','JP Nagar','Digha','Kadamkuan','Kumhrar','Raja Bazar','Khajpura','Boring Canal Road','Rukanpura','Patel Nagar','Nala Road','AG Colony','Mahendru'],
   'seo.brandsServiced': ['Kent','Aquaguard (Eureka Forbes)','Livpure','Pureit (HUL)','AO Smith','Blue Star','Havells','LG','Samsung','Whirlpool','V-Guard','Tata Swach','Aquafresh','Generic/Local Brands'],
+  'hero.bannerImage': '',        // empty = default gradient; URL = uploaded banner (e.g. /uploads/banners/xxx.jpg)
+  'hero.bannerHeadline': '',     // empty = default headline; text = custom
+  'hero.bannerSubtext': '',
 };
 
 export async function getSetting<T = any>(key: string): Promise<T> {

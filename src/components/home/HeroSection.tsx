@@ -1,28 +1,46 @@
-'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Phone, Wrench, Shield, Truck, Award, ChevronRight, Clock, CheckCircle2, MapPin, Star, Sparkles, MessageCircle } from 'lucide-react';
+import { Phone, Wrench, Shield, Clock, CheckCircle2, MapPin, Star, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PHONES, telLink, waLink } from '@/lib/utils';
+import { getSetting } from '@/lib/settings';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-export default function HeroSection() {
+export const revalidate = 60; // settings 1 minute me refresh
+
+export default async function HeroSection() {
+  const visitCharge = await getSetting<number>('service.visitCharge').catch(() => 200) || 200;
+  const banner = await getSetting<string>('hero.bannerImage').catch(() => '') || '';
+  const headline = await getSetting<string>('hero.bannerHeadline').catch(() => '') || '';
+  const subtext = await getSetting<string>('hero.bannerSubtext').catch(() => '') || '';
+
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-cyan-50 via-sky-50 to-blue-50">
-      {/* Decorative blobs */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-brand-300/20 blur-3xl" />
-        <div className="absolute -right-24 top-40 h-96 w-96 rounded-full bg-cyan-400/20 blur-3xl" />
-        <div className="absolute -bottom-32 left-1/3 h-72 w-72 rounded-full bg-orange-200/30 blur-3xl" />
-      </div>
+    <section className={`relative overflow-hidden ${banner ? 'bg-navy-950' : 'bg-gradient-to-br from-cyan-50 via-sky-50 to-blue-50'}`}>
+      {/* Admin-uploaded banner as background */}
+      {banner && (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={banner} alt="" className="absolute inset-0 h-full w-full object-cover"/>
+          <div className="absolute inset-0 bg-gradient-to-r from-navy-950/85 via-navy-900/70 to-brand-900/50"/>
+        </>
+      )}
+
+      {/* Decorative blobs (only when no banner) */}
+      {!banner && (
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-brand-300/20 blur-3xl" />
+          <div className="absolute -right-24 top-40 h-96 w-96 rounded-full bg-cyan-400/20 blur-3xl" />
+          <div className="absolute -bottom-32 left-1/3 h-72 w-72 rounded-full bg-orange-200/30 blur-3xl" />
+        </div>
+      )}
 
       {/* Water bubbles */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         {[...Array(10)].map((_, i) => (
           <div
             key={i}
-            className="absolute rounded-full bg-brand-400/15"
+            className={`absolute rounded-full ${banner ? 'bg-white/10' : 'bg-brand-400/15'}`}
             style={{
               width: `${8 + (i % 4) * 5}px`, height: `${8 + (i % 4) * 5}px`,
               left: `${(i * 11 + 5) % 100}%`, top: `${(i * 13) % 100}%`,
@@ -39,45 +57,45 @@ export default function HeroSection() {
           {/* LEFT */}
           <div className="lg:col-span-7 space-y-5">
             {/* Top badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white/80 backdrop-blur px-4 py-1.5 shadow-sm">
+            <div className={`inline-flex items-center gap-2 rounded-full border ${banner ? 'border-white/30 bg-white/15 backdrop-blur' : 'border-brand-200 bg-white/80 backdrop-blur'} px-4 py-1.5 shadow-sm`}>
               <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-500"><CheckCircle2 className="h-3 w-3 text-white"/></span>
-              <span className="text-xs font-bold text-navy-800">PATNA'S #1 RATED RO SERVICE</span>
-              <span className="text-xs text-gray-400">•</span>
-              <span className="flex items-center gap-0.5 text-xs font-bold text-orange-500">
-                <Star className="h-3 w-3 fill-orange-500"/>4.9 (2486+ Reviews)
+              <span className={`text-xs font-bold ${banner?'text-white':'text-navy-800'}`}>PATNA'S #1 RATED RO SERVICE</span>
+              <span className={`text-xs ${banner?'text-white/50':'text-gray-400'}`}>•</span>
+              <span className="flex items-center gap-0.5 text-xs font-bold text-yellow-400">
+                <Star className="h-3 w-3 fill-yellow-400"/>4.9 (2486+ Reviews)
               </span>
             </div>
 
             <div>
-              <h1 className="text-[32px] md:text-5xl lg:text-[56px] font-extrabold leading-[1.1] text-navy-950 tracking-tight">
-                Best RO Service
-                <br/>
-                <span className="bg-gradient-to-r from-brand-500 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
-                  in Patna
-                </span>
+              <h1 className={`text-[32px] md:text-5xl lg:text-[56px] font-extrabold leading-[1.1] tracking-tight ${banner?'text-white':'text-navy-950'}`}>
+                {headline || (<>Best RO Service<br/><span className={banner?'text-cyan-300':'bg-gradient-to-r from-brand-500 via-cyan-500 to-blue-600 bg-clip-text text-transparent'}>in Patna</span></>)}
               </h1>
 
-              <h2 className="mt-2 text-xl md:text-3xl lg:text-4xl font-extrabold text-navy-900 leading-tight">
-                <span className="bg-gradient-to-r from-brand-500 via-cyan-500 to-blue-600 bg-clip-text text-transparent">Patna's Leading</span>{' '}
-                Water Purifier Sale & Service
-              </h2>
+              {!headline && (
+                <h2 className={`mt-2 text-xl md:text-3xl lg:text-4xl font-extrabold leading-tight ${banner?'text-white':'text-navy-900'}`}>
+                  <span className={banner?'text-cyan-300':'bg-gradient-to-r from-brand-500 via-cyan-500 to-blue-600 bg-clip-text text-transparent'}>Patna's Leading</span>{' '}
+                  Water Purifier Sale & Service
+                </h2>
+              )}
             </div>
 
-            <p className="max-w-2xl text-base md:text-lg text-gray-600 leading-relaxed">
-              24×7 expert RO water purifier service at your doorstep in Patna. Certified technicians
-              reach you in <strong className="text-brand-600">2 hours</strong>. Genuine spare parts,
-              <strong className="text-orange-600"> transparent pricing, ₹200 fixed visit charge</strong>,
-              and complete 30-day service warranty. 18+ brands supported.
+            <p className={`max-w-2xl text-base md:text-lg leading-relaxed ${banner?'text-white/90':'text-gray-600'}`}>
+              {subtext || (
+                <>24×7 expert RO water purifier service at your doorstep in Patna. Certified technicians
+                reach you in <strong className={banner?'text-yellow-300':'text-brand-600'}>2 hours</strong>. Genuine spare parts,
+                <strong className={banner?'text-orange-300':'text-orange-600'}> transparent pricing, ₹{visitCharge} fixed visit charge</strong>,
+                and complete 30-day service warranty. 18+ brands supported.</>
+              )}
             </p>
 
             {/* COMPETITOR-BEATING BADGES ROW */}
             <div className="flex flex-wrap gap-2 pt-1">
               {[
-                { t: '🏆 Customer Service Excellence Award', c: 'bg-yellow-50 text-yellow-800 border-yellow-300' },
-                { t: '₹200 सस्ता vs ROCare/UrbanCompany', c: 'bg-green-50 text-green-700 border-green-200' },
-                { t: 'FREE TDS Test on Every Visit', c: 'bg-blue-50 text-blue-700 border-blue-200' },
-                { t: '2 Hour Response — Patna Local Team', c: 'bg-orange-50 text-orange-700 border-orange-200' },
-                { t: 'Coupon CODE: RO200 — ₹200 Off First Visit', c: 'bg-red-50 text-red-700 border-red-200 animate-pulse' },
+                { t: '🏆 Customer Service Excellence Award', c: banner?'bg-yellow-400/20 text-yellow-200 border-yellow-400/40':'bg-yellow-50 text-yellow-800 border-yellow-300' },
+                { t: `₹${Math.max(0,(visitCharge-299))} सस्ता vs ROCare/UrbanCompany`, c: banner?'bg-green-400/20 text-green-200 border-green-400/40':'bg-green-50 text-green-700 border-green-200' },
+                { t: 'FREE TDS Test on Every Visit', c: banner?'bg-blue-400/20 text-blue-200 border-blue-400/40':'bg-blue-50 text-blue-700 border-blue-200' },
+                { t: '2 Hour Response — Patna Local Team', c: banner?'bg-orange-400/20 text-orange-200 border-orange-400/40':'bg-orange-50 text-orange-700 border-orange-200' },
+                { t: `Coupon: RO${visitCharge} — ₹${visitCharge} First Visit`, c: banner?'bg-red-400/20 text-red-200 border-red-400/40 animate-pulse':'bg-red-50 text-red-700 border-red-200 animate-pulse' },
               ].map((b, i) => (
                 <span key={i} className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${b.c}`}>
                   <CheckCircle2 className="h-3 w-3"/> {b.t}
@@ -88,21 +106,22 @@ export default function HeroSection() {
             {/* Trust boxes */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-1">
               {[
-                { icon: Clock, title: '2 Hours Mein Technician', sub: 'Quickest in Patna', color:'cyan' },
-                { icon: Shield, title: '30-Day Service Warranty', sub: 'Satisfaction Guaranteed', color:'blue' },
-                { icon: MapPin, title: 'Fixed ₹200 Visit', sub: 'No Hidden Charges', color:'orange' },
-                { icon: Star, title: '4.9★ (2,486+ Reviews)', sub: 'Patna Ka #1 Rated', color:'green' },
+                { icon: Clock, title: '2 Hours Mein Technician', sub: 'Quickest in Patna' },
+                { icon: Shield, title: '30-Day Service Warranty', sub: 'Satisfaction Guaranteed' },
+                { icon: MapPin, title: `Fixed ₹${visitCharge} Visit`, sub: 'No Hidden Charges' },
+                { icon: Star, title: '4.9★ (2,486+ Reviews)', sub: 'Patna Ka #1 Rated' },
               ].map((f, i) => (
-                <div key={i} className="flex items-start gap-2 rounded-xl bg-white/80 backdrop-blur p-3 shadow-sm border border-white">
+                <div key={i} className={`flex items-start gap-2 rounded-xl ${banner?'bg-white/15 border-white/20 backdrop-blur':'bg-white/80 border-white'} p-3 shadow-sm`}>
                   <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
+                    banner?'bg-white/20 text-white':
                     i===2?'bg-orange-100 text-orange-600':
                     i===3?'bg-green-100 text-green-600':
                     'bg-brand-100 text-brand-600'}`}>
                     <f.icon className="h-5 w-5"/>
                   </div>
                   <div>
-                    <p className="text-xs md:text-sm font-bold text-navy-900 leading-tight">{f.title}</p>
-                    <p className="text-[11px] text-gray-500">{f.sub}</p>
+                    <p className={`text-xs md:text-sm font-bold leading-tight ${banner?'text-white':'text-navy-900'}`}>{f.title}</p>
+                    <p className={`text-[11px] ${banner?'text-white/70':'text-gray-500'}`}>{f.sub}</p>
                   </div>
                 </div>
               ))}
@@ -111,13 +130,13 @@ export default function HeroSection() {
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3 pt-1">
               <a href={telLink(PHONES.primary)}
-                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-brand-500/30 hover:shadow-xl hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all">
+                className={`group inline-flex items-center justify-center gap-2 rounded-xl ${banner?'bg-cta-orange hover:bg-orange-600 shadow-orange-500/40':'bg-gradient-to-r from-brand-500 to-brand-600 shadow-brand-500/30 hover:shadow-brand-500/40'} px-8 py-4 text-base font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all`}>
                 <Phone className="h-5 w-5"/> Call Now for Service
                 <span className="ml-1 rounded bg-white/20 px-2 py-0.5 text-sm font-mono">{PHONES.primary}</span>
               </a>
               <Link href="/book-service"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-brand-500 bg-white px-8 py-4 text-base font-bold text-brand-600 hover:bg-brand-50 hover:shadow-md transition-all">
-                Book Service Online <ChevronRight className="h-5 w-5"/>
+                className={`inline-flex items-center justify-center gap-2 rounded-xl border-2 px-8 py-4 text-base font-bold transition-all ${banner?'border-white bg-transparent text-white hover:bg-white/10':'border-brand-500 bg-white text-brand-600 hover:bg-brand-50 hover:shadow-md'}`}>
+                Book Service Online
               </Link>
             </div>
 
