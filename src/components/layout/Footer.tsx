@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Droplets, Phone, Mail, MapPin, Facebook, Instagram, Youtube, Send } from 'lucide-react';
-import { PHONES, waLink, PATNA_AREAS } from '@/lib/utils';
+import { Droplets, Phone, Mail, MapPin, Facebook, Instagram, Youtube, Send, Wrench } from 'lucide-react';
+import { PHONES, waLink, telLink, PATNA_AREAS } from '@/lib/utils';
 
 export default function Footer() {
   return (
@@ -88,20 +88,55 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-gray-500 md:flex-row">
+        <div className="mt-10 border-t border-white/10 pt-6">
+          <div className="rounded-xl bg-white/5 p-5">
+            <h4 className="text-sm font-bold text-brand-400">About RO Service Patna (AquaMedii)</h4>
+            <p className="mt-2 text-xs leading-relaxed text-gray-300">
+              RO Service Patna is a trusted and independent water purifier service provider in Patna, recognized with the <strong className="text-yellow-300">Customer Service Excellence Award</strong>. We offer complete solutions including RO installation, repair, maintenance, and AMC services for domestic, commercial, and industrial water purifiers. Along with expert RO services, we also provide a wide range of water purifiers and water treatment products. Committed to quality and customer satisfaction, RO Service Patna serves as your reliable partner for pure and healthy water solutions across Patna, Bihar.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-gray-500 md:flex-row">
           <p>© {new Date().getFullYear()} RO Service Patna (roserviceinpatna.in). All rights reserved.</p>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap items-center gap-4 justify-center">
             <Link href="/privacy-policy" className="hover:text-gray-300">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-gray-300">Terms</Link>
-            <span>Payments: UPI • Cards • NetBanking • COD</span>
+            <Link href="/terms" className="hover:text-gray-300">Terms & Conditions</Link>
+            <Link href="/about" className="hover:text-gray-300">About Us</Link>
+            <Link href="/contact" className="hover:text-gray-300">Contact</Link>
+            <span className="text-yellow-400">⭐ 4.9★ (2486+ Happy Customers)</span>
           </div>
         </div>
       </div>
 
+      {/* WhatsApp floating button */}
       <a href={waLink(PHONES.whatsapp, 'Hi, I need RO service in Patna')} target="_blank" rel="noopener noreferrer"
-        className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl shadow-green-500/40 hover:scale-110" aria-label="Chat on WhatsApp">
+        className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl shadow-green-500/40 hover:scale-110 transition" aria-label="Chat on WhatsApp">
         <svg viewBox="0 0 32 32" className="h-7 w-7 fill-current"><path d="M16 .396C7.384.396.396 7.384.396 16c0 2.76.73 5.475 2.114 7.866L.054 31.604l7.937-2.387A15.54 15.54 0 0 0 16 31.604c8.616 0 15.604-6.988 15.604-15.604S24.616.396 16 .396zm7.092 23.148c-.296.834-1.722 1.593-2.384 1.697-.614.097-1.392.14-2.246-.154-.516-.178-1.18-.384-2.03-.749-3.572-1.538-5.898-5.14-6.075-5.374-.176-.234-1.442-1.918-1.442-3.66 0-1.742.914-2.598 1.238-2.954.324-.357.706-.446.94-.446.236 0 .47.002.676.012.218.01.51-.082.8.608.296.706 1.008 2.444 1.096 2.62.088.176.146.382.028.616-.116.234-.176.38-.354.586-.176.206-.372.46-.53.618-.176.174-.36.366-.154.718.206.352.914 1.508 1.962 2.44 1.346 1.2 2.482 1.58 2.822 1.756.34.178.538.15.738-.09.2-.242.854-.994 1.084-1.34.23-.344.46-.288.774-.174.314.112 1.998.942 2.34 1.114.342.17.57.254.654.394.082.14.082.808-.212 1.642z"/></svg>
       </a>
+
+      {/* Call floating button (mobile pe bhi kaam karega — WhatsApp ke upar) */}
+      <a href={telLink(PHONES.primary)}
+        className="fixed bottom-[88px] right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-cta-orange text-white shadow-2xl shadow-orange-500/40 hover:scale-110 transition md:bottom-[88px]" aria-label="Call now">
+        <Phone className="h-6 w-6"/>
+      </a>
+
+      {/* Mobile sticky bottom bar (only on mobile) */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-200 bg-white/95 backdrop-blur-md p-2 shadow-2xl md:hidden">
+        <div className="flex gap-2">
+          <a href={telLink(PHONES.primary)} className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-cta-orange py-3 text-sm font-bold text-white">
+            <Phone className="h-4 w-4"/>Call Now
+          </a>
+          <a href={waLink(PHONES.whatsapp, 'Hi, RO service chahiye Patna mein')} target="_blank" rel="noopener" className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#25D366] py-3 text-sm font-bold text-white">
+            <svg viewBox="0 0 32 32" className="h-4 w-4 fill-current"><path d="M16 .396C7.384.396.396 7.384.396 16c0 2.76.73 5.475 2.114 7.866L.054 31.604l7.937-2.387A15.54 15.54 0 0 0 16 31.604c8.616 0 15.604-6.988 15.604-15.604S24.616.396 16 .396z"/></svg>WhatsApp
+          </a>
+          <Link href="/book-service" className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-navy-900 py-3 text-sm font-bold text-white">
+            <Wrench className="h-4 w-4"/>Book ₹200
+          </Link>
+        </div>
+      </div>
+      {/* Space for mobile bottom bar */}
+      <div className="h-[70px] md:hidden" aria-hidden="true"/>
     </footer>
   );
 }

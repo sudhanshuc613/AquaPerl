@@ -38,6 +38,9 @@ export default function AboutPage() {
               RO Service Patna ka sapna tha ki Patna ke har ghar mein safe, shuddh drinking water ho. Aaj hum Patna ke 32+ areas mein same-day RO repair, installation, filter change, membrane change aur AMC service provide karte hain.
             </p>
             <p className="mt-3 text-gray-600 leading-relaxed">
+              RO Service Patna is a trusted and independent water purifier service provider in Patna, recognized with the <strong>Customer Service Excellence Award</strong>. We offer complete solutions including RO installation, repair, maintenance, and AMC services for domestic, commercial, and industrial water purifiers. Along with expert RO services, we also provide a wide range of water purifiers and water treatment products.
+            </p>
+            <p className="mt-3 text-gray-600 leading-relaxed">
               Hum sirf kaam nahi karte, rishte banate hain. Yahi wajah hai ki 70% customers humein referral se aate hain. Har service par 30-day warranty, 100% genuine company spare parts, aur transparent pricing — koi hidden charge nahi.
             </p>
             <div className="mt-6 flex gap-3">

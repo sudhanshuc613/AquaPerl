@@ -73,6 +73,7 @@ export default function HeroSection() {
             {/* COMPETITOR-BEATING BADGES ROW */}
             <div className="flex flex-wrap gap-2 pt-1">
               {[
+                { t: '🏆 Customer Service Excellence Award', c: 'bg-yellow-50 text-yellow-800 border-yellow-300' },
                 { t: '₹200 सस्ता vs ROCare/UrbanCompany', c: 'bg-green-50 text-green-700 border-green-200' },
                 { t: 'FREE TDS Test on Every Visit', c: 'bg-blue-50 text-blue-700 border-blue-200' },
                 { t: '2 Hour Response — Patna Local Team', c: 'bg-orange-50 text-orange-700 border-orange-200' },

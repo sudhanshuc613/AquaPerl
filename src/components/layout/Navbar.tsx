@@ -97,7 +97,7 @@ export default function Navbar() {
 
       <header className="sticky top-0 z-40 border-b border-gray-100 bg-white/95 backdrop-blur-md shadow-sm">
         <div className="container-pad">
-          <div className="flex h-20 items-center gap-6">
+          <div className="flex h-20 items-center gap-4 lg:gap-5">
             <button className="md:hidden -ml-2 p-2" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
               {mobileOpen ? <X className="h-6 w-6"/> : <Menu className="h-6 w-6"/>}
             </button>
@@ -184,7 +184,7 @@ export default function Navbar() {
             </form>
 
             {/* Right Actions */}
-            <div className="flex items-center gap-1 ml-auto lg:ml-0">
+            <div className="flex items-center gap-1.5 ml-auto lg:ml-0 shrink-0">
               <Link href="/book-service" className="hidden md:inline-flex">
                 <Button variant="navy" size="default" className="gap-1.5 h-11 px-5 shadow-md">
                   <Wrench className="h-4 w-4"/>Book Service ₹200
