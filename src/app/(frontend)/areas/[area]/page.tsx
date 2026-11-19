@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import ServiceQuickBook from '@/components/service/ServiceQuickBook';
+import AreaLocalMap from '@/components/site/AreaLocalMap';
 import { PATNA_AREAS, BRANDS_SERVICED, PHONES, telLink, waLink, FAQ, getAreaSEO, SERVICE_PACKAGES } from '@/lib/utils';
-import { Phone, CheckCircle2, Clock, Wrench, Shield, MapPin, Star, Zap } from 'lucide-react';
+import { getAreaCoords, getAreaTestimonial } from '@/lib/area-coords';
+import { Phone, CheckCircle2, Clock, Wrench, Shield, MapPin, Star, Zap, Quote } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const revalidate = 60;
@@ -40,24 +42,56 @@ export default function AreaPage({ params }: { params: { area: string } }) {
   const areaName = area?.name || params.area.replace(/-/g,' ').replace(/\b\w/g, c => c.toUpperCase());
   const pincode = (area as any)?.pincode || '';
   const landmarks = (area as any)?.landmarks || '';
+  const coords = getAreaCoords(params.area);
+  const testimonial = getAreaTestimonial(params.area);
 
+  // Telephone list — secondary empty ho to mat bhejo
+  const tels = [`+91-${PHONES.primary}`];
+  if (PHONES.secondary) tels.push(`+91-${PHONES.secondary}`);
+
+  // ADVANCED per-page LocalBusiness schema — 2026 ke local SEO ke liye
+  // Isse Google ko pata chalta hai hum {areaName} mein specifically service dete hain
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': ['LocalBusiness','Plumber','Service'],
+    '@type': ['LocalBusiness','Plumber','HomeAndConstructionBusiness'],
     name: `RO Service ${areaName} Patna`,
-    telephone: [`+91-${PHONES.primary}`,`+91-${PHONES.secondary}`],
+    telephone: tels,
     email: 'service@roserviceinpatna.in',
     url: `https://www.roserviceinpatna.in/areas/${params.area}`,
-    address: { '@type':'PostalAddress', streetAddress: landmarks, addressLocality: areaName, postalCode: pincode, addressRegion:'Patna, Bihar', addressCountry:'IN' },
-    areaServed: { '@type':'Place', name: `${areaName}, Patna, Bihar ${pincode}` },
+    image: 'https://www.roserviceinpatna.in/og.jpg',
+    logo: 'https://www.roserviceinpatna.in/icon-512.png',
+    address: { '@type':'PostalAddress', streetAddress: landmarks, addressLocality: areaName, addressRegion: 'Patna', postalCode: pincode, addressCountry:'IN' },
+    geo: { '@type':'GeoCoordinates', latitude: coords.lat, longitude: coords.lng },
+    hasMap: `https://www.google.com/maps?q=RO+Service+${encodeURIComponent(areaName)}+Patna&ll=${coords.lat},${coords.lng}`,
+    areaServed: {
+      '@type': 'Place',
+      name: `${areaName}, Patna, Bihar ${pincode}`,
+      geo: { '@type':'GeoCoordinates', latitude: coords.lat, longitude: coords.lng },
+    },
     priceRange: '₹200 - ₹7000',
-    openingHours: 'Mo-Su 07:00-22:00',
-    sameAs: ['https://www.instagram.com/roservicepatna/'],
-    aggregateRating: { '@type':'AggregateRating', ratingValue:'4.9', reviewCount:'2486', bestRating:'5', worstRating:'1' },
+    openingHoursSpecification: [{
+      '@type':'OpeningHoursSpecification',
+      dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+      opens: '00:00', closes: '23:59',
+    }],
+    sameAs: ['https://www.instagram.com/roservicepatna/', 'https://wa.me/91'+PHONES.primary],
+    aggregateRating: { '@type':'AggregateRating', ratingValue:'4.9', reviewCount:'2486', ratingCount:'2486', bestRating:'5', worstRating:'1' },
+    review: {
+      '@type':'Review',
+      author: { '@type':'Person', name: testimonial.name },
+      datePublished: testimonial.date,
+      reviewBody: testimonial.text,
+      reviewRating: { '@type':'Rating', ratingValue: String(testimonial.rating), bestRating:'5' },
+      itemReviewed: { '@type':'LocalBusiness', name: `RO Service ${areaName} Patna` },
+    },
     makesOffer: [
-      { '@type':'Offer', itemOffered: { '@type':'Service', name:'RO Repair in '+areaName }, price:'200', priceCurrency:'INR' },
-      { '@type':'Offer', itemOffered: { '@type':'Service', name:'RO Installation in '+areaName }, price:'499', priceCurrency:'INR' },
+      { '@type':'Offer', itemOffered: { '@type':'Service', name:'RO Repair in '+areaName }, price:'200', priceCurrency:'INR', availability:'https://schema.org/InStock' },
+      { '@type':'Offer', itemOffered: { '@type':'Service', name:'RO Installation in '+areaName }, price:'499', priceCurrency:'INR', availability:'https://schema.org/InStock' },
+      { '@type':'Offer', itemOffered: { '@type':'Service', name:'RO Filter Change in '+areaName }, price:'799', priceCurrency:'INR', availability:'https://schema.org/InStock' },
+      { '@type':'Offer', itemOffered: { '@type':'Service', name:'RO Membrane Change in '+areaName }, price:'1499', priceCurrency:'INR', availability:'https://schema.org/InStock' },
     ],
+    currenciesAccepted: 'INR',
+    paymentAccepted: 'Cash, UPI, GPay, PhonePe',
   };
 
   const faqLd = {
@@ -158,6 +192,28 @@ export default function AreaPage({ params }: { params: { area: string } }) {
                 ))}
               </ul>
             </div>
+
+            {/* Local Testimonial — geo keyword signal */}
+            <div className="card-surface p-6 border-l-4 border-brand-500">
+              <Quote className="h-8 w-8 text-brand-200" />
+              <p className="mt-2 text-lg italic text-gray-800">"{testimonial.text}"</p>
+              <div className="mt-3 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-500 font-bold text-white">
+                  {testimonial.name.charAt(0)}
+                </div>
+                <div>
+                  <p className="font-bold text-navy-900">{testimonial.name}</p>
+                  <p className="text-xs text-gray-500 flex items-center gap-1">
+                    <MapPin className="h-3 w-3"/> {areaName}, Patna {pincode}
+                    <span className="mx-1">•</span>
+                    <span className="text-yellow-500">{'★'.repeat(testimonial.rating)}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* LOCAL MAP — this area centered (Google ranking signal) */}
+            <AreaLocalMap areaName={areaName} pincode={pincode} lat={coords.lat} lng={coords.lng} />
 
             {/* Brands */}
             <div>

@@ -98,6 +98,25 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* NAP block — Google Local SEO ke liye har page pe exact Name/Address/Phone */}
+        <div className="mt-10 rounded-xl bg-white/5 p-4 grid gap-3 md:grid-cols-3 text-sm">
+          <div>
+            <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Business Name</p>
+            <p className="text-white font-bold">RO Service Patna</p>
+          </div>
+          <div>
+            <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Address</p>
+            <p className="text-gray-200">Patna, Bihar 800001, India</p>
+          </div>
+          <div>
+            <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Phone & Hours</p>
+            <p className="text-gray-200">
+              <TelLink kind="primary" className="text-brand-400 hover:text-brand-300">+91 <PhoneText kind="primary"/></TelLink>
+              {' '}• Open 24×7
+            </p>
+          </div>
+        </div>
+
         <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-gray-500 md:flex-row">
           <p>© {new Date().getFullYear()} RO Service Patna (roserviceinpatna.in). All rights reserved.</p>
           <div className="flex flex-wrap items-center gap-4 justify-center">
