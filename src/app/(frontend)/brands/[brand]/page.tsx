@@ -10,6 +10,8 @@ function getBrand(slug: string) {
   return BRANDS_SERVICED.find(b => b.slug === slug);
 }
 
+export const revalidate = 60;
+
 export function generateStaticParams() {
   return BRANDS_SERVICED.map(b => ({ brand: b.slug }));
 }

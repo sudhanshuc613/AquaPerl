@@ -10,6 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { cn, PHONES, PATNA_AREAS, telLink } from '@/lib/utils';
 import { useCart } from '@/lib/store';
+import { TelLink, PhoneText, VisitCharge } from '@/components/site/PhoneLink';
 
 const categoryMega = [
   {
@@ -79,15 +80,15 @@ export default function Navbar() {
             </span>
             <span className="text-white/30">|</span>
             <span className="flex items-center gap-1.5">
-              <MapPin className="h-3 w-3"/> 🔧 Patna RO Service ₹200 Visit
+              <MapPin className="h-3 w-3"/> 🔧 Patna RO Service <VisitCharge/> Visit
             </span>
             <span className="text-white/30">|</span>
             <span className="flex items-center gap-1.5 text-yellow-300">⭐ 4.9★ (2486+ reviews)</span>
           </div>
           <div className="flex items-center gap-3">
-            <a href={telLink(PHONES.primary)} className="flex items-center gap-1 font-bold bg-cta-orange hover:bg-orange-600 transition px-3 py-1 rounded-md shadow-sm">
-              <Phone className="h-3 w-3 animate-pulse"/> Call Now: {PHONES.primary}
-            </a>
+            <TelLink kind="primary" className="flex items-center gap-1 font-bold bg-cta-orange hover:bg-orange-600 transition px-3 py-1 rounded-md shadow-sm">
+              <Phone className="h-3 w-3 animate-pulse"/> Call Now: <PhoneText kind="primary"/>
+            </TelLink>
             <Link href="/track-order" className="hidden hover:text-brand-300 md:inline text-xs font-medium">Track Order</Link>
             <Link href="/amc" className="hidden hover:text-brand-300 md:inline-flex items-center gap-1 text-xs font-medium"><Shield className="h-3 w-3"/>AMC</Link>
             {isAdmin && <Link href="/admin/dashboard" className="flex items-center gap-1 font-semibold text-brand-300 hover:text-white text-xs">Admin</Link>}
@@ -187,7 +188,7 @@ export default function Navbar() {
             <div className="flex items-center gap-1.5 ml-auto lg:ml-0 shrink-0">
               <Link href="/book-service" className="hidden md:inline-flex">
                 <Button variant="navy" size="default" className="gap-1.5 h-11 px-5 shadow-md">
-                  <Wrench className="h-4 w-4"/>Book Service ₹200
+                  <Wrench className="h-4 w-4"/>Book Service <VisitCharge/>
                 </Button>
               </Link>
               <button className="lg:hidden rounded-lg p-2.5 hover:bg-brand-50" aria-label="Search"><Search className="h-5 w-5 text-navy-800"/></button>
@@ -212,7 +213,7 @@ export default function Navbar() {
                           <Link href="/auth/register" className="block rounded-lg px-3 py-2 text-sm hover:bg-brand-50">Create Account</Link>
                           <Link href="/track-order" className="block rounded-lg px-3 py-2 text-sm hover:bg-brand-50">Track Order</Link>
                           <div className="my-1 h-px bg-gray-100"/>
-                          <a href={telLink(PHONES.primary)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold text-cta-orange hover:bg-orange-50"><Phone className="h-4 w-4"/>Call {PHONES.primary}</a>
+                          <TelLink kind="primary" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold text-cta-orange hover:bg-orange-50"><Phone className="h-4 w-4"/>Call <PhoneText kind="primary"/></TelLink>
                         </>
                       )}
                     </div>
@@ -234,7 +235,7 @@ export default function Navbar() {
             </div>
           </form>
           <div className="flex items-center gap-3 border-t border-gray-100 py-2 lg:hidden">
-            <Link href="/book-service" className="flex-1"><Button className="w-full gap-1.5 h-11" size="sm"><Wrench className="h-4 w-4"/>Book RO Service ₹200</Button></Link>
+            <Link href="/book-service" className="flex-1"><Button className="w-full gap-1.5 h-11" size="sm"><Wrench className="h-4 w-4"/>Book RO Service <VisitCharge/></Button></Link>
           </div>
         </div>
 
@@ -271,7 +272,7 @@ export default function Navbar() {
                 )}
               </div>
               <Link href="/book-service" className="flex items-center gap-2 rounded-lg px-3 py-2 font-semibold text-cta-orange hover:bg-orange-50" onClick={() => setMobileOpen(false)}>
-                <Wrench className="h-5 w-5"/>Patna RO Service ₹200
+                <Wrench className="h-5 w-5"/>Patna RO Service <VisitCharge/>
               </Link>
               <Link href="/amc" className="flex items-center gap-2 rounded-lg px-3 py-2 font-semibold text-navy-800 hover:bg-brand-50" onClick={() => setMobileOpen(false)}>
                 <Shield className="h-5 w-5"/>AMC Plans

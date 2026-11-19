@@ -5,151 +5,76 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
 import SessionProvider from '@/components/providers/SessionProvider';
+import SettingsProvider from '@/components/providers/SettingsProvider';
 import { Toaster } from 'react-hot-toast';
 import { BRAND, PHONES } from '@/lib/utils';
+import { getAllSettings } from '@/lib/settings';
+import SiteSchemas from '@/components/site/SiteSchemas';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://www.roserviceinpatna.in'),
-  icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
+// Dynamic metadata — admin se phone/title change karne par Google ko bhi new values milenge
+export async function generateMetadata(): Promise<Metadata> {
+  const s = await getAllSettings();
+  const primary = String(s['contact.primaryPhone'] || PHONES.primary);
+  const secondary = String(s['contact.secondaryPhone'] || PHONES.secondary);
+  const visit = Number(s['service.visitCharge'] ?? 200);
+  const metaTitle = String(s['seo.metaTitle'] || `RO Service Patna ₹${visit} • ☎ ${primary} | 2-Hour Technician`);
+  const metaDesc = String(s['seo.metaDescription'] ||
+    `RO repair & installation in Patna. ₹${visit} visit charge, technician in 2 HRS. All brands (Kent, Aquaguard, Livpure, Pureit, AO Smith). Genuine parts, 30-day warranty, same-day service. Call ${primary} now! Free TDS test on every visit.`);
+
+  const phoneFmt = primary.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+
+  return {
+    metadataBase: new URL('https://www.roserviceinpatna.in'),
+    icons: {
+      icon: [
+        { url: '/favicon.ico', sizes: 'any' },
+        { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
+      ],
+      shortcut: '/favicon.ico',
+      apple: '/icon-512.png',
+    },
+    title: {
+      default: metaTitle,
+      template: '%s',
+    },
+    description: metaDesc,
+    keywords: [
+      'RO service in Patna','RO repair Patna','RO installation Patna','water purifier service Patna',
+      'Kent RO service Patna','Aquaguard service Patna','Livpure service Patna','RO mechanic Patna',
+      'RO filter change Patna','RO membrane change Patna','RO AMC Patna',
+      'Boring Road RO service','Kankarbagh RO repair','Patna Sahib RO service','Danapur RO installation',
+      'Bailey Road RO repair','Rajendra Nagar RO service','Patna RO service center',
+      'RO repair near me','RO service near me','water purifier repair near me',
+      'RO purifier Patna','RO spare parts Patna','RO membrane price Patna','RO filter price Patna',
+      'best RO service in Patna','cheap RO service Patna','same day RO service Patna',
+      'RO Service Patna','roserviceinpatna.in',
+      'Digha RO service','Kadamkuan RO repair','Kumhrar RO service','Khagaul water purifier service',
+      'Patna RO technician','24 hour RO service Patna','RO leakage repair Patna','RO TDS problem Patna',
+      'Pureit service Patna','AO Smith service Patna','Blue Star RO repair','Havells RO service Patna',
+      'LG RO service','commercial RO plant Patna','RO uninstallation Patna',
+      `RO visit charge ₹${visit}`, 'RO repair 2 hours','genuine RO parts Patna',
     ],
-    shortcut: '/favicon.ico',
-    apple: '/icon-512.png',
-  },
-  title: {
-    default: 'RO Service Patna ₹200 • ☎ 9241536586 | 2-Hour Technician',
-    template: '%s',
-  },
-  description:
-    'RO repair & installation in Patna. ₹200 visit charge, technician in 2 HRS. All brands (Kent, Aquaguard, Livpure, Pureit, AO Smith). Genuine parts, 30-day warranty, same-day service. Call 9241536586 now! Free TDS test on every visit.',
-  keywords: [
-    'RO service in Patna','RO repair Patna','RO installation Patna','water purifier service Patna',
-    'Kent RO service Patna','Aquaguard service Patna','Livpure service Patna','RO mechanic Patna',
-    'RO filter change Patna','RO membrane change Patna','RO AMC Patna',
-    'Boring Road RO service','Kankarbagh RO repair','Patna Sahib RO service','Danapur RO installation',
-    'Bailey Road RO repair','Rajendra Nagar RO service','Patna RO service center',
-    'RO repair near me','RO service near me','water purifier repair near me',
-    'RO purifier Patna','RO spare parts Patna','RO membrane price Patna','RO filter price Patna',
-    'best RO service in Patna','cheap RO service Patna','same day RO service Patna',
-    'RO Service Patna','roserviceinpatna.in',
-    'Digha RO service','Kadamkuan RO repair','Kumhrar RO service','Khagaul water purifier service',
-    'Patna RO technician','24 hour RO service Patna','RO leakage repair Patna','RO TDS problem Patna',
-    'Pureit service Patna','AO Smith service Patna','Blue Star RO repair','Havells RO service Patna',
-    'LG RO service','commercial RO plant Patna','RO uninstallation Patna','RO AMC Patna 1499',
-    'RO visit charge ₹200','RO repair 2 hours','genuine RO parts Patna',
-  ],
-  authors: [{ name: 'RO Service Patna' }],
-  creator: 'RO Service Patna',
-  publisher: 'RO Service Patna',
-  category: 'Local Service',
-  alternates: { canonical: './' },
-  openGraph: {
-    type: 'website', url: '/', title: 'RO Service Patna ₹200 • ☎ 9241536586 | 2-Hour Technician',
-    description: 'RO repair & installation in Patna. ₹200 visit, 2-hour technician, 30-day warranty, all brands. Call 9241536586.',
-    siteName: BRAND.name, locale: 'en_IN',
-    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: 'RO Service Patna — ₹200 visit, 2 hour service, Call 9241536586' }],
-  },
-  twitter: { card: 'summary_large_image', title: 'RO Service Patna ₹200 • ☎ 9241536586' },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
-  formatDetection: { telephone: true, email: true, address: true },
-};
+    authors: [{ name: 'RO Service Patna' }],
+    creator: 'RO Service Patna',
+    publisher: 'RO Service Patna',
+    category: 'Local Service',
+    alternates: { canonical: './' },
+    openGraph: {
+      type: 'website', url: '/', title: metaTitle,
+      description: `RO repair & installation in Patna. ₹${visit} visit, 2-hour technician, 30-day warranty, all brands. Call ${primary}.`,
+      siteName: BRAND.name, locale: 'en_IN',
+      images: [{ url: '/og.jpg', width: 1200, height: 630, alt: `RO Service Patna — ₹${visit} visit, 2 hour service, Call ${phoneFmt}` }],
+    },
+    twitter: { card: 'summary_large_image', title: `RO Service Patna ₹${visit} • ☎ ${phoneFmt}` },
+    robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
+    formatDetection: { telephone: true, email: true, address: true },
+  };
+}
 
-const localBusinessSchema = {
-  '@context': 'https://schema.org',
-  '@type': ['LocalBusiness', 'Plumber', 'GeneralContractor'],
-  '@id': 'https://www.roserviceinpatna.in/#localbusiness',
-  name: 'RO Service Patna',
-  image: 'https://www.roserviceinpatna.in/og.jpg',
-  logo: 'https://www.roserviceinpatna.in/icon-512.png',
-  url: 'https://www.roserviceinpatna.in',
-  telephone: ['+919241536586', '+919534037266'],
-  contactPoint: {
-    '@type': 'ContactPoint',
-    telephone: '+91-924-153-6586',
-    contactType: 'customer service',
-    areaServed: 'IN-BR',
-    availableLanguage: ['English', 'Hindi'],
-  },
-  priceRange: '₹200 - ₹5000',
-  email: 'service@roserviceinpatna.in',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Patna',
-    addressLocality: 'Patna',
-    addressRegion: 'Bihar',
-    postalCode: '800001',
-    addressCountry: 'IN',
-  },
-  geo: { '@type': 'GeoCoordinates', latitude: 25.5941, longitude: 85.1376 },
-  areaServed: {
-    '@type': 'GeoCircle',
-    geoMidpoint: { '@type': 'GeoCoordinates', latitude: 25.5941, longitude: 85.1376 },
-    geoRadius: '25000',
-  },
-  openingHoursSpecification: {
-    '@type': 'OpeningHoursSpecification',
-    dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-    opens: '07:00',
-    closes: '22:00',
-  },
-  sameAs: [
-    'https://www.facebook.com/people/RO-Service-Patna/61570000000000/',
-    'https://wa.me/919241536586',
-    'https://g.co/kgs/aquamedii',
-  ],
-  hasOfferCatalog: {
-    '@type': 'OfferCatalog',
-    name: 'RO Services',
-    itemListElement: [
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'RO Visit & Diagnosis', serviceType: 'diagnosis' }, price: '200', priceCurrency: 'INR' },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'RO Repair', serviceType: 'repair' }, price: '299', priceCurrency: 'INR' },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'RO Routine Service', serviceType: 'service' }, price: '399', priceCurrency: 'INR' },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'RO Installation', serviceType: 'installation' }, price: '499', priceCurrency: 'INR' },
-    ],
-  },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    reviewCount: '2486',
-    bestRating: '5',
-    worstRating: '1',
-  },
-};
-
-const organizationSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  '@id': 'https://www.roserviceinpatna.in/#organization',
-  name: 'AquaMedii | RO Repair - Service | Commercial Plant',
-  alternateName: 'RO Service Patna',
-  url: 'https://www.roserviceinpatna.in',
-  logo: 'https://www.roserviceinpatna.in/icon-512.png',
-  telephone: ['+919241536586', '+919534037266'],
-  email: 'service@roserviceinpatna.in',
-  address: { '@type':'PostalAddress', addressLocality:'Patna', addressRegion:'Bihar', postalCode:'800001', addressCountry:'IN' },
-  areaServed: { '@type':'City', name:'Patna' },
-};
-
-const websiteSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  '@id': 'https://www.roserviceinpatna.in/#website',
-  url: 'https://www.roserviceinpatna.in',
-  name: 'RO Service Patna',
-  publisher: { '@id': 'https://www.roserviceinpatna.in/#organization' },
-  inLanguage: 'en-IN',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: 'https://www.roserviceinpatna.in/search?q={search_term_string}',
-    'query-input': 'required name=search_term_string',
-  },
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const s = await getAllSettings();
   return (
     <html lang="en">
       <head>
@@ -162,18 +87,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       </head>
       <body className={inter.className}>
         <SessionProvider>
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-          <CartDrawer />
-          <div id="modal-root" />
-          <Toaster position="top-right" toastOptions={{ duration: 3500 }} />
+          <SettingsProvider>
+            <Navbar />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+            <CartDrawer />
+            <div id="modal-root" />
+            <Toaster position="top-right" toastOptions={{ duration: 3500 }} />
+            {/* JSON-LD schemas (server-rendered, DB ke phone/price use karte hai) */}
+            <SiteSchemas settings={s} />
+          </SettingsProvider>
         </SessionProvider>
       </body>
     </html>

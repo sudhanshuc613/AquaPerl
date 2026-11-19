@@ -5,6 +5,8 @@ import { PATNA_AREAS, BRANDS_SERVICED, PHONES, telLink, waLink, FAQ, getAreaSEO,
 import { Phone, CheckCircle2, Clock, Wrench, Shield, MapPin, Star, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+export const revalidate = 60;
+
 export function generateStaticParams() {
   return PATNA_AREAS.map(a => ({ area: a.slug }));
 }

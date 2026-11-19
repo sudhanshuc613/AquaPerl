@@ -89,6 +89,8 @@ const PROBLEMS = [
   },
 ];
 
+export const revalidate = 60;
+
 export function generateStaticParams() {
   return PROBLEMS.map(p => ({ problem: p.slug }));
 }

@@ -18,9 +18,19 @@ export default function AdminSettings() {
 
   const save = async () => {
     setSaving(true);
-    const res = await fetch('/api/admin/settings', { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify(settings) });
-    if (res.ok) toast.success('Settings saved! 2 minute mein site pe reflect ho jayega');
-    else toast.error('Save nahi hua');
+    try {
+      const res = await fetch('/api/admin/settings', { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify(settings) });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        toast.success('✅ Settings saved! Site ab turant refresh ho raha hai...');
+        // Nudge next tick to reload cache
+        setTimeout(() => window.location.reload(), 1500);
+      } else {
+        toast.error('Save nahi hua: ' + (data.error || 'unknown error'));
+      }
+    } catch (e: any) {
+      toast.error('Save error: ' + e.message);
+    }
     setSaving(false);
   };
 

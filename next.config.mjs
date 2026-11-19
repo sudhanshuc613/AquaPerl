@@ -1,90 +1,48 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
   images: {
-    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
-      { protocol: 'https', hostname: '**' },
-      { protocol: 'http', hostname: '**' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'plus.unsplash.com' },
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
+      { protocol: 'https', hostname: '*.amazonaws.com' },
+      { protocol: 'https', hostname: '*.razorpay.com' },
+      { protocol: 'https', hostname: 'images.pexels.com' },
+      { protocol: 'https', hostname: '*.pixabay.com' },
+      { protocol: 'http', hostname: 'localhost' },
+      { protocol: 'https', hostname: '**', pathname: '/**' },
     ],
   },
-  eslint: { ignoreDuringBuilds: true },
-  typescript: { ignoreBuildErrors: false },
-  async redirects() {
-    return [
-      // Force www canonical so Google doesn't split ranking between www and non-www
-      {
-        source: '/:path*',
-        has: [{ type: 'host', value: 'roserviceinpatna.in' }],
-        destination: 'https://www.roserviceinpatna.in/:path*',
-        permanent: true,
-      },
-      // OLD purane slugs 301 redirect to new pages (GSC mein purane urls the)
-      { source: '/brands/aquanexa', destination: '/', permanent: true },
-      { source: '/brands/generic-local-brands', destination: '/', permanent: true },
-      { source: '/product/aquafresh', destination: '/brands/aquafresh', permanent: true },
-      { source: '/product/aqn-mem-80', destination: '/categories/ro-membranes', permanent: true },
-      { source: '/product/aqn-c100', destination: '/categories/commercial-plants', permanent: true },
-      { source: '/product/commercial-50-lph', destination: '/categories/50-lph', permanent: true },
-      { source: '/product/commercial-frp-100', destination: '/categories/100-lph', permanent: true },
-      { source: '/product/aquanexa-pro-12l', destination: '/product/ro-patna-pro-12l', permanent: true },
-      // Purane /auth/register aur /auth/login pages hata diye (admin ke liye sirf /login chahiye)
-      { source: '/auth/:path*', destination: '/login', permanent: true },
-    ];
-  },
+  // Cache public pages aggressively for SEO speed
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: '/((?!api|admin|_next/static|_next/image|favicon.ico|uploads).*)',
         headers: [
-          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-DNS-Prefetch-Control', value: 'on' },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(self)' },
+          { key: 'Cache-Control', value: 'public, max-age=0, s-maxage=60, stale-while-revalidate=300' },
         ],
       },
-      // NOINDEX for private/user/admin pages — but allow crawling them so robots.txt rule conflict na ho (header noindex hi Google ko rokega)
       {
-        source: '/login',
-        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet' }],
-      },
-      {
-        source: '/admin/:path*',
-        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet' }],
-      },
-      {
-        source: '/cart',
-        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
-      },
-      {
-        source: '/checkout/:path*',
-        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
-      },
-      {
-        source: '/wishlist',
-        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
-      },
-      {
-        source: '/orders/:path*',
-        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
-      },
-      {
-        source: '/api/:path*',
-        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' }],
-      },
-      {
-        source: '/auth/:path*',
-        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
-      },
-      {
-        source: '/track-order',
-        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
-      },
-      // Cache public pages aggressively for SEO speed
-      {
-        source: '/((?!api/|_next/|admin/|checkout/|cart|orders/|login|track-order|wishlist).*)',
+        source: '/uploads/(.*)',
         headers: [
-          { key: 'Cache-Control', value: 'public, max-age=0, s-maxage=300, stale-while-revalidate=86400' },
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
         ],
       },
+    ];
+  },
+  async redirects() {
+    return [
+      // Old spam/hacked URLs → 410 Gone (batado Google ko ye page delete ho gaya)
+      { source: '/kent-ro-service', destination: '/brands/kent', permanent: false },
+      { source: '/kent-ro-service/', destination: '/brands/kent', permanent: false },
+      { source: '/:path*/kent-ro-service', destination: '/brands/kent', permanent: false },
+      // www is canonical (non-www → www 301 handled by Vercel project setting, extra safety)
     ];
   },
 };

@@ -11,6 +11,8 @@ export const revalidate = 60; // settings 1 minute me refresh
 
 export default async function HeroSection() {
   const visitCharge = await getSetting<number>('service.visitCharge').catch(() => 200) || 200;
+  const primaryPhone = String(await getSetting<string>('contact.primaryPhone').catch(() => PHONES.primary) || PHONES.primary);
+  const whatsappPhone = String(await getSetting<string>('contact.whatsapp').catch(() => PHONES.whatsapp) || PHONES.whatsapp);
   const banner = await getSetting<string>('hero.bannerImage').catch(() => '') || '';
   const headline = await getSetting<string>('hero.bannerHeadline').catch(() => '') || '';
   const subtext = await getSetting<string>('hero.bannerSubtext').catch(() => '') || '';
@@ -129,10 +131,10 @@ export default async function HeroSection() {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3 pt-1">
-              <a href={telLink(PHONES.primary)}
+              <a href={telLink(primaryPhone)}
                 className={`group inline-flex items-center justify-center gap-2 rounded-xl ${banner?'bg-cta-orange hover:bg-orange-600 shadow-orange-500/40':'bg-gradient-to-r from-brand-500 to-brand-600 shadow-brand-500/30 hover:shadow-brand-500/40'} px-8 py-4 text-base font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all`}>
                 <Phone className="h-5 w-5"/> Call Now for Service
-                <span className="ml-1 rounded bg-white/20 px-2 py-0.5 text-sm font-mono">{PHONES.primary}</span>
+                <span className="ml-1 rounded bg-white/20 px-2 py-0.5 text-sm font-mono">{primaryPhone}</span>
               </a>
               <Link href="/book-service"
                 className={`inline-flex items-center justify-center gap-2 rounded-xl border-2 px-8 py-4 text-base font-bold transition-all ${banner?'border-white bg-transparent text-white hover:bg-white/10':'border-brand-500 bg-white text-brand-600 hover:bg-brand-50 hover:shadow-md'}`}>
@@ -141,7 +143,7 @@ export default async function HeroSection() {
             </div>
 
             <div className="flex flex-wrap items-center gap-4 pt-1 text-sm">
-              <a href={waLink(PHONES.whatsapp, 'Hi, RO service chahiye Patna mein.')} target="_blank" rel="noopener"
+              <a href={waLink(whatsappPhone, 'Hi, RO service chahiye Patna mein.')} target="_blank" rel="noopener"
                 className="inline-flex items-center gap-2 text-[#25D366] font-semibold hover:underline">
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#25D366]/10">
                   <MessageCircle className="h-4 w-4"/>
@@ -255,7 +257,7 @@ export default async function HeroSection() {
                   </div>
                   <div>
                     <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Customer Support</p>
-                    <a href={telLink(PHONES.primary)} className="text-xl font-black text-navy-900 hover:text-brand-600">{PHONES.primary}</a>
+                    <a href={telLink(primaryPhone)} className="text-xl font-black text-navy-900 hover:text-brand-600">{primaryPhone}</a>
                   </div>
                 </div>
               </div>

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Droplets, Phone, Mail, MapPin, Facebook, Instagram, Youtube, Send, Wrench } from 'lucide-react';
-import { PHONES, waLink, telLink, PATNA_AREAS } from '@/lib/utils';
+import { PHONES, PATNA_AREAS } from '@/lib/utils';
+import { TelLink, WaLink, PhoneText, VisitCharge } from '@/components/site/PhoneLink';
 
 export default function Footer() {
   return (
@@ -9,11 +10,11 @@ export default function Footer() {
         <div className="mb-12 flex flex-col gap-4 rounded-2xl bg-aqua-gradient p-8 text-white shadow-xl md:flex-row md:items-center md:justify-between">
           <div>
             <h3 className="text-2xl text-white md:text-3xl">Need Urgent RO Repair in Patna?</h3>
-            <p className="mt-1 text-brand-100">Visit charge only ₹200. Same-day service all over Patna.</p>
+            <p className="mt-1 text-brand-100">Visit charge only <VisitCharge/>. Same-day service all over Patna.</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <a href={`tel:+91${PHONES.primary}`} className="btn-primary bg-white !text-navy-900 hover:bg-gray-100"><Phone className="h-4 w-4"/>Call {PHONES.primary}</a>
-            <a href={waLink(PHONES.whatsapp, 'Hi, I need RO service')} className="btn-whatsapp"><Send className="h-4 w-4"/>WhatsApp</a>
+            <TelLink kind="primary" className="btn-primary bg-white !text-navy-900 hover:bg-gray-100"><Phone className="h-4 w-4"/>Call <PhoneText kind="primary"/></TelLink>
+            <WaLink message="Hi, I need RO service in Patna" className="btn-whatsapp"><Send className="h-4 w-4"/>WhatsApp</WaLink>
           </div>
         </div>
 
@@ -33,8 +34,8 @@ export default function Footer() {
               Also sell genuine RO purifiers, spare parts and commercial plants across India.
             </p>
             <div className="mt-5 space-y-2 text-sm">
-              <a href={`tel:+91${PHONES.primary}`} className="flex items-center gap-2 hover:text-brand-400"><Phone className="h-4 w-4 text-brand-400"/>+91 {PHONES.primary} (Primary)</a>
-              <a href={`tel:+91${PHONES.secondary}`} className="flex items-center gap-2 hover:text-brand-400"><Phone className="h-4 w-4 text-brand-400"/>+91 {PHONES.secondary} (Secondary)</a>
+              <TelLink kind="primary" className="flex items-center gap-2 hover:text-brand-400"><Phone className="h-4 w-4 text-brand-400"/>+91 <PhoneText kind="primary"/> (Primary)</TelLink>
+              <TelLink kind="secondary" className="flex items-center gap-2 hover:text-brand-400"><Phone className="h-4 w-4 text-brand-400"/>+91 <PhoneText kind="secondary"/> (Secondary)</TelLink>
               <a href="mailto:service@roserviceinpatna.in" className="flex items-center gap-2 hover:text-brand-400"><Mail className="h-4 w-4 text-brand-400"/>service@roserviceinpatna.in</a>
               <div className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-400"/><span>Serving entire Patna, Bihar</span></div>
             </div>
@@ -110,28 +111,28 @@ export default function Footer() {
       </div>
 
       {/* WhatsApp floating button */}
-      <a href={waLink(PHONES.whatsapp, 'Hi, I need RO service in Patna')} target="_blank" rel="noopener noreferrer"
+      <WaLink message="Hi, I need RO service in Patna"
         className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl shadow-green-500/40 hover:scale-110 transition" aria-label="Chat on WhatsApp">
         <svg viewBox="0 0 32 32" className="h-7 w-7 fill-current"><path d="M16 .396C7.384.396.396 7.384.396 16c0 2.76.73 5.475 2.114 7.866L.054 31.604l7.937-2.387A15.54 15.54 0 0 0 16 31.604c8.616 0 15.604-6.988 15.604-15.604S24.616.396 16 .396zm7.092 23.148c-.296.834-1.722 1.593-2.384 1.697-.614.097-1.392.14-2.246-.154-.516-.178-1.18-.384-2.03-.749-3.572-1.538-5.898-5.14-6.075-5.374-.176-.234-1.442-1.918-1.442-3.66 0-1.742.914-2.598 1.238-2.954.324-.357.706-.446.94-.446.236 0 .47.002.676.012.218.01.51-.082.8.608.296.706 1.008 2.444 1.096 2.62.088.176.146.382.028.616-.116.234-.176.38-.354.586-.176.206-.372.46-.53.618-.176.174-.36.366-.154.718.206.352.914 1.508 1.962 2.44 1.346 1.2 2.482 1.58 2.822 1.756.34.178.538.15.738-.09.2-.242.854-.994 1.084-1.34.23-.344.46-.288.774-.174.314.112 1.998.942 2.34 1.114.342.17.57.254.654.394.082.14.082.808-.212 1.642z"/></svg>
-      </a>
+      </WaLink>
 
       {/* Call floating button (mobile pe bhi kaam karega — WhatsApp ke upar) */}
-      <a href={telLink(PHONES.primary)}
+      <TelLink kind="primary"
         className="fixed bottom-[88px] right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-cta-orange text-white shadow-2xl shadow-orange-500/40 hover:scale-110 transition md:bottom-[88px]" aria-label="Call now">
         <Phone className="h-6 w-6"/>
-      </a>
+      </TelLink>
 
       {/* Mobile sticky bottom bar (only on mobile) */}
       <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-200 bg-white/95 backdrop-blur-md p-2 shadow-2xl md:hidden">
         <div className="flex gap-2">
-          <a href={telLink(PHONES.primary)} className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-cta-orange py-3 text-sm font-bold text-white">
+          <TelLink kind="primary" className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-cta-orange py-3 text-sm font-bold text-white">
             <Phone className="h-4 w-4"/>Call Now
-          </a>
-          <a href={waLink(PHONES.whatsapp, 'Hi, RO service chahiye Patna mein')} target="_blank" rel="noopener" className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#25D366] py-3 text-sm font-bold text-white">
+          </TelLink>
+          <WaLink message="Hi, RO service chahiye Patna mein" className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#25D366] py-3 text-sm font-bold text-white">
             <svg viewBox="0 0 32 32" className="h-4 w-4 fill-current"><path d="M16 .396C7.384.396.396 7.384.396 16c0 2.76.73 5.475 2.114 7.866L.054 31.604l7.937-2.387A15.54 15.54 0 0 0 16 31.604c8.616 0 15.604-6.988 15.604-15.604S24.616.396 16 .396z"/></svg>WhatsApp
-          </a>
+          </WaLink>
           <Link href="/book-service" className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-navy-900 py-3 text-sm font-bold text-white">
-            <Wrench className="h-4 w-4"/>Book ₹200
+            <Wrench className="h-4 w-4"/>Book <VisitCharge/>
           </Link>
         </div>
       </div>
