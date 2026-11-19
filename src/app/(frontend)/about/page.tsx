@@ -68,7 +68,7 @@ export default function AboutPage() {
               { icon:Clock, title:'Same-Day Service', desc:'4 PM se pehle book karne par aaj hi technician. Urgent service 2 hours mein available.' },
               { icon:Shield, title:'30-Day Warranty', desc:'Har service par 30-day warranty. Same problem wapas aaye to FREE fix.' },
               { icon:CheckCircle2, title:'100% Genuine Parts', desc:'Original company ke membranes, filters, pumps. Duplicate kabhi nahi.' },
-              { icon:MapPin, title:'32+ Patna Areas', desc:'Boring Road se Bihta tak, Kankarbagh se Phulwari Sharif — pure Patna mein service.' },
+              { icon:MapPin, title:'78+ Patna Localities', desc:'Danapur se Deedarganj tak, Phulwari Sharif se Patna Sahib tak — pure Patna mein service.' },
               { icon:Wrench, title:'Expert Technicians', desc:'Trained, background-verified technicians. All brands (Kent, Aquaguard, Livpure, etc.) ke specialist.' },
               { icon:Star, title:'4.9★ Customer Rating', desc:'10,000+ customers ne humein 5 star diya hai. Google/Justdial pe dekho.' },
             ].map(f => (

@@ -112,6 +112,22 @@ export const PATNA_AREAS = [
   { slug: 'station-road', name: 'Station Road Patna', pincode: '800001', landmarks: 'Patna Junction, Frazer Road' },
   { slug: 'agam-kuan', name: 'Agam Kuan', pincode: '800007', landmarks: 'Patna Sahib, Gulzarbagh' },
   { slug: 'gulzarbagh', name: 'Gulzarbagh', pincode: '800007', landmarks: 'Patna Sahib, Agam Kuan' },
+  // Additional areas — competitor ko beat karne ke liye (long-tail keywords)
+  { slug: 'ias-colony', name: 'IAS Colony', pincode: '800001', landmarks: 'Patna High Court, Boring Road, Kidwaipuri' },
+  { slug: 'bmp-colony', name: 'BMP Colony', pincode: '800023', landmarks: 'Patliputra, Patel Nagar' },
+  { slug: 'jagdeo-path', name: 'Jagdeo Path', pincode: '800014', landmarks: 'Bailey Road, Rukanpura, Sheikhpura' },
+  { slug: 'rajbansi-nagar', name: 'Rajbansi Nagar', pincode: '800023', landmarks: 'Patliputra, Patel Nagar, Rukanpura' },
+  { slug: 'bypass-road', name: 'Patna Bypass Road', pincode: '800024', landmarks: 'Ram Krishna Nagar, Mithapur, Khemnichak' },
+  { slug: 'anandpuri', name: 'Anandpuri', pincode: '800001', landmarks: 'Boring Road, Sri Krishna Puri' },
+  { slug: 'transport-nagar', name: 'Transport Nagar', pincode: '800027', landmarks: 'Ram Krishna Nagar, Khemnichak, Fatuha Road' },
+  { slug: 'digha-ghat', name: 'Digha Ghat', pincode: '800011', landmarks: 'Digha, Patliputra, Danapur Road' },
+  { slug: 'pm-mall-road', name: 'P&M Mall Road', pincode: '800014', landmarks: 'Patliputra, RPS More' },
+  { slug: 'sri-krishna-nagar', name: 'Sri Krishna Nagar', pincode: '800001', landmarks: 'Boring Road, Patna High Court, Nageshwar Colony' },
+  { slug: 'sabzibagh', name: 'Sabzibagh', pincode: '800004', landmarks: 'Ashok Rajpath, Bakerganj, Naya Tola' },
+  { slug: 's-k-puri', name: 'S.K. Puri', pincode: '800001', landmarks: 'Boring Road, Sri Krishna Puri, Kidwaipuri' },
+  { slug: 'new-patliputra', name: 'New Patliputra Colony', pincode: '800013', landmarks: 'Patliputra, RPS More, Bailey Road' },
+  { slug: 'gaighat', name: 'Gaighat Patna', pincode: '800007', landmarks: 'Gulzarbagh, Patna Sahib, Agam Kuan' },
+  { slug: 'patna-city-chowk', name: 'Patna City Chowk', pincode: '800008', landmarks: 'Patna Sahib, Ashok Rajpath' },
 ];
 
 // All RO brands serviced with logos
@@ -202,7 +218,7 @@ export const FAQ = [
   { q: 'Kaun-kaun se brand ke RO service karte ho?', a: 'Hum sab major brands service karte hain — Kent, Aquaguard (Eureka Forbes), Livpure, Pureit (HUL), AO Smith, Blue Star, Havells, LG, Samsung, Whirlpool, V-Guard, Tata Swach, aur local/generic brands bhi. Sabhi purifier models pe kaam karte hain.' },
   { q: 'Service par warranty milti hai?', a: 'Ji haan! Har service par 30-day ki service warranty milti hai. Agar usi problem se 30 din mein fir se issue aaye to bilkul free mein fix karte hain. Spare parts pe alag se 3-6 month warranty milti hai.' },
   { q: 'Genuine parts hi use karte ho?', a: 'Haan bhai, 100% original company ke spare parts use karte hain. Membranes (80 GPD / 100 GPD), carbon/sediment filters, UV lamps, pumps — sab branded. Local duplicate parts kabhi nahi dalte.' },
-  { q: 'Patna ke kin areas mein service dete ho?', a: 'Hum pure Patna mein service dete hain — Boring Road, Kankarbagh, Patna Sahib, Danapur, Bailey Road, Patliputra, Phulwari Sharif, Rajendra Nagar, Mithapur, Anisabad, Beur, Khagaul, Gardanibagh, Bihta, Kurji, aur 30+ areas mein. Pincode 800001 to 801505 sab covered.' },
+  { q: 'Patna ke kin areas mein service dete ho?', a: 'Hum pure Patna mein service dete hain — Boring Road, Kankarbagh, Patna Sahib, Danapur, Bailey Road, Patliputra, Phulwari Sharif, Rajendra Nagar, Mithapur, Anisabad, Beur, Khagaul, Gardanibagh, Bihta, Kurji, aur 50+ areas mein. Danapur se Deedarganj tak, Phulwari se Patna Sahib tak poora Patna covered hai.' },
   { q: 'AMC plans bhi available hain?', a: 'Haan! 3 AMC plans hain — Basic ₹1499/year, Silver ₹2499/year (pre-filters free), Gold ₹4999/year (membrane bhi free + unlimited visits). Gold AMC se har saal ₹3000+ ki bachat hoti hai.' },
   { q: 'Naya RO kharidna bhi chahte hain?', a: 'Bilkul! Hum naye RO purifiers, commercial plants, aur genuine spare parts bhi bechte hain. Website se order karein ya seedha call karo — free delivery pan-India, Patna mein free installation.' },
 ];

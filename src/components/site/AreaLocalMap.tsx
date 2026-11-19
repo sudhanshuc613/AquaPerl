@@ -56,7 +56,7 @@ export default function AreaLocalMap({ areaName, pincode, lat, lng }: Props) {
           </div>
           {/* Badge */}
           <div className="absolute bottom-2 left-2 rounded bg-white/95 px-2 py-1 text-[11px] font-semibold text-navy-900 shadow">
-            📍 {areaName}, Patna {pincode} — 2 Hrs mein service
+            📍 {areaName}, Patna — 2 Hrs mein service
           </div>
         </div>
 
@@ -64,7 +64,7 @@ export default function AreaLocalMap({ areaName, pincode, lat, lng }: Props) {
         <div className="card-surface p-5 flex flex-col justify-center">
           <p className="text-sm text-gray-500 uppercase tracking-wide">Servicing Locality</p>
           <h4 className="text-xl font-bold text-navy-900">{areaName}</h4>
-          <p className="text-sm text-gray-600">Patna, Bihar {pincode}</p>
+          <p className="text-sm text-gray-600">Patna, Bihar</p>
 
           <div className="mt-4 space-y-2">
             <TelLink kind="primary" className="flex items-center justify-between rounded-lg bg-cta-orange px-3 py-2 text-sm font-bold text-white hover:bg-orange-600">

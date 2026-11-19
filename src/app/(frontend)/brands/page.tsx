@@ -6,7 +6,7 @@ import { Phone, CheckCircle2 } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'All RO Brands Service in Patna | Kent, Aquaguard, Livpure, Pureit, AO Smith',
-  description: 'Authorized RO service for all brands in Patna - Kent, Aquaguard, Livpure, Pureit, AO Smith, Blue Star, Havells, LG, Nasaka, Usha, Blue Mount, Aquafresh. Same-day service @ ₹200 visit. Call 9534037266.',
+  description: 'Independent RO service for all brands in Patna — Kent, Aquaguard, Livpure, Pureit, AO Smith, Blue Star, Havells, LG, Nasaka, Usha. Same-day service @ ₹200 visit. Call 9534037266.',
   keywords: ['Kent RO service Patna','Aquaguard service Patna','Livpure service Patna','Pureit service Patna','AO Smith service Patna','Blue Star RO service Patna','Havells RO service Patna','Nasaka RO service','Usha Shriram RO','Aquafresh RO service','Blue Mount RO Patna'],
   alternates: { canonical: '/brands' },
 };

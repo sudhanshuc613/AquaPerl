@@ -67,6 +67,21 @@ export const AREA_COORDS: Record<string, { lat: number; lng: number }> = {
   'station-road':       { lat: 25.604, lng: 85.135 },
   'agam-kuan':          { lat: 25.595, lng: 85.210 },
   'gulzarbagh':         { lat: 25.592, lng: 85.220 },
+  'ias-colony':         { lat: 25.608, lng: 85.110 },
+  'bmp-colony':         { lat: 25.615, lng: 85.078 },
+  'jagdeo-path':        { lat: 25.610, lng: 85.060 },
+  'rajbansi-nagar':     { lat: 25.613, lng: 85.070 },
+  'bypass-road':        { lat: 25.580, lng: 85.180 },
+  'anandpuri':          { lat: 25.616, lng: 85.115 },
+  'transport-nagar':    { lat: 25.578, lng: 85.195 },
+  'digha-ghat':         { lat: 25.635, lng: 85.060 },
+  'pm-mall-road':       { lat: 25.620, lng: 85.075 },
+  'sri-krishna-nagar':  { lat: 25.615, lng: 85.108 },
+  'sabzibagh':          { lat: 25.608, lng: 85.165 },
+  's-k-puri':           { lat: 25.614, lng: 85.110 },
+  'new-patliputra':     { lat: 25.625, lng: 85.068 },
+  'gaighat':            { lat: 25.600, lng: 85.220 },
+  'patna-city-chowk':   { lat: 25.595, lng: 85.225 },
 };
 
 /** Local testimonials per area (real-sounding with area name mention — geo keyword signals) */

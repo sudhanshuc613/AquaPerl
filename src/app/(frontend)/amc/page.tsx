@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'RO AMC Patna ₹1499/yr • ☎ 9534037266 | 3 Free Visits + Filters',
   description: 'Best RO AMC plans in Patna starting ₹1499/year. 3 preventive services, free filters, priority 2-hour support, genuine parts. All brands Kent/Aquaguard/Livpure. Call 9534037266.',
   keywords: ['RO AMC Patna','RO annual maintenance contract Patna','RO service plan Patna','RO yearly service Patna','cheap RO AMC Patna','RO maintenance Patna','RO AMC plans Patna 1499'],
+  alternates: { canonical: '/amc' },
 };
 
 export default function AMCPage() {

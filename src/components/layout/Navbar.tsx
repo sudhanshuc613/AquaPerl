@@ -149,7 +149,7 @@ export default function Navbar() {
                   <div className="absolute left-0 top-full w-[680px] pt-2 z-50">
                     <div className="rounded-xl border border-gray-100 bg-white p-4 shadow-2xl">
                       <Link href="/book-service" className="flex items-center gap-2 rounded-lg bg-orange-50 px-4 py-2.5 text-sm font-bold text-cta-orange" onClick={() => setActiveCat(null)}>
-                        <MapPin className="h-4 w-4"/>All 32+ Patna Areas Covered
+                        <MapPin className="h-4 w-4"/>All 78+ Patna Areas Covered
                       </Link>
                       <div className="mt-3 grid grid-cols-3 gap-x-4 gap-y-0.5">
                         {AREA_COLS.map((col, ci) => (

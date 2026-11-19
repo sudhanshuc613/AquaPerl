@@ -121,7 +121,7 @@ export default function ServiceQuickBook() {
           <form onSubmit={handleSubmit} className="mt-6 grid gap-4 md:grid-cols-2">
             <div><label className="mb-1 block text-sm font-medium">Aapka Naam *</label><Input required value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Ravi Kumar"/></div>
             <div><label className="mb-1 block text-sm font-medium">Mobile Number *</label><Input required type="tel" maxLength={10} value={form.phone} onChange={e => setForm({...form, phone: e.target.value.replace(/\D/g,'')})} placeholder="10-digit mobile"/></div>
-            <div><label className="mb-1 block text-sm font-medium">Pincode *</label><Input required maxLength={6} value={form.pincode} onChange={e => setForm({...form, pincode: e.target.value.replace(/\D/g,'')})} placeholder="800001"/></div>
+            <div><label className="mb-1 block text-sm font-medium">Pincode *</label><Input required maxLength={6} value={form.pincode} onChange={e => setForm({...form, pincode: e.target.value.replace(/\D/g,'')})} placeholder="e.g. 800001"/></div>
             <div><label className="mb-1 block text-sm font-medium">Service Type *</label>
               <select required className="input" value={form.issue} onChange={e => setForm({...form, issue: e.target.value})}>
                 {issueTypes.map(t => <option key={t.val} value={t.val}>{t.label}</option>)}

@@ -85,7 +85,7 @@ export default function Footer() {
                 <li key={a.slug}><Link href={`/areas/${a.slug}`} className="hover:text-brand-400">{a.name}</Link></li>
               ))}
             </ul>
-            <Link href="/book-service" className="mt-3 inline-block text-xs font-semibold text-brand-400 hover:underline">View all areas →</Link>
+            <Link href="/book-service" className="mt-3 inline-block text-xs font-semibold text-brand-400 hover:underline">{PATNA_AREAS.length}+ areas covered →</Link>
           </div>
         </div>
 
@@ -106,7 +106,7 @@ export default function Footer() {
           </div>
           <div>
             <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Address</p>
-            <p className="text-gray-200">Patna, Bihar 800001, India</p>
+            <p className="text-gray-200">Patna, Bihar, India</p>
           </div>
           <div>
             <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Phone & Hours</p>
@@ -115,6 +115,10 @@ export default function Footer() {
               {' '}• Open 24×7
             </p>
           </div>
+        </div>
+
+        <div className="mt-4 text-center text-[10px] text-gray-600 italic">
+          Disclaimer: RO Service Patna is an independent RO/UV/UF water purifier service provider. We are not affiliated with, authorized by, or endorsed by any of the brands shown on this site. All brand names, logos, and trademarks are property of their respective owners.
         </div>
 
         <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-gray-500 md:flex-row">

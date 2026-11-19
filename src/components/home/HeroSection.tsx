@@ -93,11 +93,11 @@ export default async function HeroSection() {
             {/* COMPETITOR-BEATING BADGES ROW */}
             <div className="flex flex-wrap gap-2 pt-1">
               {[
-                { t: '🏆 Customer Service Excellence Award', c: banner?'bg-yellow-400/20 text-yellow-200 border-yellow-400/40':'bg-yellow-50 text-yellow-800 border-yellow-300' },
-                { t: `₹${Math.max(0,(visitCharge-299))} सस्ता vs ROCare/UrbanCompany`, c: banner?'bg-green-400/20 text-green-200 border-green-400/40':'bg-green-50 text-green-700 border-green-200' },
-                { t: 'FREE TDS Test on Every Visit', c: banner?'bg-blue-400/20 text-blue-200 border-blue-400/40':'bg-blue-50 text-blue-700 border-blue-200' },
-                { t: '2 Hour Response — Patna Local Team', c: banner?'bg-orange-400/20 text-orange-200 border-orange-400/40':'bg-orange-50 text-orange-700 border-orange-200' },
-                { t: `Coupon: RO${visitCharge} — ₹${visitCharge} First Visit`, c: banner?'bg-red-400/20 text-red-200 border-red-400/40 animate-pulse':'bg-red-50 text-red-700 border-red-200 animate-pulse' },
+                { t: '🏆 8+ Years Experience in Patna', c: banner?'bg-yellow-400/20 text-yellow-200 border-yellow-400/40':'bg-yellow-50 text-yellow-800 border-yellow-300' },
+                { t: `₹${Math.max(0,(visitCharge-299))} सस्ता vs दूसरे RO service`, c: banner?'bg-green-400/20 text-green-200 border-green-400/40':'bg-green-50 text-green-700 border-green-200' },
+                { t: 'मुफ़्त TDS Test हर Visit पर', c: banner?'bg-blue-400/20 text-blue-200 border-blue-400/40':'bg-blue-50 text-blue-700 border-blue-200' },
+                { t: '2 घंटे में Technician — पटना की अपनी टीम', c: banner?'bg-orange-400/20 text-orange-200 border-orange-400/40':'bg-orange-50 text-orange-700 border-orange-200' },
+                { t: '✓ Genuine Parts — 30-Day Warranty', c: banner?'bg-emerald-400/20 text-emerald-200 border-emerald-400/40':'bg-emerald-50 text-emerald-700 border-emerald-200' },
               ].map((b, i) => (
                 <span key={i} className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${b.c}`}>
                   <CheckCircle2 className="h-3 w-3"/> {b.t}
@@ -270,7 +270,10 @@ export default async function HeroSection() {
       <div className="border-y border-gray-100 bg-white/60 backdrop-blur py-10 overflow-hidden">
         <div className="container-pad">
           <p className="text-center text-sm font-bold uppercase tracking-widest text-gray-500 mb-6">
-            Authorized Service Partner for 18+ Leading RO Brands
+            18+ Brands Ki Expert RO Service & Repair
+          </p>
+          <p className="text-center text-xs text-gray-400 -mt-4 mb-4 italic">
+            (हम स्वतंत्र सर्विस प्रोवाइडर हैं — किसी भी ब्रांड के ऑथराइज्ड सर्विस सेंटर नहीं, पर सभी ब्रांड्स की सर्विस करते हैं)
           </p>
           <div className="marquee flex gap-10 items-center whitespace-nowrap animate-marquee">
             {[...Array(2)].map((_, n) => (

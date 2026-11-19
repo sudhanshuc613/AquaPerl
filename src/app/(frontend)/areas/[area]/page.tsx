@@ -132,7 +132,7 @@ export default function AreaPage({ params }: { params: { area: string } }) {
             </span>
           </h1>
           <p className="mt-3 max-w-3xl text-white/90 text-base md:text-lg">
-            Best <strong>RO repair in {areaName}</strong>, Patna (Pincode: {pincode}). Our verified technician 2-4 ghante mein aapke darwaje par.
+            Best <strong>RO repair in {areaName}</strong>, Patna. Humara verified technician 2-4 ghante mein aapke darwaje par.
             Sabhi brands ke RO ki repair, installation, filter change, aur membrane replacement karte hain.{' '}
             {landmarks && <>Nearby areas: <strong>{landmarks}</strong>.</>}
           </p>
@@ -159,8 +159,8 @@ export default function AreaPage({ params }: { params: { area: string } }) {
             <div>
               <h2>Why {areaName} Locals Trust Us for RO Service?</h2>
               <p className="mt-2 text-gray-600">
-                {areaName} Patna ke sabse bharoseemand RO service partner. Hum sirf RO ka kaam karte hain — isliye expert hain.
-                Pura Patna (pincode {pincode}) mein humare technicians roz 20+ RO service karte hain.
+                {areaName} में पटना का भरोसेमंद स्वतंत्र RO सर्विस प्रोवाइडर। हम सिर्फ RO का काम करते हैं — इसलिए एक्सपर्ट हैं।
+                पूरे पटना शहर में हमारे टेक्नीशियन रोज़ 20+ RO की सर्विस करते हैं।
               </p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 {[
@@ -204,7 +204,7 @@ export default function AreaPage({ params }: { params: { area: string } }) {
                 <div>
                   <p className="font-bold text-navy-900">{testimonial.name}</p>
                   <p className="text-xs text-gray-500 flex items-center gap-1">
-                    <MapPin className="h-3 w-3"/> {areaName}, Patna {pincode}
+                    <MapPin className="h-3 w-3"/> {areaName}, Patna
                     <span className="mx-1">•</span>
                     <span className="text-yellow-500">{'★'.repeat(testimonial.rating)}</span>
                   </p>
@@ -288,7 +288,7 @@ export default function AreaPage({ params }: { params: { area: string } }) {
             {/* Other areas */}
             <div>
               <h2>Other Patna Areas We Serve</h2>
-              <p className="mt-1 text-sm text-gray-600">In 30+ areas mein same-day RO service dete hain:</p>
+              <p className="mt-1 text-sm text-gray-600">इन 75+ areas में same-day RO service देते हैं:</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {PATNA_AREAS.filter(a=>a.slug!==params.area).map(a => (
                   <Link key={a.slug} href={`/areas/${a.slug}`} className="rounded-full border px-3 py-1.5 text-sm hover:border-brand-500 hover:bg-brand-50 hover:text-brand-600 transition">📍 {a.name}</Link>
