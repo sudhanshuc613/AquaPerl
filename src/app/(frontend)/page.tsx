@@ -227,7 +227,7 @@ export default function HomePage() {
             {[
               { name:'Ravi Kumar', area:'Kankarbagh, Patna', text:'Mera Kent RO 2 din se nahi chal raha tha. Subah 9 baje call kiya, 11 baje technician aaya, filter badal diya. Sirf ₹600 total kharcha. Bohot achha service!' },
               { name:'Priya Devi', area:'Boring Road, Patna', text:'RO Service Patna se naya RO kharida. Price market se ₹3000 kam tha aur free installation mila. Patna ka best RO shop!' },
-              { name:'Amit Singh', area:'Mumbai', text:'Commercial plant order kiya tha apne office ke liye. Shipping fast thi, installation guide bhi diya. Quality superb hai.' },
+              { name:'Amit Singh', area:'Patna', text:'Commercial plant order kiya tha apne office ke liye. Shipping fast thi, installation guide bhi diya. Quality superb hai.' },
             ].map(t => (
               <div key={t.name} className="rounded-2xl bg-white/5 p-6 backdrop-blur">
                 <div className="flex gap-0.5 text-yellow-400">{Array.from({length:5}).map((_,i)=><Star key={i} className="h-4 w-4 fill-current"/>)}</div>

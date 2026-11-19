@@ -4,14 +4,42 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install --legacy-peer-deps",
   "regions": ["bom1"],
+  "cleanUrls": true,
+  "trailingSlash": false,
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/((?!api|admin|_next/static|_next/image|favicon.ico|uploads|robots.txt|sitemap.xml).*)",
       "headers": [
+        { "key": "X-DNS-Prefetch-Control", "value": "on" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(self)" },
+        { "key": "X-Robots-Tag", "value": "index, follow, max-image-preview:large, max-snippet:-1" },
+        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=60, stale-while-revalidate=300" }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
+      "source": "/admin/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }
+      ]
+    },
+    {
+      "source": "/uploads/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     }
+  ],
+  "redirects": [
+    { "source": "/kent-ro-service", "destination": "/brands/kent", "permanent": true },
+    { "source": "/kent-ro-service/:path*", "destination": "/brands/kent", "permanent": true }
   ]
 }
