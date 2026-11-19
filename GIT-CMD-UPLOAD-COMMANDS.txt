@@ -1,0 +1,174 @@
+═══════════════════════════════════════════════════════════════════
+  GIT / CMD UPLOAD COMMANDS — COPY PASTE KARTE JAO
+  RO Service Patna Final Deploy
+═══════════════════════════════════════════════════════════════════
+
+PEHLE CHECK KARO KI TUMHAARE PC ME GIT HAI YA NAHI?
+───────────────────────────────────────────────────────────────────
+CMD khol ke (Win+R → cmd → Enter) aur type karo:
+
+    git --version
+
+Agar "git version 2.xx.x" aaya → git hai, Step 1 pe chalo.
+Agar "not recognized" aaya → https://git-scm.com/download/win se
+    Git download karke install kar lo (Next, Next, Finish), phir
+    CMD dobara khol ke.
+
+AGAR TUMHARA PC PE PEHLA REPO BANA RAHE HO TO 1 BAAR SETUP:
+───────────────────────────────────────────────────────────────────
+CMD me ye 2 line chalao (apna naam aur email daalo sirf pehli baar):
+
+    git config --global user.name "tumhara naam"
+    git config --global user.email "tumhari.email@gmail.com"
+
+
+═══════════════════════════════════════════════════════════════════
+🔹 SCENARIO A: TUMHAARE PAAS KOI PURANA REPO NAHI HAI (NAYA UPLOAD)
+═══════════════════════════════════════════════════════════════════
+
+1) Pehle ZIP ko unzip karo kisi folder me (e.g., C:\ro-patna\)
+   - Is folder me directly src/, prisma/, package.json, vercel.json
+     dikhna chahiye.
+
+2) GitHub pe jao → New Repository → naam do "ro-patna" → Public
+   → "Create repository" → waha ek URL milega, jaise:
+   https://github.com/tumhareusername/ro-patna.git
+
+3) CMD khol ke unzip wale folder me jao:
+
+    cd C:\ro-patna
+
+4) Ye commands EK EK KARKE chalao (sab copy paste kar sakte ho):
+
+    git init
+    git add .
+    git commit -m "final deploy: admin password + patna map + competitor-beating schema"
+    git branch -M main
+    git remote add origin https://github.com/TUMHARA_USERNAME/ro-patna.git
+    git push -u origin main
+
+   ⚠️  Upadate karo: URL me TUMHARA_USERNAME apne actual GitHub username
+      se replace karo aur repo naam sahi daalo.
+
+5) Push karte waqt GitHub login maangega:
+   - Browser me GitHub login khulega → authorize kar do.
+   - Ya GitHub ke Settings → Developer Settings → Personal access tokens
+     se token bana ke password ki jagah use karo.
+
+6) Done! 30-60 second me saari files GitHub pe pahunch jayengi.
+   Phir Vercel pe ja ke import kar lo.
+
+
+═══════════════════════════════════════════════════════════════════
+🔹 SCENARIO B: PEHLE SE REPO HAI (VERCEL PE ALREADY DEPLOYED HAI)
+═══════════════════════════════════════════════════════════════════
+
+Ye sabse aasan hai. Tum jaha repo clone kiya tha waha jao ya naya clone:
+
+1) Agar repo pehle se PC pe hai to us folder me CMD kholo, warna:
+
+    cd C:\
+    git clone https://github.com/TUMHARA_USERNAME/ro-patna.git
+    cd ro-patna
+
+2) Purani files hata do aur naya code daal do:
+   (Yeh shortcut hai — purane code ko replace kar deta hai)
+
+   Option 1 (Manual): ZIP ko repo wale folder me hi unzip kar do
+   (overwrite sabko yes bol do).
+
+   Option 2 (CMD se — safer):
+   Git bash ya PowerShell me:
+
+       robocopy "C:\path\to\unzipped\RO-PATNA-ADVANCED-FINAL" "C:\ro-patna" /MIR /XD .git node_modules .next
+
+3) Phir ye 3 commands chalao:
+
+    git add .
+    git commit -m "advanced: admin password change + Patna map + SEO schema upgrade"
+    git push
+
+4) Ho gaya! Vercel auto-detect karke 2-3 minute me deploy kar dega.
+
+
+═══════════════════════════════════════════════════════════════════
+🔹 SINGLE COPY-PASTE BLOCK (NAYA REPO HAI TO BAS NAME BADAL KE CHALA DO)
+═══════════════════════════════════════════════════════════════════
+
+(ZIP ko C:\ro-patna\ me pehle hi unzip kar lena)
+
+cd C:\ro-patna
+git init
+git add .
+git commit -m "final deploy"
+git branch -M main
+git remote add origin https://github.com/TUMHARA_USERNAME/ro-patna.git
+git push -u origin main
+
+
+═══════════════════════════════════════════════════════════════════
+🔹 AGAR ERROR AAYE TO:
+═══════════════════════════════════════════════════════════════════
+
+❌ "fatal: not a git repository"
+   → Tum galat folder me ho. `cd` se us folder me jao jaha package.json hai.
+
+❌ "remote origin already exists"
+   → Ye chalao:
+       git remote remove origin
+       git remote add origin https://github.com/TUMHARA_USERNAME/ro-patna.git
+
+❌ "Authentication failed"
+   → GitHub ka Personal Access Token (PAT) banao:
+     GitHub → Settings → Developer settings → Personal access tokens →
+     Tokens (classic) → Generate new token → repo scope check → Generate.
+     Token ko copy karke password ki jagah paste karo.
+
+❌ "rejected / non-fast-forward"
+   → Ye chalao:
+       git pull origin main --rebase
+       git push -u origin main
+
+❌ "Filename too long" (Windows kabhi kabhi deta hai):
+   → Ye pehle chalao:
+       git config --system core.longpaths true
+
+❌ Push me 403 / permission denied:
+   → Repo ke URL me sahi username hai check karo, ya GitHub desktop app
+     use kar lo (asaan hai): https://desktop.github.com/
+
+
+═══════════════════════════════════════════════════════════════════
+🔹 BINA GIT KE — VERCEL DIRECT UPLOAD (EASIEST — NO CMD NEEDED)
+═══════════════════════════════════════════════════════════════════
+
+Agar CMD/Git se pareshani ho rahi hai to bilkul mat ghutno — ye tareeka 100% aasan hai:
+
+1. https://vercel.com/new pe jao (login hone ke baad)
+2. "Deploy from GitHub" ke neeche thoda scroll karo → "Import Third-Party Git Repository"
+   ya template section ke paas ek option hai **"Upload a folder"** ya **"Deploy Template"**
+   - Ya direct: https://vercel.com/dashboard → "Add New..." → "Project"
+     → neeche "Clone Template" ke jagah "Deploy" ke upar ek dropzone hoga
+     jaha folder directly drag-drop kar sakte ho.
+3. RO-PATNA-ADVANCED-FINAL.zip ko unzip karo → poora folder Vercel pe
+   drag karke chhod do.
+4. Environment Variables daalo (DATABASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL).
+5. Deploy button dabao — ho gaya!
+
+💡 YE SABSE AASAN TARIQA HAI — agar command line nahi samajh rahe to isse kar lo.
+   Domain baad me connect kar lena.
+
+
+═══════════════════════════════════════════════════════════════════
+🔹 POST-DEPLOY VERIFICATION (push ho jane ke 5 minute baad)
+═══════════════════════════════════════════════════════════════════
+
+1. Vercel dashboard pe green ✓ dikh jaye → site URL pe click
+2. Homepage pe 9534037266 number check karo (footer/top strip me)
+3. /login pe jao → admin@roserviceinpatna.in / admin@123
+4. Password change kar lo naya strong
+5. /contact page pe Patna map + 24 Hours dikh raha hai confirm
+6. Admin → Settings me phone/price save karke Ctrl+F5
+7. Bas! Google ranking ke liye GSC + Google Business Profile banao.
+
+Bas bhai, itna hi. Koi bhi atka to screenshot bhejo.

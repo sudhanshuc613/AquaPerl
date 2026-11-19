@@ -10,6 +10,7 @@ import { Toaster } from 'react-hot-toast';
 import { BRAND, PHONES } from '@/lib/utils';
 import { getAllSettings } from '@/lib/settings';
 import SiteSchemas from '@/components/site/SiteSchemas';
+import ServiceAreaFooter from '@/components/site/ServiceAreaFooter';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 
@@ -93,6 +94,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <SettingsProvider>
             <Navbar />
             <main className="min-h-screen">{children}</main>
+            <ServiceAreaFooter />
             <Footer />
             <CartDrawer />
             <div id="modal-root" />

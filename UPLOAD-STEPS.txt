@@ -1,0 +1,202 @@
+═══════════════════════════════════════════════════════════════════
+  RO PATNA — STEP-BY-STEP UPLOAD / DEPLOY GUIDE (HINGLISH)
+  File to use: RO-PATNA-ADVANCED-FINAL.zip
+═══════════════════════════════════════════════════════════════════
+
+TUMHE BAS 3 CHEEZ KARNI HAIN:
+  1) GitHub pe code upload
+  2) Vercel se deploy
+  3) Admin login karke password change
+
+Bas! 10 minute ka kaam hai.
+═══════════════════════════════════════════════════════════════════
+
+
+🔹 STEP 0: PEHLE SE CHAL RAHA HAI TO YE JARURI NAHI
+─────────────────────────────────────────────────────────────────
+Agar tumhare paas already GitHub repo + Vercel project hai to:
+  - Sidha STEP 2 pe jump karo (GitHub me files replace karo)
+- Agar naya deploy karna hai to Step 1 se shuru karo
+
+
+─────────────────────────────────────────────────────────────────
+🔹 STEP 1: GITHUB PAR NAYA REPO BANAO (agar pehli baar ho)
+─────────────────────────────────────────────────────────────────
+1. https://github.com/signup pe jaake account banao (agar nahi hai)
+2. Login ke baad top-right "+" button → "New repository"
+3. Repository name: ro-patna (ya roserviceinpatna — jo chaho)
+4. Public rakho (FREE me unlimited deploy hote hain)
+5. "Add a README" UNCHECKED
+6. "Create repository" button dabao
+7. Ek page khulega — usko yahi chhod do, Step 2 karo
+
+
+─────────────────────────────────────────────────────────────────
+🔹 STEP 2: ZIP KO UNZIP KARO AUR GITHUB PE UPLOAD KARO
+─────────────────────────────────────────────────────────────────
+1. RO-PATNA-ADVANCED-FINAL.zip ko kisi folder me unzip karo (Right click → Extract All)
+2. GitHub repo wale page pe jao (jo Step 1 me banaya tha / ya purana repo)
+3. "Add file" button (top right) → "Upload files"
+4. Ab unzip kiye hue folder me jao → SARE FILES SELECT KARO (Ctrl+A)
+   ⚠️  Important: andar ka poora content upload karo (src/, prisma/, public/,
+   package.json, vercel.json, next.config.mjs — yeh sab root me dikhna chahiye)
+   ❌ Mat karo: poore folder ko hi andar daal dena (matlab repo me ek aur
+      folder ban jayega to Vercel ko code nahi milega)
+5. Neeche "Commit changes" button dabao (title me likh do: "final deploy")
+6. 30-60 seconds me saari files upload ho jayengi
+
+
+─────────────────────────────────────────────────────────────────
+🔹 STEP 3: VERCEL SE DEPLOY KARO
+─────────────────────────────────────────────────────────────────
+1. https://vercel.com/signup → "Continue with GitHub" se sign up karo (FREE)
+2. Signup ke baad dashboard pe "Add New..." → "Project" click karo
+3. "Import Git Repository" me tumhara "ro-patna" repo dikhega → uska "Import" button dabao
+4. Ab ek form aayega — BAS 3 CHEEZ FILL KARO BAAKI SAB CHHOD DO:
+
+   📝 Environment Variables section me yeh 3 daalo:
+
+   ┌─────────────────────┬────────────────────────────────────────┐
+   │ NAME                │ VALUE                                  │
+   ├─────────────────────┼────────────────────────────────────────┤
+   │ DATABASE_URL        │ Neon DB wali pichhli wali URL daalo    │
+   │                     │ (postgresql://....neon.tech/...)       │
+   ├─────────────────────┼────────────────────────────────────────┤
+   │ NEXTAUTH_SECRET     │ Koi bhi random long string daalo       │
+   │                     │ Example: ropatna-2026-secret-key-x9k2m │
+   ├─────────────────────┼────────────────────────────────────────┤
+   │ NEXTAUTH_URL        │ Deploy ke baad jo URL mile usko yaha   │
+   │                     │ daalna (pehle deploy to ho jaye, phir  │
+   │                     │ Settings me baad me badal sakte ho)    │
+   └─────────────────────┴────────────────────────────────────────┘
+
+   💡 Tip: NEXTAUTH_SECRET ke liye yeh use kar lo (as-is):
+          ropatna-2026-super-secret-9534037266-a7k3m9x
+
+5. "Deploy" button dabao — bas!
+6. Build 2-4 minute me poora hoga.
+7. "Congratulations!" screen aayegi aur ek URL milega jaise:
+   ro-patna-xxx.vercel.app
+   - Us link pe click karo → site live dikhegi!
+
+
+─────────────────────────────────────────────────────────────────
+🔹 STEP 4: APNE DOMAIN (roserviceinpatna.in) SE CONNECT KARO
+─────────────────────────────────────────────────────────────────
+1. Vercel project ke andar → top "Settings" → "Domains"
+2. Domain add karo: www.roserviceinpatna.in
+3. Phir add karo: roserviceinpatna.in (non-www)
+4. Vercel tumhe DNS ke liye kuch records dega.
+5. Jaha tumhara domain manage ho raha hai (domain registrar / Cloudflare)
+   waha jaake woh records daal do.
+6. Agar pehle se Vercel pe domain set tha to yeh step SKIP kar do.
+
+
+─────────────────────────────────────────────────────────────────
+🔹 STEP 5: ADMIN LOGIN KARO AUR PASSWORD BADLO
+─────────────────────────────────────────────────────────────────
+1. Apne live site pe jao: https://www.roserviceinpatna.in/login
+2. Default login:
+   Email:    admin@roserviceinpatna.in
+   Password: admin@123
+3. Login hote hi sidebar me → "Password & Security" pe click karo
+4. Purana password: admin@123
+   Naya password: apna strong password daalo (6+ chars, capital + number mix)
+   Confirm password: wahi fir se
+5. "🔐 Update Password" dabao
+6. Success aane ke baad naya password yaad rakh lena!
+
+
+─────────────────────────────────────────────────────────────────
+🔹 STEP 6: ADMIN SE APNA PHONE / PRICES CHECK KARO
+─────────────────────────────────────────────────────────────────
+1. Sidebar → "Settings" pe jao
+2. Contact Information me ye values confirm karo:
+   Primary Phone:  9534037266
+   WhatsApp:       9534037266
+   Secondary:      (khali chhodo)
+   Email:          service@roserviceinpatna.in
+3. Patna Service Pricing me:
+   Visit / Diagnosis Charge: 200
+   (baaki apne hisab se badal sakte ho)
+4. "Save All Settings" dabao
+5. 1 minute wait karo, phir Ctrl+F5 se homepage refresh karo
+6. Footer/navbar me 9534037266 dikh raha hoga — confirm!
+
+
+─────────────────────────────────────────────────────────────────
+🔹 STEP 7: MAP KA CHECK KARO
+─────────────────────────────────────────────────────────────────
+1. https://www.roserviceinpatna.in/contact pe jao
+2. Neeche scroll karo → Patna map dikh raha hoga
+3. Left side "Business Hours" card me Monday-Sunday 24 Hours dikh raha hoga
+4. Map me "Patna, Patna, Bihar" info card + "Open in Maps" button hoga
+5. Neeche Patna ke 24 area ke clickable chips honge
+6. Sab dikh raha hai? Perfect!
+
+
+─────────────────────────────────────────────────────────────────
+🔹 STEP 8: GOOGLE RANKING LAANE KE LIYE (DEPLOY KE 1 DIN BAAD)
+─────────────────────────────────────────────────────────────────
+1. Google Search Console (https://search.google.com/search-console)
+   - Property add karo (roserviceinpatna.in)
+   - Sitemap submit: https://www.roserviceinpatna.in/sitemap.xml
+   - URL Inspection me homepage daal ke "REQUEST INDEXING" dabao
+
+2. Google Business Profile banao (FREE — local #1 laane ke liye ZARURI):
+   - https://business.google.com
+   - Naam: RO Service Patna
+   - Number: 9534037266
+   - Address: Patna, Bihar (service area business select karna)
+   - Service area: Patna (25 km radius)
+   - Hours: 24×7
+   - Category: Water filter supplier + Repair service
+
+3. 1-2 weeks wait karo — Google purana spam hata ke naya index karega
+   aur ranking wapas aa jayegi.
+
+
+═══════════════════════════════════════════════════════════════════
+AGAR KOI ERROR AAYE TO?
+═══════════════════════════════════════════════════════════════════
+
+❌ "Build failed" Vercel pe?
+   → Vercel ke Deployments me jao → latest deploy pe click → "Build Logs"
+     me jo RED error hai woh mujhe WhatsApp/screenshot bhejo.
+
+❌ "Login nahi ho raha"?
+   → Apne domain pe /api/setup-admin kholo (ek naya tab me), woh automatically
+     admin user bana dega. Phir admin@roserviceinpatna.in / admin@123 se login.
+
+❌ "Phone number change nahi ho raha"?
+   → Admin → Settings me jao, sahi number daalo, Save dabao, 1 minute wait,
+     Ctrl+F5 karo (hard refresh).
+
+❌ "Map nahi dikh raha"?
+   → Ad blocker ya Brave browser Google Maps block karta hai — Chrome /
+     Firefox normal mode me dekh lo.
+
+❌ "Site bahut slow hai"?
+   → Impossible — Next.js static site hai, sub-second load hoga. Agar slow
+     lag raha hai to internet check karo.
+
+═══════════════════════════════════════════════════════════════════
+QUICK CHECKLIST (deploy ke baad tick karte jao)
+═══════════════════════════════════════════════════════════════════
+☐ GitHub repo me saari files upload ho gayi (src/, prisma/, package.json etc.)
+☐ Vercel build success (green tick)
+☐ Site live (URL khul rahi hai)
+☐ Homepage me 9534037266 number dikh raha hai
+☐ /login pe admin login ho raha hai
+☐ Password change kar liya naya strong
+☐ Admin → Settings save ho raha hai
+☐ /contact page pe Patna map + 24 Hours + area chips dikh rahe
+☐ Footer/navbar/WhatsApp button me 9534037266 hai
+☐ /sitemap.xml khul rahi hai
+☐ GSC sitemap submit kar diya
+☐ Google Business Profile bana liya
+
+Agar sab tick ho gaye → PARTY 🎉 Tumhari site Google pe top pe aane ke liye
+fully ready hai! 1-2 weeks me ranking wapas aa jayegi.
+
+Koi bhi problem aaye bas screenshot bhejo — 2 minute me fix kar dunga.

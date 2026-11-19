@@ -24,6 +24,7 @@ const PROBLEMS = [
   { slug:'ro-installation', name:'New RO Installation', icon:Wrench, price:'₹499' },
 ];
 import { Button } from '@/components/ui/button';
+import PatnaServiceMap from '@/components/site/PatnaServiceMap';
 
 const sampleProducts = [
     { id:'s1', name:'RO Service Patna Pro 12L RO+UV+UF TDS Controller', slug:'ro-patna-pro-12l', price:12999, compareAtPrice:18999, primaryImage:'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=600', brand:{name:'RO Service Patna',slug:'ro-service-patna'}, avgRating:4.7, reviewCount:342, isCommercial:false },
@@ -403,6 +404,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Patna Service Area Map — Google ranking ke liye full map homepage pe bhi */}
+      <PatnaServiceMap />
 
       {/* Final CTA */}
       <section className="container-pad py-14">
