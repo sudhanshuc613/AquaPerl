@@ -23,7 +23,7 @@ Ab 3 cheezein baaki hain:
 - Name: "RO Service Patna" (bilkul exact)
 - Category: "Water Purification Company" + "Water Filter Supplier" + "Water Treatment Supplier"
 - Address: Apna Patna ka address daalo (ghar ka bhi chalega)
-- Phone: 9241536586
+- Phone: 9534037266
 - Website: https://www.roserviceinpatna.in
 - Service areas: Patna ke 42 areas add karo (sab)
 - Hours: 7 AM to 10 PM (all days)
@@ -53,7 +53,7 @@ Karne wali sites (sab FREE):
 
 Sab jagah SAME name, SAME phone, SAME address daalo (NAP consistency).
 Name: "RO Service Patna"
-Phone: 9241536586
+Phone: 9534037266
 Address: same jo GBP me daala
 
 
@@ -78,7 +78,7 @@ button dabao. Isse Google ko signal jaega ki issue solve kar diya.
 
 
 === STEP 7 (Next week) - WHATSAPP BUSINESS ===
-WhatsApp Business app download karo 9241536586 wale number pe.
+WhatsApp Business app download karo 9534037266 wale number pe.
 - Greeting message set karo
 - Away message set karo
 - Catalog me services (₹200 visit etc.) add karo

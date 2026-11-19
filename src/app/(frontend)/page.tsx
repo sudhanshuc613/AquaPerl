@@ -388,7 +388,7 @@ export default function HomePage() {
             <h2 className="mt-1 text-3xl">How Our RO Service Works?</h2>
             <ol className="mt-5 space-y-4">
               {[
-                {n:1, t:'Call/Book karein', d:'Phone 9241536586 pe call karo ya WhatsApp bhejo. Hum 15 minute mein call back karte hain.'},
+                {n:1, t:'Call/Book karein', d:'Phone 9534037266 pe call karo ya WhatsApp bhejo. Hum 15 minute mein call back karte hain.'},
                 {n:2, t:'Technician at your door', d:'Aapke time slot ke mutabik 2-4 ghante mein technician aapke ghar pohoch jata hai.'},
                 {n:3, t:'Inspection + Free Quote', d:'Machine poori tarah check karenge, problem identify karenge, exact cost batayenge. Approval ke baad hi kaam.'},
                 {n:4, t:'Genuine Parts se Repair', d:'Original spare parts use karenge, TDS set karenge, full testing karenge.'},

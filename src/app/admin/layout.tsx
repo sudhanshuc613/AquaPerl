@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import {
   LayoutDashboard, Package, ShoppingBag, Wrench, Users, Settings,
-  Search as SearchIcon, BarChart3, Tag, LogOut, Menu, Bell,
+  Search as SearchIcon, BarChart3, Tag, LogOut, Menu, Bell, Shield,
 } from 'lucide-react';
 import { Droplets } from 'lucide-react';
 
@@ -20,6 +20,7 @@ const nav = [
   { href: '/admin/customers',    label: 'Customers',      icon: Users },
   { href: '/admin/seo',          label: 'SEO & Content',  icon: BarChart3 },
   { href: '/admin/settings',     label: 'Settings',       icon: Settings },
+  { href: '/admin/security',     label: 'Password & Security', icon: Shield },
 ];
 
 export const metadata = { title: 'Admin Dashboard | RO Service Patna' };

@@ -195,7 +195,7 @@ export default function AreaPage({ params }: { params: { area: string } }) {
             <div className="card-surface p-6">
               <h3>How Our {areaName} RO Service Works?</h3>
               <ol className="mt-4 space-y-3">
-                <li className="flex gap-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500 text-white font-bold">1</span><div><strong>Call/Book/WhatsApp karein:</strong> Phone 9241536586 pe call karo ya form bharo. Hum 15 minute mein call back karte hain.</div></li>
+                <li className="flex gap-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500 text-white font-bold">1</span><div><strong>Call/Book/WhatsApp karein:</strong> Phone 9534037266 pe call karo ya form bharo. Hum 15 minute mein call back karte hain.</div></li>
                 <li className="flex gap-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500 text-white font-bold">2</span><div><strong>Technician {areaName} mein aayega:</strong> Aapke time slot ke according technician 2-4 ghante mein pohoch jayega.</div></li>
                 <li className="flex gap-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500 text-white font-bold">3</span><div><strong>Free quote + approval:</strong> Technician machine check karega, exact cost batayega. Approval ke baad hi kaam shuru.</div></li>
                 <li className="flex gap-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500 text-white font-bold">4</span><div><strong>Genuine parts se repair:</strong> Original spare parts use karenge, TDS set karenge, full testing karenge.</div></li>

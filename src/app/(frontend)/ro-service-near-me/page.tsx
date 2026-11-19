@@ -6,8 +6,8 @@ import { Phone, Clock, Shield, CheckCircle2, MapPin, Wrench, Star } from 'lucide
 import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
-  title: 'RO Service Near Me Patna ₹200 • ☎ 9241536586 | 2-HR Technician',
-  description: 'RO service near me in Patna. Same-day RO repair, installation, filter & membrane change at ₹200 visit. Technician in 2 hours, 30-day warranty, all areas covered. Call 9241536586!',
+  title: 'RO Service Near Me Patna ₹200 • ☎ 9534037266 | 2-HR Technician',
+  description: 'RO service near me in Patna. Same-day RO repair, installation, filter & membrane change at ₹200 visit. Technician in 2 hours, 30-day warranty, all areas covered. Call 9534037266!',
   keywords: [
     'RO service near me','RO repair near me','water purifier service near me','RO mechanic near me',
     'RO service near Patna','RO repair near me in Patna','best RO service near me',

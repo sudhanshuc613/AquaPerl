@@ -5,7 +5,7 @@ import { FAQ, PHONES, telLink, waLink } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'FAQs - RO Service Patna | Common RO Repair Questions Answered',
-  description: 'Common questions about RO service, repair, installation, pricing, AMC, warranty in Patna. Get all answers here. Call 9241536586 for any query.',
+  description: 'Common questions about RO service, repair, installation, pricing, AMC, warranty in Patna. Get all answers here. Call 9534037266 for any query.',
   keywords: ['RO service Patna FAQ','RO repair questions Patna','RO AMC questions','RO service warranty Patna'],
   alternates: { canonical: './' },
 };

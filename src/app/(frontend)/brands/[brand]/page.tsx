@@ -19,7 +19,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { brand: string } }): Promise<Metadata> {
   const brand = getBrand(params.brand);
   if (!brand) return { title: 'Brand Not Found' };
-  const phone = '9241536586';
+  const phone = '9534037266';
   return {
     title: `${brand.name} RO Service Patna ₹200 • ☎ ${phone}`,
     description: `${brand.name} RO repair & installation in Patna. ₹200 visit, technician in 2 HRS. Genuine ${brand.name} parts, 30-day warranty, same-day service. Call ${phone} now!`,

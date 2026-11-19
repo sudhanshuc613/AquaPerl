@@ -74,13 +74,13 @@ CAMPAIGN 1: CALL ADS (₹105/day — main lead generator)
 
 Call ad kya hota hai?
 → Mobile pe user ko direct "Call" button dikhta hai, click karte hi
-phone aapke number (9241536586) par lag jata hai. Website pe nahi
+phone aapke number (9534037266) par lag jata hai. Website pe nahi
 bhejta. Ye local service ke liye SABSE BEST format hai.
 
 👉 SETUP:
 - Campaign type: "Create a campaign without a goal's guidance"
 - Campaign subtype: "Call ads" (phone-only)
-- Phone number: 9241536586 (primary)
+- Phone number: 9534037266 (primary)
 - Country: IN
 - Ad schedule: Mon-Sun, 8 AM - 9 PM
 - Location: Patna + 25km radius
@@ -181,7 +181,7 @@ AD 1 (Main Offer - Price Focus):
    service. Call abhi — free phone consultation.
   Display Path: /RO-Repair | ₹200-Charge
   Business Name: AquaMedii - RO Service Patna
-  Phone: 9241536586
+  Phone: 9534037266
 
 AD 2 (Speed Focus):
   Headline 1: 2-Hour RO Repair Patna
@@ -276,7 +276,7 @@ Headlines (mix-match hone ke liye 10+ daalo):
 Descriptions:
    Patna ka #1 RO repair service. Online book karo, 2 ghante mein
    technician aapke ghar. ₹200 visit charge, 30-day warranty.
-   Call 9241536586 ya online form bharen.
+   Call 9534037266 ya online form bharen.
    Kent, Aquaguard, Livpure, Pureit, AO Smith, Blue Star, Havells
    sabki repair/service. Boring Road, Kankarbagh, Danapur, Patliputra
    poore Patna mein service.

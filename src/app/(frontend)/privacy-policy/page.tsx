@@ -33,9 +33,9 @@ export default function PrivacyPage() {
       <h2>Cookies</h2>
       <p>We use cookies for session management (cart, login) and analytics. You can disable cookies in your browser, though some features may not work.</p>
       <h2>Your Rights</h2>
-      <p>You can request deletion of your data or opt out of marketing communications by contacting us at service@roserviceinpatna.in or calling {`${"9241536586"}`}.</p>
+      <p>You can request deletion of your data or opt out of marketing communications by contacting us at service@roserviceinpatna.in or calling {`${"9534037266"}`}.</p>
       <h2>Contact</h2>
-      <p>For any privacy queries, contact us at service@roserviceinpatna.in or call {`${"9241536586"}`}.</p>
+      <p>For any privacy queries, contact us at service@roserviceinpatna.in or call {`${"9534037266"}`}.</p>
     </section>
   );
 }

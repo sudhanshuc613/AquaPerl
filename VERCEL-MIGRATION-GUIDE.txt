@@ -135,7 +135,7 @@ Deploy start hoga, 2-3 minute mein ho jayega.
    https://ro-service-patna-ab12cde.vercel.app
 2. Is URL ko browser mein kholo:
    - Homepage sahi khulna chahiye
-   - Phone numbers 9241536586/9534037266 dikhna chahiye
+   - Phone numbers 9534037266/9534037266 dikhna chahiye
    - /areas/rajiv-nagar kholo, title mein phone number hona chahiye
    - /login pe jao, admin login test karo (admin@roserviceinpatna.in / admin@123)
    - /sitemap.xml kholo — sab URLs https://www.roserviceinpatna.in/..

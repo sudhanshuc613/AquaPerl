@@ -93,8 +93,8 @@ STEP 3: AB PEHLA CAMPAIGN BANATE HAIN — CAMPAIGN 1: CALL ADS
    - SIRF "Phone calls" wale checkbox ko TICK karo. Baaki sab
      hata do.
    - "Phone calls" tick karte hi ek box ayega "Enter your phone
-     number". Wahan apna main number dalo: 9241536586
-   - Country code already +91 hoga, bas number daalo: 9241536586
+     number". Wahan apna main number dalo: 9534037266
+   - Country code already +91 hoga, bas number daalo: 9534037266
    - Phir "Continue" button pe click karo (niche blue button).
 
 6. Ab "General settings" page ayega. Yahan har setting step-by-step
@@ -335,7 +335,7 @@ next ad group pe jao.
        AquaMedii - RO Service Patna
 
    (b) Phone number:
-       Pehle se filled hoga (9241536586), check kar lo sahi hai.
+       Pehle se filled hoga (9534037266), check kar lo sahi hai.
 
    (c) Headline 1 (30 characters max):
        RO Service Patna - ₹200
@@ -368,7 +368,7 @@ next ad group pe jao.
 
 CALL AD 2:
   Business: AquaMedii - RO Service Patna
-  Phone: 9241536586
+  Phone: 9534037266
   Headline 1: 2-Hour RO Repair Patna
   Headline 2: 10,000+ Happy Customers
   Description 1: Phone uthate hi technician nikal jata hai. ₹200
@@ -380,7 +380,7 @@ CALL AD 2:
 
 CALL AD 3:
   Business: AquaMedii - RO Service Patna
-  Phone: 9241536586
+  Phone: 9534037266
   Headline 1: Genuine RO Repair Patna
   Headline 2: No Fake Parts - Fixed ₹200
   Description 1: 5 saal se Patna mein service. Koi hidden charges
@@ -676,7 +676,7 @@ ADS for Campaign 2 (Responsive Search Ad banayega):
 5. Descriptions (kam se kam 4 daalo):
    - Patna ka #1 RO repair service. Online book karo, 2 ghante mein
      technician aapke ghar. ₹200 visit charge, 30-day warranty. Call
-     9241536586 ya online form bharen.
+     9534037266 ya online form bharen.
    - Kent, Aquaguard, Livpure, Pureit, AO Smith, Blue Star, Havells
      sabki repair/service. Boring Road, Kankarbagh, Danapur poore
      Patna mein service available.
@@ -782,7 +782,7 @@ dunga. Thank you!"
 👉 Har call ke 2 minute andar WhatsApp pe message bhejo:
    "AquaMedii RO Service se baat karne ke liye dhanyavaad.
    Aapka address confirm: ______. Technician 2 ghante mein
-   pahuchenga. Helpline: 9241536586"
+   pahuchenga. Helpline: 9534037266"
 
 Is step se booking confirmation rate 40-50% se badh jata hai.
 

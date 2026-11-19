@@ -6,7 +6,7 @@ import { PHONES, telLink, waLink, PATNA_AREAS, BRANDS_SERVICED } from '@/lib/uti
 
 export const metadata: Metadata = {
   title: 'About Us - RO Service Patna | Patna ka #1 Trusted RO Repair & Installation',
-  description: 'RO Service Patna is Patna\'s most trusted RO water purifier repair, installation & AMC service provider with 10,000+ happy customers. Same-day service @ ₹200 visit, 30-day warranty, genuine parts. Call 9241536586.',
+  description: 'RO Service Patna is Patna\'s most trusted RO water purifier repair, installation & AMC service provider with 10,000+ happy customers. Same-day service @ ₹200 visit, 30-day warranty, genuine parts. Call 9534037266.',
   keywords: ['about RO Service Patna','Patna RO service company','best RO repair Patna','RO installation Patna','trusted RO service Patna'],
   alternates: { canonical: '/about' },
 };

@@ -4,8 +4,8 @@ import { Phone, CheckCircle2, Shield, Clock, Users, Wrench } from 'lucide-react'
 import { PHONES, telLink, waLink } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'Book RO Service Patna ₹200 • ☎ 9241536586 | 2-Hour Visit',
-  description: 'Book RO repair, installation, AMC & filter change in Patna online. ₹200 fixed visit charge, technician in 2 hours, 30-day warranty, genuine parts. Call or WhatsApp 9241536586 now.',
+  title: 'Book RO Service Patna ₹200 • ☎ 9534037266 | 2-Hour Visit',
+  description: 'Book RO repair, installation, AMC & filter change in Patna online. ₹200 fixed visit charge, technician in 2 hours, 30-day warranty, genuine parts. Call or WhatsApp 9534037266 now.',
   keywords: ['RO service Patna','RO repair Patna','RO installation Patna','water purifier service Patna','RO Service Patna service','RO AMC Patna','book RO service Patna','RO mechanic Patna'],
   alternates: { canonical: '/book-service' },
 };
@@ -22,7 +22,7 @@ export default function BookServicePage() {
     '@context': 'https://schema.org',
     '@type': 'Service',
     name: 'RO Water Purifier Repair & Installation',
-    provider: { '@type': 'LocalBusiness', name: 'RO Service Patna', telephone: '+91-9241536586' },
+    provider: { '@type': 'LocalBusiness', name: 'RO Service Patna', telephone: '+91-9534037266' },
     areaServed: { '@type': 'City', name: 'Patna' },
     offers: { '@type': 'Offer', price: '200', priceCurrency: 'INR', description: 'Visit charge only ₹200' },
   };

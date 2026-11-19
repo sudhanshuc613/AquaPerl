@@ -85,20 +85,20 @@ async function main() {
 
   // 7. Site settings - correct phone numbers
   await prisma.siteSetting.upsert({
-    where: { key: 'contact.phones' }, update: { value: ['9241536586', '9534037266'] },
-    create: { key: 'contact.phones', value: ['9241536586', '9534037266'] },
+    where: { key: 'contact.phones' }, update: { value: ['9534037266', '9534037266'] },
+    create: { key: 'contact.phones', value: ['9534037266', '9534037266'] },
   });
   await prisma.siteSetting.upsert({
-    where: { key: 'contact.primaryPhone' }, update: { value: '9241536586' },
-    create: { key: 'contact.primaryPhone', value: '9241536586' },
+    where: { key: 'contact.primaryPhone' }, update: { value: '9534037266' },
+    create: { key: 'contact.primaryPhone', value: '9534037266' },
   });
   await prisma.siteSetting.upsert({
     where: { key: 'contact.secondaryPhone' }, update: { value: '9534037266' },
     create: { key: 'contact.secondaryPhone', value: '9534037266' },
   });
   await prisma.siteSetting.upsert({
-    where: { key: 'contact.whatsapp' }, update: { value: '9241536586' },
-    create: { key: 'contact.whatsapp', value: '9241536586' },
+    where: { key: 'contact.whatsapp' }, update: { value: '9534037266' },
+    create: { key: 'contact.whatsapp', value: '9534037266' },
   });
   await prisma.siteSetting.upsert({
     where: { key: 'service.visitCharge' }, update: { value: 200 },

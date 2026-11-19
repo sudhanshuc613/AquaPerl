@@ -117,7 +117,7 @@ STEP 9 — Google Business Profile (GBP) — TOP RANK ke liye ZAROORI
 3. Business name mein thoda update karo:
       "AquaMedii - RO Service Patna"
    (Is se Google ko "RO Service Patna" keyword samajh mein aayega.)
-4. Phone number verify karo: 9241536586
+4. Phone number verify karo: 9534037266
 5. Website daalo: https://www.roserviceinpatna.in
 6. Service area mein saare Patna areas add karo (42).
 7. Opening hours set karo (e.g. Mon-Sun 8 AM - 9 PM).
@@ -147,7 +147,7 @@ In websites par jaake FREE mein apna business register karo
    - Google Maps (already via GBP)
    - Quora / IndiaMART / LocalCircles
 
-Har jagah same Name, Phone (9241536586), Address, Website
+Har jagah same Name, Phone (9534037266), Address, Website
 (https://www.roserviceinpatna.in) daalo — isko "NAP consistency"
 kehte hain, SEO mein bohat zaroori hai.
 
@@ -180,9 +180,9 @@ important pages par. Jaldi hi #1 pe aa jaega.
   IMPORTANT CONTROLS yaad rakhne ke liye
 ================================================================
 - Service visit charge: ₹200 (admin panel → Settings se change)
-- Primary phone: 9241536586
+- Primary phone: 9534037266
 - Secondary phone: 9534037266
-- WhatsApp bhi: 9241536586
+- WhatsApp bhi: 9534037266
 - Website: https://www.roserviceinpatna.in (WWW hamesha lagana)
 - Admin secret URL: https://www.roserviceinpatna.in/login
 

@@ -4,10 +4,11 @@ import { Phone, Mail, MapPin, Clock, Send, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PHONES, telLink, waLink, PATNA_AREAS } from '@/lib/utils';
 import ServiceQuickBook from '@/components/service/ServiceQuickBook';
+import PatnaServiceMap from '@/components/site/PatnaServiceMap';
 
 export const metadata: Metadata = {
-  title: 'Contact Us - RO Service Patna | Call 9241536586',
-  description: 'Contact RO Service Patna for RO repair, installation, AMC or product queries. Call 9241536586, WhatsApp 9241536586, or book online. Same-day service in all Patna areas.',
+  title: 'Contact Us - RO Service Patna | Call 9534037266',
+  description: 'Contact RO Service Patna for RO repair, installation, AMC or product queries. Call 9534037266, WhatsApp 9534037266, or book online. Same-day service in all Patna areas.',
   keywords: ['RO service Patna contact','Patna RO service phone number','RO repair Patna contact','RO Service Patna helpline'],
   alternates: { canonical: '/contact' },
 };
@@ -49,6 +50,9 @@ export default function ContactPage() {
           <ServiceQuickBook/>
         </div>
       </div>
+
+      {/* Full Patna Service Area Map — 24 hrs + coverage overlay */}
+      <PatnaServiceMap/>
     </div>
   );
 }

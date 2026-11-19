@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   const email = 'admin@roserviceinpatna.in';
-  const phone = '9241536586';
+  const phone = '9534037266';
   const password = 'admin@123'; // BADAL DENA PRODUCTION MEIN!
   const name = 'RO Service Patna Admin';
 

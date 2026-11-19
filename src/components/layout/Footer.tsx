@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Droplets, Phone, Mail, MapPin, Facebook, Instagram, Youtube, Send, Wrench } from 'lucide-react';
 import { PHONES, PATNA_AREAS } from '@/lib/utils';
-import { TelLink, WaLink, PhoneText, VisitCharge } from '@/components/site/PhoneLink';
+import { TelLink, WaLink, PhoneText, VisitCharge, SecondaryPhone } from '@/components/site/PhoneLink';
 
 export default function Footer() {
   return (
@@ -34,8 +34,8 @@ export default function Footer() {
               Also sell genuine RO purifiers, spare parts and commercial plants across India.
             </p>
             <div className="mt-5 space-y-2 text-sm">
-              <TelLink kind="primary" className="flex items-center gap-2 hover:text-brand-400"><Phone className="h-4 w-4 text-brand-400"/>+91 <PhoneText kind="primary"/> (Primary)</TelLink>
-              <TelLink kind="secondary" className="flex items-center gap-2 hover:text-brand-400"><Phone className="h-4 w-4 text-brand-400"/>+91 <PhoneText kind="secondary"/> (Secondary)</TelLink>
+              <TelLink kind="primary" className="flex items-center gap-2 hover:text-brand-400"><Phone className="h-4 w-4 text-brand-400"/>+91 <PhoneText kind="primary"/></TelLink>
+              <SecondaryPhone />
               <a href="mailto:service@roserviceinpatna.in" className="flex items-center gap-2 hover:text-brand-400"><Mail className="h-4 w-4 text-brand-400"/>service@roserviceinpatna.in</a>
               <div className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-400"/><span>Serving entire Patna, Bihar</span></div>
             </div>

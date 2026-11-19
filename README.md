@@ -16,9 +16,9 @@ Patna ka #1 RO Repair, Installation & Sale website.
   - Password: `admin@123`
 
 ## Phone Numbers (admin se changeable)
-- Primary: 9241536586
+- Primary: 9534037266
 - Secondary: 9534037266
-- WhatsApp: 9241536586
+- WhatsApp: 9534037266
 
 ## Pages
 - Home, About, Contact, FAQ, Pricing, AMC

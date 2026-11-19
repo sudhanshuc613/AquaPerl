@@ -41,9 +41,9 @@ export const BRAND = {
 
 // PHONE NUMBERS - admin panel se change honge ye to defaults hai
 export const PHONES = {
-  primary: '9241536586',
-  secondary: '9534037266',
-  whatsapp: '9241536586',
+  primary: '9534037266',
+  secondary: '',
+  whatsapp: '9534037266',
 };
 
 // Patna areas (40+ SEO-focused - competitor analysis ke baad jo areas log actually search karte hai)
@@ -198,7 +198,7 @@ export const AMC_PLANS = [
 
 export const FAQ = [
   { q: 'RO repair mein kitna kharcha aata hai Patna mein?', a: 'Hamara ₹200 visit charge hai (diagnosis ke liye). Repair ka actual kaam dekh ke quote dete hain, aur customer ke approval ke baad hi kaam karte hain. Koi hidden charge nahi. Routine service ₹399, filter change ₹799 se, membrane change ₹1499 se start. Sabse sasta Patna mein!' },
-  { q: 'Kitne time mein technician aa jata hai?', a: 'Agar aap subah 4 baje se pehle book karte hain to same-day service available hai. Usually 2-4 ghante mein technician aapke darwaje par pohoch jata hai. Emergency service bhi available hai — bas call karo 9241536586.' },
+  { q: 'Kitne time mein technician aa jata hai?', a: 'Agar aap subah 4 baje se pehle book karte hain to same-day service available hai. Usually 2-4 ghante mein technician aapke darwaje par pohoch jata hai. Emergency service bhi available hai — bas call karo 9534037266.' },
   { q: 'Kaun-kaun se brand ke RO service karte ho?', a: 'Hum sab major brands service karte hain — Kent, Aquaguard (Eureka Forbes), Livpure, Pureit (HUL), AO Smith, Blue Star, Havells, LG, Samsung, Whirlpool, V-Guard, Tata Swach, aur local/generic brands bhi. Sabhi purifier models pe kaam karte hain.' },
   { q: 'Service par warranty milti hai?', a: 'Ji haan! Har service par 30-day ki service warranty milti hai. Agar usi problem se 30 din mein fir se issue aaye to bilkul free mein fix karte hain. Spare parts pe alag se 3-6 month warranty milti hai.' },
   { q: 'Genuine parts hi use karte ho?', a: 'Haan bhai, 100% original company ke spare parts use karte hain. Membranes (80 GPD / 100 GPD), carbon/sediment filters, UV lamps, pumps — sab branded. Local duplicate parts kabhi nahi dalte.' },
@@ -266,7 +266,7 @@ export function getAreaSEO(areaSlug: string) {
   const area = PATNA_AREAS.find(a => a.slug === areaSlug);
   if (!area) return null;
   // Title ~55 chars (Google poora dikhaye), desc ~150 chars pehle (phone start mein)
-  const phone = '9241536586';
+  const phone = '9534037266';
   return {
     title: `RO Service ${area.name} Patna ₹200 • ☎ ${phone}`,
     description: `RO repair & installation in ${area.name}, Patna. ₹200 visit, technician in 2 HRS. All brands, 30-day warranty, genuine parts. Call ${phone} now!`,

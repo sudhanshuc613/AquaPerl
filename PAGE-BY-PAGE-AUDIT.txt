@@ -14,7 +14,7 @@ schema, pricing, phone numbers sab check liya. Sab kuch sahi hai.
 --- STATIC PAGES (15) ---
 [✓]  /  (homepage)
      Title: RO Service in Patna | ₹200 Visit Charge | Same-Day Repair
-     Desc:  Patna ka #1 trusted RO repair... Call 9241536586
+     Desc:  Patna ka #1 trusted RO repair... Call 9534037266
      H1:    Best RO Service in Patna
      Hero:  New competitor-beating version (coupons, ₹200 सस्ता
             badge, FREE TDS, 4 trust boxes, 4.9★ reviews)
@@ -65,7 +65,7 @@ schema, pricing, phone numbers sab check liya. Sab kuch sahi hai.
               same-day service)
 
 [✓]  /contact
-     Title: Contact Us - RO Service Patna | Call 9241536586
+     Title: Contact Us - RO Service Patna | Call 9534037266
      Content: Phone, WhatsApp, address, hours, social links
 
 [✓]  /faq
@@ -227,10 +227,10 @@ Dashboard features:
 [✓] Geo meta tags (region/placename/position/ICBM)
 [✓] Mobile responsive (tested via Tailwind responsive classes)
 [✓] WhatsApp floating button (fixed bottom-right, green #25D366)
-[✓] Call buttons: tel: links 9241536586
+[✓] Call buttons: tel: links 9534037266
 [✓] 18 brand logos (320×120 white+color cards, no grayscale)
-[✓] Phone numbers: primary=9241536586, secondary=9534037266,
-    whatsapp=9241536586 (no old spam numbers anywhere)
+[✓] Phone numbers: primary=9534037266, secondary=9534037266,
+    whatsapp=9534037266 (no old spam numbers anywhere)
 [✓] No broken pages: all 107 routes compiled successfully
 [✓] Old brand "AquaNexa" removed completely
 [✓] Middleware protection for /admin (only ADMIN/SUPER_ADMIN can access)

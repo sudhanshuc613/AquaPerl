@@ -522,8 +522,8 @@ model SiteSetting {
   updatedAt   DateTime @updatedAt
 }
 // Keys will include:
-// - contact.phones : ["9241536586", "9534037266"]
-// - contact.whatsapp : "9241536586"
+// - contact.phones : ["9534037266", "9534037266"]
+// - contact.whatsapp : "9534037266"
 // - contact.email : "service@roserviceinpatna.in"
 // - shipping.freeAbove : 999
 // - shipping.standardCharge : 79
