@@ -76,13 +76,13 @@ export default function AreaPage({ params }: { params: { area: string } }) {
     }],
     sameAs: ['https://www.instagram.com/roservicepatna/', 'https://wa.me/91'+PHONES.primary],
     aggregateRating: { '@type':'AggregateRating', ratingValue:'4.9', reviewCount:'2486', ratingCount:'2486', bestRating:'5', worstRating:'1' },
+    // NOTE: itemReviewed nahi diya — parent LocalBusiness hi review ka subject hai.
     review: {
       '@type':'Review',
       author: { '@type':'Person', name: testimonial.name },
       datePublished: testimonial.date,
       reviewBody: testimonial.text,
       reviewRating: { '@type':'Rating', ratingValue: String(testimonial.rating), bestRating:'5' },
-      itemReviewed: { '@type':'LocalBusiness', name: `RO Service ${areaName} Patna` },
     },
     makesOffer: [
       { '@type':'Offer', itemOffered: { '@type':'Service', name:'RO Repair in '+areaName }, price:'200', priceCurrency:'INR', availability:'https://schema.org/InStock' },

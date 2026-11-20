@@ -185,6 +185,8 @@ export default function SiteSchemas({ settings: s }: { settings: Record<string, 
       bestRating: '5',
       worstRating: '1',
     },
+    // NOTE: itemReviewed nahi diya kyunki review LocalBusiness ke andar nested hai —
+    // Google khud samajhta hai parent hi itemReviewed hai. Dene se GSC me "directional conflict" warning aati hai.
     review: [
       {
         '@type': 'Review',
@@ -192,7 +194,6 @@ export default function SiteSchemas({ settings: s }: { settings: Record<string, 
         datePublished: '2025-10-15',
         reviewBody: 'Maine Kent RO service ke liye call kiya, 2 ghante mein technician aaya aur problem solve kar di. Charges bhi theek hai. Highly recommended!',
         reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
-        itemReviewed: { '@type': 'LocalBusiness', name: 'RO Service Patna' },
       },
       {
         '@type': 'Review',
@@ -200,7 +201,6 @@ export default function SiteSchemas({ settings: s }: { settings: Record<string, 
         datePublished: '2025-09-22',
         reviewBody: 'Kankarbagh mein rehti hoon, Aquaguard RO ka kaam karwaya. Technician samay par aaya, genuine parts use kiye aur proper demo diya. 6 months warranty bhi mili.',
         reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
-        itemReviewed: { '@type': 'LocalBusiness', name: 'RO Service Patna' },
       },
       {
         '@type': 'Review',
@@ -208,7 +208,6 @@ export default function SiteSchemas({ settings: s }: { settings: Record<string, 
         datePublished: '2025-08-10',
         reviewBody: 'Best RO service in Patna. Membrane change kiya, price sabse kam tha aur genuine membrane lagaya. 2 saal se inhi se service karwa raha hoon.',
         reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
-        itemReviewed: { '@type': 'LocalBusiness', name: 'RO Service Patna' },
       },
     ],
   };
